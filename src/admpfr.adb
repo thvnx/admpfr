@@ -18,4 +18,14 @@ package body AdMPFR is
       V := Get_Value (20);
       Put_Line ("Result is " & int'Image (V));
    end Main;
+
+   procedure Initialize (M : in out Mpfr_Float) is
+   begin
+      mpfr_init (M.Value'Access);
+   end Initialize;
+
+   procedure Finalize (M : in out Mpfr_Float) is
+   begin
+      mpfr_clear (M.Value'Access);
+   end Finalize;
 end Admpfr;
