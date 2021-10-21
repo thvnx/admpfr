@@ -20,23 +20,32 @@ package Admpfr is
    Failure : exception;
 
 private
-   procedure mpfr_init (m : access mpfr_t);
-   pragma Import (C, mpfr_init, "mpfr_init");
+   procedure mpfr_init (m : access mpfr_t) with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_init";
+   -- Import, Convention, and External_Name aspects could be replaced by a
+   -- single pragma: `pragma Import (C, mpfr_init, "mpfr_init")`.
 
-   procedure mpfr_clear (m : access mpfr_t);
-   pragma Import (C, mpfr_clear, "mpfr_clear");
+   procedure mpfr_clear (m : access mpfr_t) with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_clear";
 
    function mpfr_set_str (m : access mpfr_t;
                           str : chars_ptr;
                           base : Int;
                           rnd : Int)
-                         return Int;
-	 pragma Import (C, mpfr_set_str, "mpfr_set_str");
+                         return Int  with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_set_str";
 
    type mpfr_t is record
       m : System.Address;
-   end record;
-   pragma Convention (C, mpfr_t);
+   end record with
+     Convention => C;
+   -- Convention aspect could be replaced by pragma `Convention (C, mpfr_t)`
 
    type Mpfr_Float is new Ada.Finalization.Limited_Controlled with
       record
