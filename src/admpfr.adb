@@ -20,28 +20,28 @@ package body AdMPFR is
       Put_Line ("Result is " & int'Image (V));
    end Main;
 
-   procedure Initialize (M : in out Mpfr_Float) is
+   procedure Initialize (X : in out Mpfr_Float) is
    begin
-      mpfr_init (M.Value'Access);
+      mpfr_init (X.Value'Access);
    end Initialize;
 
-   procedure Finalize (M : in out Mpfr_Float) is
+   procedure Finalize (X : in out Mpfr_Float) is
    begin
-      mpfr_clear (M.Value'Access);
+      mpfr_clear (X.Value'Access);
    end Finalize;
 
    procedure Set
-     (M : out Mpfr_Float;
-      To   : String;
-      Base : Int := 10)
+     (Rop : out Mpfr_Float;
+      S   : String;
+      Base : int := 10)
    is
       use Interfaces.C.Strings;
 
-      Result : Int;
-      Rnd : Int := 0;
-      Input  : chars_ptr := New_String (To);
+      Result : int;
+      Rnd : int := 0;
+      Input  : chars_ptr := New_String (S);
    begin
-      Result := mpfr_set_str (M.Value'Access, Input, Base, Rnd);
+      Result := mpfr_set_str (Rop.Value'Access, Input, Base, Rnd);
       Free (Input);
       if Result /= 0 then
          raise Failure;
