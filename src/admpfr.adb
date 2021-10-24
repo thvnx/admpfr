@@ -3,6 +3,24 @@ with Interfaces.C.Strings;
 with Ada.Text_IO;  use Ada.Text_IO;
 
 package body AdMPFR is
+   procedure mpfr_init (X : access Mpfr_T) with
+     -- Import, Convention, and External_Name aspects could be replaced by a
+     -- single pragma: `pragma Import (C, mpfr_init, "mpfr_init")`.
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_init";
+
+   procedure mpfr_clear (X : access Mpfr_T) with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_clear";
+
+   function mpfr_set_str (Rop : access Mpfr_T; S : chars_ptr;
+                          Base : int; Rnd : int) return int with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_set_str";
+
    procedure Main is
 
       function Get_Value (a : int) return int
