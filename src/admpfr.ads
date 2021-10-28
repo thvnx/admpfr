@@ -9,12 +9,13 @@ package AdMPFR is
    type Mpfr_T is limited private;
    type Mpfr_Float is tagged limited private;
 
+   type Base_T is range 2 .. 62;
+
    -- NOTE: used as simple test for now, to be removed
    procedure Main;
 
-   -- TODO: create enum/range type for Base
    -- TODO: add rounding parameter
-   procedure Set (Rop : out Mpfr_Float; S : String; Base : int := 10);
+   procedure Set (Rop : out Mpfr_Float; S : String; Base : Base_T := 10);
 
    Failure : exception;
 

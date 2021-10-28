@@ -51,7 +51,7 @@ package body AdMPFR is
    procedure Set
      (Rop : out Mpfr_Float;
       S   : String;
-      Base : int := 10)
+      Base : Base_T := 10)
    is
       use Interfaces.C.Strings;
 
@@ -59,7 +59,7 @@ package body AdMPFR is
       Rnd : int := 0;
       Input  : chars_ptr := New_String (S);
    begin
-      Result := mpfr_set_str (Rop.Value'Access, Input, Base, Rnd);
+      Result := mpfr_set_str (Rop.Value'Access, Input, Int (Base), Rnd);
       Free (Input);
       if Result /= 0 then
          raise Failure;
