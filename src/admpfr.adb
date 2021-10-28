@@ -38,6 +38,20 @@ package body AdMPFR is
       Put_Line ("Result is " & int'Image (V));
    end Main;
 
+   function Rnd_T_Pos_To_Int (Rnd : Rnd_T) return Int is
+      function C_Stub (Rnd : Int) return Int
+      with
+        Import => True,
+        Convention => C,
+        External_Name => "rnd_t_pos_to_int";
+
+      Res : Int;
+   begin
+      Res := C_Stub (Rnd_T'Pos (Rnd));
+      pragma Assert (Res > 0);
+      return Res;
+   end Rnd_T_Pos_To_Int;
+
    procedure Initialize (X : in out Mpfr_Float) is
    begin
       mpfr_init (X.Value'Access);
@@ -51,15 +65,16 @@ package body AdMPFR is
    procedure Set
      (Rop : out Mpfr_Float;
       S   : String;
-      Base : Base_T := 10)
+      Base : Base_T := 10;
+      Rnd : Rnd_T := Rndn)
    is
       use Interfaces.C.Strings;
 
       Result : int;
-      Rnd : int := 0;
       Input  : chars_ptr := New_String (S);
    begin
-      Result := mpfr_set_str (Rop.Value'Access, Input, Int (Base), Rnd);
+      Result := mpfr_set_str (Rop.Value'Access, Input,
+                              Int (Base), Rnd_T_Pos_To_Int (Rnd));
       Free (Input);
       if Result /= 0 then
          raise Failure;

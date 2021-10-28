@@ -11,11 +11,13 @@ package AdMPFR is
 
    type Base_T is range 2 .. 62;
 
+   type Rnd_T is (Rndn, Rndd, Rndu, Rndz, Rnda, Rndf);
+
    -- NOTE: used as simple test for now, to be removed
    procedure Main;
 
-   -- TODO: add rounding parameter
-   procedure Set (Rop : out Mpfr_Float; S : String; Base : Base_T := 10);
+   procedure Set (Rop : out Mpfr_Float; S : String;
+                  Base : Base_T := 10; Rnd : Rnd_T := Rndn);
 
    Failure : exception;
 
@@ -25,6 +27,8 @@ private
       record
          Value : aliased Mpfr_T;
       end record;
+
+   function Rnd_T_Pos_To_Int (Rnd : Rnd_T) return Int;
 
    procedure Initialize (X : in out Mpfr_Float);
    procedure Finalize   (X : in out Mpfr_float);
