@@ -21,23 +21,6 @@ package body AdMPFR is
      Convention    => C,
      External_Name => "mpfr_set_str";
 
-   procedure Main is
-
-      function Get_Value (a : int) return int
-      with
-        Import        => True,
-        Convention    => C,
-        External_Name => "my_func";
-
-      --  Imports function 'my_func' from C and
-      --  rename it to 'Get_Value'
-
-      V : int;
-   begin
-      V := Get_Value (20);
-      Put_Line ("Result is " & int'Image (V));
-   end Main;
-
    function Rnd_T_Pos_To_Int (Rnd : Rnd_T) return Int is
       function C_Stub (Rnd : Int) return Int
       with

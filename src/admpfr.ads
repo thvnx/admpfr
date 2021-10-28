@@ -13,9 +13,6 @@ package AdMPFR is
 
    type Rnd_T is (Rndn, Rndd, Rndu, Rndz, Rnda, Rndf);
 
-   -- NOTE: used as simple test for now, to be removed
-   procedure Main;
-
    procedure Set (Rop : out Mpfr_Float; S : String;
                   Base : Base_T := 10; Rnd : Rnd_T := Rndn);
 
