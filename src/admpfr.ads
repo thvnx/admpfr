@@ -6,7 +6,6 @@ with System;
 
 
 package AdMPFR is
-   type Mpfr_T is limited private;
    type Mpfr_Float is tagged limited private;
 
    type Base_T is range 2 .. 62;
@@ -28,7 +27,7 @@ private
    -- Warning: this may not be portable since the mpfr_prec_t, and mpfr_exp_t
    -- can be of a different type depending on the machine the library has been
    -- built for.
-   type Mpfr_T is record
+   type Mpfr_T is limited record
       Mpfr_Prec_T : Prec_T;
       Mpfr_Sign_T : Int;
       Mpfr_Exp_T  : Exp_T;
