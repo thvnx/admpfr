@@ -1,13 +1,12 @@
-with Interfaces.C; use Interfaces.C;
-with Interfaces.C.Strings; use Interfaces.C.Strings;
-with Ada.Text_IO;  use Ada.Text_IO;
-with Ada.Strings;       use Ada.Strings;
+with Ada.Text_IO;           use Ada.Text_IO;
+with Ada.Strings;           use Ada.Strings;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Interfaces.C;          use Interfaces.C;
+with Interfaces.C.Strings;  use Interfaces.C.Strings;
+
 
 package body AdMPFR is
    procedure mpfr_init (X : access Mpfr_T) with
-     -- Import, Convention, and External_Name aspects could be replaced by a
-     -- single pragma: `pragma Import (C, mpfr_init, "mpfr_init")`.
      Import        => True,
      Convention    => C,
      External_Name => "mpfr_init";
@@ -17,15 +16,15 @@ package body AdMPFR is
      Convention    => C,
      External_Name => "mpfr_clear";
 
-   function mpfr_set_str (Rop : access Mpfr_T; S : chars_ptr;
-                          Base : int; Rnd : int) return int with
+   function mpfr_set_str (Rop : access Mpfr_T; S : Chars_Ptr;
+                          Base : Int; Rnd : Int) return Int with
      Import        => True,
      Convention    => C,
      External_Name => "mpfr_set_str";
 
    function mpfr_get_str (S : System.Address; Expptr : System.Address;
-                          Base : int; N : Size_T; Op : access constant Mpfr_T;
-                          Rnd : int) return Chars_ptr with
+                          Base : Int; N : Size_T; Op : access constant Mpfr_T;
+                          Rnd : Int) return Chars_ptr with
      Import        => True,
      Convention    => C,
      External_Name => "mpfr_get_str";
@@ -64,16 +63,10 @@ package body AdMPFR is
       mpfr_clear (X.Value'Access);
    end Finalize;
 
-   procedure Set
-     (Rop : out Mpfr_Float;
-      S   : String;
-      Base : Base_T := 10;
-      Rnd : Rnd_T := Rndn)
-   is
-      use Interfaces.C.Strings;
-
-      Result : int;
-      Input  : chars_ptr := New_String (S);
+   procedure Set (Rop : out Mpfr_Float; S : String;
+                  Base : Base_T := 10; Rnd : Rnd_T := Rndn) is
+      Result : Int;
+      Input  : Chars_Ptr := New_String (S);
    begin
       Result := mpfr_set_str (Rop.Value'Access, Input,
                               Int (Base), Rnd_T_Pos_To_Int (Rnd));
