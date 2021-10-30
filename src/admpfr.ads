@@ -16,16 +16,22 @@ package AdMPFR is
    procedure Set (Rop : out Mpfr_Float; S : String;
                   Base : Base_T := 10; Rnd : Rnd_T := Rndn);
 
+   function To_String (X : Mpfr_Float; Base : Base_T := 10;
+                       Rnd : Rnd_T := Rndn) return String;
+
    Failure : exception;
 
 private
+   type Prec_T is new Long;
+   type Exp_T is new Long;
+
    -- Warning: this may not be portable since the mpfr_prec_t, and mpfr_exp_t
    -- can be of a different type depending on the machine the library has been
    -- built for.
    type Mpfr_t is record
-      Mpfr_Prec_T : Long;
+      Mpfr_Prec_T : Prec_T;
       Mpfr_Sign_T : Int;
-      Mpfr_Exp_T  : Long;
+      Mpfr_Exp_T  : Exp_T;
       Mp_Limb_T   : System.Address;
    end record with Convention => C;
 
