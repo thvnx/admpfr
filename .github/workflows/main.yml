@@ -28,7 +28,7 @@ jobs:
       - name: Build and test admpfr
         run: |
           export LIBRARY_PATH=/usr/local/lib
-          cd gnat_native*/ && export PATH=$PWD/bin:$PATH && cd -
-          cd gprbuild*/ && export PATH=$PWD/bin:$PATH && cd -
+          cd gnat_native*/ && export PATH=$PATH:$PWD/bin && cd -
+          cd gprbuild*/ && export PATH=$PATH:$PWD/bin && cd -
           gprbuild -p
           obj/main
