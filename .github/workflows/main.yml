@@ -1,0 +1,33 @@
+name: admpfr CI (macOS)
+
+on: 
+  pull_request:
+  schedule:
+    - cron: '0 0 * * 0' # weekly
+
+jobs:
+  macos:
+    strategy:
+      matrix:
+        platform: [macos-latest]
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up env
+        run: |
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+          brew install mpfr
+          wget https://github.com/alire-project/alire/releases/download/v1.1.1/alr-1.1.1-bin-x86_64-macos.zip
+          unzip alr-1.1.1-bin-x86_64-macos.zip
+          alr-1/bin/alr get gnat_native gprbuild
+
+      - name: Build and test admpfr
+        run: |
+          export LIBRARY_PATH=/usr/local/lib
+          cd gnat_native*/ && eval `alr-1/bin/alr printenv` && cd -
+          cd gprbuild*/ && eval `alr-1/bin/alr printenv` && cd -
+          gprbuild -p
+          obj/main
