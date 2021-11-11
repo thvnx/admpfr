@@ -22,7 +22,8 @@ jobs:
           brew install mpfr
           wget https://github.com/alire-project/alire/releases/download/v1.1.1/alr-1.1.1-bin-x86_64-macos.zip
           unzip alr-1.1.1-bin-x86_64-macos.zip
-          bin/alr get gnat_native gprbuild
+          bin/alr get gprbuild
+          bin/alr get gnat_native
 
       - name: Build and test admpfr
         run: |
