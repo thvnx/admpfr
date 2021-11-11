@@ -19,8 +19,7 @@ jobs:
       - name: Set up env
         run: |
           /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-          brew upgrade
-          brew install mpfr
+          brew reinstall mpfr
           wget https://github.com/alire-project/alire/releases/download/v1.1.1/alr-1.1.1-bin-x86_64-macos.zip
           unzip alr-1.1.1-bin-x86_64-macos.zip
           bin/alr get gprbuild
