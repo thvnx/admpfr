@@ -21,33 +21,40 @@ with System;
 
 
 package AdMPFR is
+
    type Mpfr_Float is tagged limited private;
 
    type Base_T is range 2 .. 62;
 
    type Rnd_T is (Rndn, Rndd, Rndu, Rndz, Rnda, Rndf);
 
-   procedure Set (Rop : out Mpfr_Float; S : String;
-                  Base : Base_T := 10; Rnd : Rnd_T := Rndn);
+   procedure Set
+     (Rop  : out Mpfr_Float;
+      S    : String;
+      Base : Base_T := 10;
+      Rnd  : Rnd_T  := Rndn);
 
-   function To_String (X : Mpfr_Float; Base : Base_T := 10;
-                       Rnd : Rnd_T := Rndn) return String;
+   function To_String
+     (X    : Mpfr_Float;
+      Base : Base_T := 10;
+      Rnd  : Rnd_T  := Rndn) return String;
 
    Failure : exception;
 
 private
+
    type Prec_T is new Long;
    type Exp_T is new Long;
 
-   -- Warning: this may not be portable since the mpfr_prec_t, and mpfr_exp_t
-   -- can be of a different type depending on the machine the library has been
-   -- built for.
    type Mpfr_T is limited record
       Mpfr_Prec_T : Prec_T;
       Mpfr_Sign_T : Int;
       Mpfr_Exp_T  : Exp_T;
       Mp_Limb_T   : System.Address;
    end record with Convention => C;
+   --  Be careful, Mpfr_T may be not portable since Mpfr_Prec_T, and Mpfr_Exp_T
+   --  can be of a different type depending on the machine the library has been
+   --  built for. Mpfr_T record must stricty stick to the C mpfr_t struct.
 
    type Mpfr_Float is new Limited_Controlled with
       record
@@ -58,4 +65,5 @@ private
 
    procedure Initialize (X : in out Mpfr_Float);
    procedure Finalize   (X : in out Mpfr_float);
+
 end AdMPFR;

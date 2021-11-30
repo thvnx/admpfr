@@ -21,6 +21,7 @@ with Interfaces.C.Strings;  use Interfaces.C.Strings;
 
 
 package body AdMPFR is
+
    procedure mpfr_init (X : access Mpfr_T) with
      Import        => True,
      Convention    => C,
@@ -31,15 +32,24 @@ package body AdMPFR is
      Convention    => C,
      External_Name => "mpfr_clear";
 
-   function mpfr_set_str (Rop : access Mpfr_T; S : Chars_Ptr;
-                          Base : Int; Rnd : Int) return Int with
+   function mpfr_set_str
+     (Rop  : access Mpfr_T;
+      S    : Chars_Ptr;
+      Base : Int;
+      Rnd  : Int) return Int
+   with
      Import        => True,
      Convention    => C,
      External_Name => "mpfr_set_str";
 
-   function mpfr_get_str (S : System.Address; Expptr : System.Address;
-                          Base : Int; N : Size_T; Op : access constant Mpfr_T;
-                          Rnd : Int) return Chars_ptr with
+   function mpfr_get_str
+     (S      : System.Address;
+      Expptr : System.Address;
+      Base   : Int;
+      N      : Size_T;
+      Op     : access constant Mpfr_T;
+      Rnd    : Int) return Chars_ptr
+   with
      Import        => True,
      Convention    => C,
      External_Name => "mpfr_get_str";
@@ -78,28 +88,38 @@ package body AdMPFR is
       mpfr_clear (X.Value'Access);
    end Finalize;
 
-   procedure Set (Rop : out Mpfr_Float; S : String;
-                  Base : Base_T := 10; Rnd : Rnd_T := Rndn) is
+   procedure Set
+     (Rop  : out Mpfr_Float;
+      S    : String;
+      Base : Base_T := 10;
+      Rnd  : Rnd_T  := Rndn)
+   is
       Result : Int;
       Input  : Chars_Ptr := New_String (S);
    begin
-      Result := mpfr_set_str (Rop.Value'Access, Input,
-                              Int (Base), Rnd_T_Pos_To_Int (Rnd));
+      Result := mpfr_set_str
+                  (Rop.Value'Access, Input, Int (Base),
+                   Rnd_T_Pos_To_Int (Rnd));
       Free (Input);
       if Result /= 0 then
          raise Failure;
       end if;
    end Set;
 
-   -- TODO: redefine the 'Image attribute when GCC FSF will support Ada 2022,
-   -- see: https://stackoverflow.com/questions/67969309/ada-customise-image.
-   function To_String (X : Mpfr_Float; Base : Base_T := 10;
-                       Rnd : Rnd_T := Rndn) return String is
+   --  TODO: Add 'Image attribute on Mpfr_Float type when GCC FSF will support
+   --  Ada 2022, see:
+   --  https://stackoverflow.com/questions/67969309/ada-customise-image.
 
-      -- TODO: rely on mpfr_get_str_ndigits for now but allows the user to set
-      -- the number of digits to print.
-      Number_Digits : constant Size_T := Size_T'Max (mpfr_get_str_ndigits
-        (Int (Base), mpfr_get_prec (X.Value'Access)), 7);
+   function To_String
+     (X    : Mpfr_Float;
+      Base : Base_T := 10;
+      Rnd  : Rnd_T  := Rndn) return String
+   is
+      --  TODO: Rely on mpfr_get_str_ndigits for now but allows the user to set
+      --  the number of digits to print by adding a parameter to this function.
+
+      Number_Digits : constant Size_T := Size_T'Max
+        (mpfr_get_str_ndigits (Int (Base), mpfr_get_prec (X.Value'Access)), 7);
 
       Significand_Buffer : String (1 .. Integer (Number_Digits + 2));
       Exponent           : Exp_T;
@@ -107,24 +127,34 @@ package body AdMPFR is
       Exponent_S, Number : Unbounded_String;
       Significand        : Chars_Ptr;
    begin
-      Significand := mpfr_get_str (Significand_Buffer'Address, Exponent'Address,
-                                   Int (Base), Number_Digits, X.Value'Access,
-                                   Rnd_T_Pos_To_Int (Rnd));
+      Significand := mpfr_get_str
+                       (Significand_Buffer'Address,
+                        Exponent'Address,
+                        Int (Base),
+                        Number_Digits,
+                        X.Value'Access,
+                        Rnd_T_Pos_To_Int (Rnd));
 
-      -- Convert Exponent to a string. Add '+' sign if exponent is zero or
-      -- positive. Remove one as we'll insert the implicit radix point in the
-      -- significand.
+      --  Convert Exponent to a string
+
       Exponent_S := To_Unbounded_String (Exp_T'Image (Exponent - 1));
+
+      --  Add '+' sign if exponent is zero or positive. Remove 1 as we'll
+      --  insert the implicit radix point in the significand.
+
       if Exponent - 1 >= 0 then
          Overwrite (Exponent_S, 1, "+");
       end if;
 
       -- Concat significand and exponent
+
       Number := Value (Significand) & "E" & Exponent_S;
 
       -- Insert the radix point
+
       Insert (Number, (if Significand_Buffer (1) = '-' then 3 else 2), ".");
 
       return To_String (Number);
    end To_String;
+
 end Admpfr;
