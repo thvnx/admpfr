@@ -67,8 +67,8 @@ package body AdMPFR is
    function Rnd_T_Pos_To_Int (Rnd : Rnd_T) return Int is
       function C_Stub (Rnd : Int) return Int
       with
-        Import => True,
-        Convention => C,
+        Import        => True,
+        Convention    => C,
         External_Name => "rnd_t_pos_to_int";
 
       Res : Int;
