@@ -118,6 +118,8 @@ package body AdMPFR is
       --  TODO: Rely on mpfr_get_str_ndigits for now but allows the user to set
       --  the number of digits to print by adding a parameter to this function.
 
+      --  Default behavior mimics mpfr_printf("%.RNe", X)
+
       Number_Digits : constant Size_T := Size_T'Max
         (mpfr_get_str_ndigits (Int (Base), mpfr_get_prec (X.Value'Access)), 7);
 
@@ -135,20 +137,38 @@ package body AdMPFR is
                         X.Value'Access,
                         Rnd_T_Pos_To_Int (Rnd));
 
+      --  Remove 1 if first digit is not zero as we'll insert the implicit radix
+      --  point in the significand.
+
+      if Significand_Buffer (1) /= '-' then
+         if Significand_Buffer (1) /= '0' then
+            Exponent := Exponent - 1;
+         end if;
+      else
+         if Significand_Buffer (2) /= '0' then
+            Exponent := Exponent - 1;
+         end if;
+      end if;
+
       --  Convert Exponent to a string
 
-      Exponent_S := To_Unbounded_String (Exp_T'Image (Exponent - 1));
+      Exponent_S := To_Unbounded_String (Exp_T'Image (Exponent));
 
-      --  Add '+' sign if exponent is zero or positive. Remove 1 as we'll
-      --  insert the implicit radix point in the significand.
+      --  Format exponent as mpfr_printf("%RNe")
 
-      if Exponent - 1 >= 0 then
+      if Length(Exponent_S) = 2 then
+         Insert (Exponent_S, 2, "0");
+      end if;
+
+      --  Add '+' sign if exponent is zero or positive.
+
+      if Exponent >= 0 then
          Overwrite (Exponent_S, 1, "+");
       end if;
 
       -- Concat significand and exponent
 
-      Number := Value (Significand) & "E" & Exponent_S;
+      Number := Value (Significand) & "e" & Exponent_S;
 
       -- Insert the radix point
 
