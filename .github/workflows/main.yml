@@ -25,11 +25,11 @@ jobs:
           unzip alr-1.1.1-bin-x86_64-macos.zip
           bin/alr get gprbuild
           bin/alr get gnat_native
+          pip3 install e3-testsuite
 
       - name: Build and test admpfr
         run: |
           export LIBRARY_PATH=/usr/local/lib
           cd gnat_native*/ && export PATH=$PATH:$PWD/bin && cd -
           cd gprbuild*/ && export PATH=$PATH:$PWD/bin && cd -
-          gprbuild -p
-          obj/main
+          ./testsuite/testsuite.py
