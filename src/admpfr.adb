@@ -32,6 +32,18 @@ package body AdMPFR is
      Convention    => C,
      External_Name => "mpfr_clear";
 
+   function mpfr_prec_min return Prec_T with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_prec_min";
+   Prec_Min : Prec_T := mpfr_prec_min;
+
+   function mpfr_prec_max return Prec_T with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_prec_max";
+   Prec_Max : Prec_T := mpfr_prec_max;
+
    function mpfr_set_str
      (Rop  : access Mpfr_T;
       S    : Chars_Ptr;
@@ -63,6 +75,11 @@ package body AdMPFR is
      Import        => True,
      Convention    => C,
      External_Name => "mpfr_get_prec";
+
+   procedure mpfr_set_prec (X : access constant Mpfr_T; Prec : Prec_T) with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_set_prec";
 
    function Rnd_T_Pos_To_Int (Rnd : Rnd_T) return Int is
       function C_Stub (Rnd : Int) return Int
@@ -182,5 +199,14 @@ package body AdMPFR is
    begin
       return mpfr_get_prec (X.Value'Access);
    end Get_Prec;
+
+   procedure Set_Prec (X : Mpfr_Float; Prec : Prec_T) is
+   begin
+      if Prec > Prec_Max or Prec < Prec_Min then
+         raise Failure;
+      else
+         mpfr_set_prec (X.Value'Access, Prec);
+      end if;
+   end Set_Prec;
 
 end Admpfr;

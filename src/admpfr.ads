@@ -42,6 +42,7 @@ package AdMPFR is
       Rnd  : Rnd_T  := Rndn) return String;
 
    function Get_Prec (X : Mpfr_Float) return Prec_T;
+   procedure Set_Prec (X : Mpfr_Float; Prec : Prec_T);
 
    Failure : exception;
 

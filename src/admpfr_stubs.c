@@ -31,3 +31,13 @@ int rnd_t_pos_to_int (int r)
     default: return -1;
     }
 }
+
+long mpfr_prec_min ()
+{
+  return MPFR_PREC_MIN;
+}
+
+long mpfr_prec_max ()
+{
+  return MPFR_PREC_MAX;
+}
