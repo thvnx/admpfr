@@ -16,4 +16,11 @@ begin
    Put_Line (To_String (E));
    Set (F, "999e999");
    Put_Line (To_String (F));
+
+   for R in Rnd_T'Range loop
+      for B in Base_T'Range loop
+         Set (A, "-0.1", Base => B, Rnd => R);
+         Put_Line (To_String (A, Base => B, Rnd => R));
+      end loop;
+   end loop;
 end Test;
