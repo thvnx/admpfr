@@ -45,6 +45,16 @@ class AdmpfrTestsuite(Testsuite):
     test_driver_map = {"admpfr": AdmpfrDriver}
     default_driver = "admpfr"
 
+    def add_options(self, parser):
+        parser.add_argument(
+            "--rewrite", action="store_true",
+            help="Rewrite test baselines according to current outputs"
+        )
+
+    def set_up(self):
+        super(AdmpfrTestsuite, self).set_up()
+        self.env.rewrite_baselines = self.main.args.rewrite
+
 
 if __name__ == "__main__":
     sys.exit(AdmpfrTestsuite().testsuite_main())
