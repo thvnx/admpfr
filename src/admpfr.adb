@@ -178,4 +178,9 @@ package body AdMPFR is
       return To_String (Number);
    end To_String;
 
+   function Get_Prec (X : Mpfr_Float) return Prec_T is
+   begin
+      return mpfr_get_prec (X.Value'Access);
+   end Get_Prec;
+
 end Admpfr;

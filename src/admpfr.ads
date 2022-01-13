@@ -28,6 +28,8 @@ package AdMPFR is
 
    type Rnd_T is (Rndn, Rndd, Rndu, Rndz, Rnda, Rndf);
 
+   type Prec_T is new Long;
+
    procedure Set
      (Rop  : out Mpfr_Float;
       S    : String;
@@ -39,11 +41,12 @@ package AdMPFR is
       Base : Base_T := 10;
       Rnd  : Rnd_T  := Rndn) return String;
 
+   function Get_Prec (X : Mpfr_Float) return Prec_T;
+
    Failure : exception;
 
 private
 
-   type Prec_T is new Long;
    type Exp_T is new Long;
 
    type Mpfr_T is limited record
