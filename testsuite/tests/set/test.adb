@@ -1,4 +1,4 @@
-with Admpfr; use Admpfr;
+with AdMPFR; use AdMPFR;
 
 procedure Test is
    A, B, C : Mpfr_Float;
