@@ -1,4 +1,4 @@
-with Ada.Text_Io; use Ada.Text_Io;
+with Ada.Text_IO; use Ada.Text_IO;
 with AdMPFR;      use AdMPFR;
 
 procedure Main is

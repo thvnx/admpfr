@@ -13,12 +13,9 @@
 --  You should have received a copy of the GNU General Public License
 --  along with Foobar.  If not, see <https://www.gnu.org/licenses/>.
 
-With Ada.Text_IO;           use Ada.Text_IO;
 with Ada.Strings;           use Ada.Strings;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Interfaces.C;          use Interfaces.C;
 with Interfaces.C.Strings;  use Interfaces.C.Strings;
-
 
 package body AdMPFR is
 
@@ -36,19 +33,19 @@ package body AdMPFR is
      Import        => True,
      Convention    => C,
      External_Name => "mpfr_prec_min";
-   Prec_Min : Prec_T := mpfr_prec_min;
+   Prec_Min : constant Prec_T := mpfr_prec_min;
 
    function mpfr_prec_max return Prec_T with
      Import        => True,
      Convention    => C,
      External_Name => "mpfr_prec_max";
-   Prec_Max : Prec_T := mpfr_prec_max;
+   Prec_Max : constant Prec_T := mpfr_prec_max;
 
    function mpfr_set_str
      (Rop  : access Mpfr_T;
-      S    : Chars_Ptr;
-      Base : Int;
-      Rnd  : Int) return Int
+      S    : chars_ptr;
+      Base : int;
+      Rnd  : int) return int
    with
      Import        => True,
      Convention    => C,
@@ -57,16 +54,16 @@ package body AdMPFR is
    function mpfr_get_str
      (S      : System.Address;
       Expptr : System.Address;
-      Base   : Int;
-      N      : Size_T;
+      Base   : int;
+      N      : size_t;
       Op     : access constant Mpfr_T;
-      Rnd    : Int) return Chars_ptr
+      Rnd    : int) return chars_ptr
    with
      Import        => True,
      Convention    => C,
      External_Name => "mpfr_get_str";
 
-   function mpfr_get_str_ndigits (Base : Int; Prec: Prec_T) return Size_T with
+   function mpfr_get_str_ndigits (Base : int; Prec : Prec_T) return size_t with
      Import        => True,
      Convention    => C,
      External_Name => "mpfr_get_str_ndigits";
@@ -81,14 +78,14 @@ package body AdMPFR is
      Convention    => C,
      External_Name => "mpfr_set_prec";
 
-   function Rnd_T_Pos_To_Int (Rnd : Rnd_T) return Int is
-      function C_Stub (Rnd : Int) return Int
+   function Rnd_T_Pos_To_Int (Rnd : Rnd_T) return int is
+      function C_Stub (Rnd : int) return int
       with
         Import        => True,
         Convention    => C,
         External_Name => "rnd_t_pos_to_int";
 
-      Res : Int;
+      Res : int;
    begin
       Res := C_Stub (Rnd_T'Pos (Rnd));
       pragma Assert (Res > 0);
@@ -111,11 +108,11 @@ package body AdMPFR is
       Base : Base_T := 10;
       Rnd  : Rnd_T  := Rndn)
    is
-      Result : Int;
-      Input  : Chars_Ptr := New_String (S);
+      Result : int;
+      Input  : chars_ptr := New_String (S);
    begin
       Result := mpfr_set_str
-                  (Rop.Value'Access, Input, Int (Base),
+        (Rop.Value'Access, Input, int (Base),
                    Rnd_T_Pos_To_Int (Rnd));
       Free (Input);
       if Result /= 0 then
@@ -138,25 +135,25 @@ package body AdMPFR is
       --  Default behavior mimics mpfr_printf("%.RNe", X),
       --  at least for base 10!
 
-      Number_Digits : constant Size_T := Size_T'Max
-        (mpfr_get_str_ndigits (Int (Base), mpfr_get_prec (X.Value'Access)), 7);
+      Number_Digits : constant size_t := size_t'Max
+        (mpfr_get_str_ndigits (int (Base), mpfr_get_prec (X.Value'Access)), 7);
 
       Significand_Buffer : String (1 .. Integer (Number_Digits + 2));
       Exponent           : Exp_T;
 
       Exponent_S, Number : Unbounded_String;
-      Significand        : Chars_Ptr;
+      Significand        : chars_ptr;
    begin
       Significand := mpfr_get_str
                        (Significand_Buffer'Address,
                         Exponent'Address,
-                        Int (Base),
+                        int (Base),
                         Number_Digits,
                         X.Value'Access,
                         Rnd_T_Pos_To_Int (Rnd));
 
-      --  Remove 1 if first digit is not zero as we'll insert the implicit radix
-      --  point in the significand.
+      --  Remove 1 if first digit is not zero as we'll insert the implicit
+      --  radix point in the significand.
 
       if Significand_Buffer (1) /= '-' then
          if Significand_Buffer (1) /= '0' then
@@ -174,7 +171,7 @@ package body AdMPFR is
 
       --  Format exponent as mpfr_printf("%RNe")
 
-      if Length(Exponent_S) = 2 then
+      if Length (Exponent_S) = 2 then
          Insert (Exponent_S, 2, "0");
       end if;
 
@@ -184,11 +181,11 @@ package body AdMPFR is
          Overwrite (Exponent_S, 1, "+");
       end if;
 
-      -- Concat significand and exponent
+      --  Concat significand and exponent
 
       Number := Value (Significand) & "e" & Exponent_S;
 
-      -- Insert the radix point
+      --  Insert the radix point
 
       Insert (Number, (if Significand_Buffer (1) = '-' then 3 else 2), ".");
 
@@ -209,4 +206,4 @@ package body AdMPFR is
       end if;
    end Set_Prec;
 
-end Admpfr;
+end AdMPFR;

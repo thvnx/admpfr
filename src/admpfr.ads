@@ -15,10 +15,8 @@
 
 with Ada.Finalization;     use Ada.Finalization;
 with Interfaces.C;         use Interfaces.C;
-with Interfaces.C.Strings; use Interfaces.C.Strings;
 
 with System;
-
 
 package AdMPFR is
 
@@ -28,7 +26,7 @@ package AdMPFR is
 
    type Rnd_T is (Rndn, Rndd, Rndu, Rndz, Rnda, Rndf);
 
-   type Prec_T is new Long;
+   type Prec_T is new long;
 
    procedure Set
      (Rop  : out Mpfr_Float;
@@ -48,11 +46,11 @@ package AdMPFR is
 
 private
 
-   type Exp_T is new Long;
+   type Exp_T is new long;
 
    type Mpfr_T is limited record
       Mpfr_Prec_T : Prec_T;
-      Mpfr_Sign_T : Int;
+      Mpfr_Sign_T : int;
       Mpfr_Exp_T  : Exp_T;
       Mp_Limb_T   : System.Address;
    end record with Convention => C;
@@ -65,9 +63,9 @@ private
          Value : aliased Mpfr_T;
       end record;
 
-   function Rnd_T_Pos_To_Int (Rnd : Rnd_T) return Int;
+   function Rnd_T_Pos_To_Int (Rnd : Rnd_T) return int;
 
    procedure Initialize (X : in out Mpfr_Float);
-   procedure Finalize   (X : in out Mpfr_float);
+   procedure Finalize   (X : in out Mpfr_Float);
 
 end AdMPFR;
