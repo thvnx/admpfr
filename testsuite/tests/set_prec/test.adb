@@ -1,5 +1,5 @@
-with Ada.Text_Io; use Ada.Text_Io;
-with Admpfr;      use Admpfr;
+with Ada.Text_IO; use Ada.Text_IO;
+with AdMPFR;      use AdMPFR;
 
 procedure Test is
    M : Mpfr_Float;

@@ -24,8 +24,14 @@ class AdmpfrDriver(DiffTestDriver):
             for Main use ("test.adb");
             for Object_Dir use "obj";
 
+            package Compiler is
+               for Switches ("Ada") use
+                 ("-g", "-O0", "-gnata", "-gnatVa", "-gnatQ", "-gnatyg", "-gnateE",
+                  "-gnatwaCJe", "-fstack-check", "-gnatwae");
+            end Compiler;
+
             package Linker is
-                for Default_Switches ("ada") use ("-lmpfr");
+               for Default_Switches ("ada") use ("-lmpfr");
             end Linker;
 
             end Test;
