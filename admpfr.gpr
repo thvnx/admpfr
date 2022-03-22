@@ -6,6 +6,13 @@ project AdMPFR is
    for Main use ("main.adb");
    for Object_Dir use "obj";
 
+   package Compiler is
+      for Switches ("Ada") use
+        ("-g", "-O0", "-gnata", "-gnatVa", "-gnatQ", "-gnatyg", "-gnateE",
+         "-gnatwaCJe", "-fstack-check", "-gnatwae");
+      for Switches ("C") use ("-g", "-Wall" ,"-Werror");
+   end Compiler;
+
    package Linker is
       for Default_Switches ("ada") use ("-lmpfr");
    end Linker;
