@@ -32,4 +32,4 @@ jobs:
           export LIBRARY_PATH=/usr/local/lib
           cd gnat_native*/ && export PATH=$PATH:$PWD/bin && cd -
           cd gprbuild*/ && export PATH=$PATH:$PWD/bin && cd -
-          ./testsuite/testsuite.py
+          ./testsuite/testsuite.py --failure-exit-code=1
