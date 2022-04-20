@@ -88,7 +88,7 @@ package body AdMPFR is
       Res : int;
    begin
       Res := C_Stub (Rnd_T'Pos (Rnd));
-      pragma Assert (Res > 0);
+      pragma Assert (Res >= 0);
       return Res;
    end Rnd_T_Pos_To_Int;
 
