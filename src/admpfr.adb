@@ -108,7 +108,7 @@ package body AdMPFR is
                           X.Value'Access);
 
       if Res < 0 then
-         raise Failure;
+         raise Failure with "mpfr_printf failure";
       end if;
    end Mpfr_Printf;
 
@@ -141,7 +141,7 @@ package body AdMPFR is
                    Rnd_T_Pos_To_Int (Rnd));
       Free (Input);
       if Result /= 0 then
-         raise Failure;
+         raise Failure with "mpfr_set_str failure";
       end if;
    end Set;
 
@@ -225,7 +225,7 @@ package body AdMPFR is
    procedure Set_Prec (X : Mpfr_Float; Prec : Prec_T) is
    begin
       if Prec > Prec_Max or Prec < Prec_Min then
-         raise Failure;
+         raise Failure with "precision out of bounds";
       else
          mpfr_set_prec (X.Value'Access, Prec);
       end if;
