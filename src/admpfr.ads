@@ -24,7 +24,8 @@ package AdMPFR is
 
    type Base_T is range 2 .. 62;
 
-   type Rnd_T is (Rndn, Rndd, Rndu, Rndz, Rnda, Rndf);
+   type Rnd_T is (Rndn, Rndz, Rndu, Rndd, Rnda, Rndf);
+   --  Stick to the order declared in mpfr.h's mpfr_rnd_t enum
 
    type Prec_T is new long;
 

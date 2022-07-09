@@ -23,9 +23,9 @@ int rnd_t_pos_to_int (int r)
   switch (r)
     {
     case 0: return MPFR_RNDN;
-    case 1: return MPFR_RNDD;
+    case 1: return MPFR_RNDZ;
     case 2: return MPFR_RNDU;
-    case 3: return MPFR_RNDZ;
+    case 3: return MPFR_RNDD;
     case 4: return MPFR_RNDA;
     case 5: return MPFR_RNDF;
     default: return -1;
