@@ -110,7 +110,9 @@ package body Admpfr is
    -- Mpfr_Printf --
    -----------------
 
-   procedure Mpfr_Printf (Template : String; R : Rounding; X : Mpfloat) is
+   procedure Mpfr_Printf (Template : String;
+                          X : Mpfloat;
+                          R : Rounding := Rndn) is
       function Printf_Stub (T : chars_ptr;
                             R : mpfr_rnd_t;
                             X : access constant mpfr_t) return int
@@ -128,15 +130,6 @@ package body Admpfr is
       if Res < 0 then
          raise Failure with "mpfr_printf failure";
       end if;
-   end Mpfr_Printf;
-
-   -----------------
-   -- Mpfr_Printf --
-   -----------------
-
-   procedure Mpfr_Printf (Template : String; X : Mpfloat) is
-   begin
-      Mpfr_Printf (Template, Rndn, X);
    end Mpfr_Printf;
 
    ----------------

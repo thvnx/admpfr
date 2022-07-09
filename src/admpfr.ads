@@ -43,8 +43,9 @@ package Admpfr is
    function Get_Prec (X : Mpfloat) return Precision;
    procedure Set_Prec (X : Mpfloat; Prec : Precision);
 
-   procedure Mpfr_Printf (Template : String; X : Mpfloat);
-   procedure Mpfr_Printf (Template : String; R : Rounding; X : Mpfloat);
+   procedure Mpfr_Printf (Template : String;
+                          X : Mpfloat;
+                          R : Rounding := Rndn);
 
    Failure : exception;
 
