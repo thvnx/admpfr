@@ -20,7 +20,7 @@
 
 // Assuming that mpfr_rnd_t is an int, mpfr_prec_t is a long.
 
-mpfr_rnd_t rnd_t_pos_to_int (int r)
+mpfr_rnd_t rounding_to_mpfr_rnd_t (int r)
 {
   switch (r)
     {

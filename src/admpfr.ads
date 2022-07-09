@@ -18,58 +18,61 @@ with Interfaces.C;         use Interfaces.C;
 
 with System;
 
-package AdMPFR is
+package Admpfr is
 
-   type Mpfr_Float is tagged limited private;
+   type Mpfloat is tagged limited private;
 
-   type Base_T is range 2 .. 62;
+   type Base is range 2 .. 62;
 
-   type Rnd_T is (Rndn, Rndz, Rndu, Rndd, Rnda, Rndf);
+   type Rounding is (Rndn, Rndz, Rndu, Rndd, Rnda, Rndf);
    --  Stick to the order declared in mpfr.h's mpfr_rnd_t enum
 
-   type Prec_T is new long;
+   type Precision is new Standard.Long_Integer;
 
    procedure Set
-     (Rop  : out Mpfr_Float;
+     (Rop  : out Mpfloat;
       S    : String;
-      Base : Base_T := 10;
-      Rnd  : Rnd_T  := Rndn);
+      Base : Admpfr.Base := 10;
+      Rnd  : Rounding  := Rndn);
 
    function To_String
-     (X    : Mpfr_Float;
-      Base : Base_T := 10;
-      Rnd  : Rnd_T  := Rndn) return String;
+     (X    : Mpfloat;
+      Base : Admpfr.Base := 10;
+      Rnd  : Rounding  := Rndn) return String;
 
-   function Get_Prec (X : Mpfr_Float) return Prec_T;
-   procedure Set_Prec (X : Mpfr_Float; Prec : Prec_T);
+   function Get_Prec (X : Mpfloat) return Precision;
+   procedure Set_Prec (X : Mpfloat; Prec : Precision);
 
-   procedure Mpfr_Printf (Template : String; X : Mpfr_Float);
-   procedure Mpfr_Printf (Template : String; R : Rnd_T; X : Mpfr_Float);
+   procedure Mpfr_Printf (Template : String; X : Mpfloat);
+   procedure Mpfr_Printf (Template : String; R : Rounding; X : Mpfloat);
 
    Failure : exception;
 
 private
 
-   type Exp_T is new long;
+   type mpfr_exp_t is new long;
+   type mpfr_prec_t is new long;
+   type mpfr_rnd_t is new int;
+   type mpfr_sign_t is new int;
 
-   type Mpfr_T is limited record
-      Mpfr_Prec_T : Prec_T;
-      Mpfr_Sign_T : int;
-      Mpfr_Exp_T  : Exp_T;
-      Mp_Limb_T   : System.Address;
+   type mpfr_t is limited record
+      Mpfr_Prec : mpfr_prec_t;
+      Mpfr_Sign : mpfr_sign_t;
+      Mpfr_Exp  : mpfr_exp_t;
+      Mp_Limb   : System.Address;
    end record with Convention => C;
-   --  Be careful, Mpfr_T may be not portable since Mpfr_Prec_T, and Mpfr_Exp_T
+   --  Be careful, mpfr_t may be not portable since mpfr_prec_t, and mpfr_exp_t
    --  can be of a different type depending on the machine the library has been
-   --  built for. Mpfr_T record must stricty stick to the C mpfr_t struct.
+   --  built for. mpfr_t record must stricty stick to the C mpfr_t struct.
 
-   type Mpfr_Float is new Limited_Controlled with
+   type Mpfloat is new Limited_Controlled with
       record
-         Value : aliased Mpfr_T;
+         Value : aliased mpfr_t;
       end record;
 
-   function Rnd_T_Pos_To_Int (Rnd : Rnd_T) return int;
+   function Rounding_To_Mpfr_Rnd_T (Rnd : Rounding) return mpfr_rnd_t;
 
-   procedure Initialize (X : in out Mpfr_Float);
-   procedure Finalize   (X : in out Mpfr_Float);
+   procedure Initialize (X : in out Mpfloat);
+   procedure Finalize   (X : in out Mpfloat);
 
-end AdMPFR;
+end Admpfr;

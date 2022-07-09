@@ -1,7 +1,7 @@
-with AdMPFR; use AdMPFR;
+with Admpfr; use Admpfr;
 
 procedure Test is
-   A, B, C : Mpfr_Float with Unreferenced;
+   A, B, C : Mpfloat with Unreferenced;
 begin
    null;
 end Test;

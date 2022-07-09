@@ -1,8 +1,8 @@
 with Ada.Text_IO; use Ada.Text_IO;
-with AdMPFR;      use AdMPFR;
+with Admpfr;      use Admpfr;
 
 procedure Test is
-   M : Mpfr_Float;
+   M : Mpfloat;
 begin
    Set_Prec (M, 42);
    Set (M, "1");

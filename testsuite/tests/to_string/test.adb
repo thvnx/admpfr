@@ -1,8 +1,8 @@
 with Ada.Text_IO; use Ada.Text_IO;
-with AdMPFR;      use AdMPFR;
+with Admpfr;      use Admpfr;
 
 procedure Test is
-   A, B, C, D, E, F : Mpfr_Float;
+   A, B, C, D, E, F : Mpfloat;
 begin
    Set (A, "-0.1");
    Put_Line (To_String (A));
@@ -17,8 +17,8 @@ begin
    Set (F, "999e999");
    Put_Line (To_String (F));
 
-   for R in Rnd_T'Range loop
-      for B in Base_T'Range loop
+   for R in Rounding'Range loop
+      for B in Base'Range loop
          Set (A, "-0.1", Base => B, Rnd => R);
          Put_Line (To_String (A, Base => B, Rnd => R));
       end loop;

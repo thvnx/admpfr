@@ -17,37 +17,37 @@ with Ada.Strings;           use Ada.Strings;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C.Strings;  use Interfaces.C.Strings;
 
-package body AdMPFR is
+package body Admpfr is
 
    --  Direct mpfr calls
 
-   procedure mpfr_init (X : access Mpfr_T) with
+   procedure mpfr_init (X : access mpfr_t) with
      Import        => True,
      Convention    => C,
      External_Name => "mpfr_init";
 
-   procedure mpfr_clear (X : access Mpfr_T) with
+   procedure mpfr_clear (X : access mpfr_t) with
      Import        => True,
      Convention    => C,
      External_Name => "mpfr_clear";
 
-   function mpfr_prec_min return Prec_T with
+   function mpfr_prec_min return mpfr_prec_t with
      Import        => True,
      Convention    => C,
      External_Name => "mpfr_prec_min";
-   Prec_Min : constant Prec_T := mpfr_prec_min;
+   Prec_Min : constant Precision := Precision (mpfr_prec_min);
 
-   function mpfr_prec_max return Prec_T with
+   function mpfr_prec_max return mpfr_prec_t with
      Import        => True,
      Convention    => C,
      External_Name => "mpfr_prec_max";
-   Prec_Max : constant Prec_T := mpfr_prec_max;
+   Prec_Max : constant Precision := Precision (mpfr_prec_max);
 
    function mpfr_set_str
-     (Rop  : access Mpfr_T;
+     (Rop  : access mpfr_t;
       S    : chars_ptr;
       Base : int;
-      Rnd  : int) return int
+      Rnd  : mpfr_rnd_t) return int
    with
      Import        => True,
      Convention    => C,
@@ -58,58 +58,62 @@ package body AdMPFR is
       Expptr : System.Address;
       Base   : int;
       N      : size_t;
-      Op     : access constant Mpfr_T;
-      Rnd    : int) return chars_ptr
+      Op     : access constant mpfr_t;
+      Rnd    : mpfr_rnd_t) return chars_ptr
    with
      Import        => True,
      Convention    => C,
      External_Name => "mpfr_get_str";
 
-   function mpfr_get_str_ndigits (Base : int; Prec : Prec_T) return size_t with
+   function mpfr_get_str_ndigits (Base : int;
+                                  Prec : mpfr_prec_t) return size_t
+   with
      Import        => True,
      Convention    => C,
      External_Name => "mpfr_get_str_ndigits";
 
    --  Calls to admpfr C wrappers
 
-   function mpfr_get_prec (X : access constant Mpfr_T) return Prec_T with
+   function mpfr_get_prec (X : access constant mpfr_t) return mpfr_prec_t with
      Import        => True,
      Convention    => C,
      External_Name => "mpfr_get_prec";
 
-   procedure mpfr_set_prec (X : access constant Mpfr_T; Prec : Prec_T) with
+   procedure mpfr_set_prec (X : access constant mpfr_t;
+                            Prec : mpfr_prec_t)
+   with
      Import        => True,
      Convention    => C,
      External_Name => "mpfr_set_prec";
 
-   ----------------------
-   -- Rnd_T_Pos_To_Int --
-   ----------------------
+   ----------------------------
+   -- Rounding_To_Mpfr_Rnd_T --
+   ----------------------------
 
-   function Rnd_T_Pos_To_Int (Rnd : Rnd_T) return int is
-      function c_stub (Rnd : int) return int
+   function Rounding_To_Mpfr_Rnd_T (Rnd : Rounding) return mpfr_rnd_t is
+      function c_stub (Rnd : mpfr_rnd_t) return mpfr_rnd_t
       with
         Import        => True,
         Convention    => C,
-        External_Name => "rnd_t_pos_to_int";
+        External_Name => "rounding_to_mpfr_rnd_t";
 
-      Res : int;
+      Res : mpfr_rnd_t;
    begin
-      Res := c_stub (Rnd_T'Pos (Rnd));
+      Res := c_stub (Rounding'Pos (Rnd));
       if Res < 0 then
          raise Failure with "invalid rounding mode";
       end if;
       return Res;
-   end Rnd_T_Pos_To_Int;
+   end Rounding_To_Mpfr_Rnd_T;
 
    -----------------
    -- Mpfr_Printf --
    -----------------
 
-   procedure Mpfr_Printf (Template : String; R : Rnd_T; X : Mpfr_Float) is
+   procedure Mpfr_Printf (Template : String; R : Rounding; X : Mpfloat) is
       function Printf_Stub (T : chars_ptr;
-                            R : int;
-                            X : access constant Mpfr_T) return int
+                            R : mpfr_rnd_t;
+                            X : access constant mpfr_t) return int
       with
         Import        => True,
         Convention    => C,
@@ -118,7 +122,7 @@ package body AdMPFR is
       Res : int;
    begin
       Res := Printf_Stub (New_String (Template),
-                          Rnd_T_Pos_To_Int (R),
+                          Rounding_To_Mpfr_Rnd_T (R),
                           X.Value'Access);
 
       if Res < 0 then
@@ -130,7 +134,7 @@ package body AdMPFR is
    -- Mpfr_Printf --
    -----------------
 
-   procedure Mpfr_Printf (Template : String; X : Mpfr_Float) is
+   procedure Mpfr_Printf (Template : String; X : Mpfloat) is
    begin
       Mpfr_Printf (Template, Rndn, X);
    end Mpfr_Printf;
@@ -139,7 +143,7 @@ package body AdMPFR is
    -- Initialize --
    ----------------
 
-   procedure Initialize (X : in out Mpfr_Float) is
+   procedure Initialize (X : in out Mpfloat) is
    begin
       mpfr_init (X.Value'Access);
    end Initialize;
@@ -148,7 +152,7 @@ package body AdMPFR is
    -- Finalize --
    --------------
 
-   procedure Finalize (X : in out Mpfr_Float) is
+   procedure Finalize (X : in out Mpfloat) is
    begin
       mpfr_clear (X.Value'Access);
    end Finalize;
@@ -158,24 +162,24 @@ package body AdMPFR is
    ---------
 
    procedure Set
-     (Rop  : out Mpfr_Float;
+     (Rop  : out Mpfloat;
       S    : String;
-      Base : Base_T := 10;
-      Rnd  : Rnd_T  := Rndn)
+      Base : Admpfr.Base := 10;
+      Rnd  : Rounding  := Rndn)
    is
       Result : int;
       Input  : chars_ptr := New_String (S);
    begin
       Result := mpfr_set_str
         (Rop.Value'Access, Input, int (Base),
-                   Rnd_T_Pos_To_Int (Rnd));
+         Rounding_To_Mpfr_Rnd_T (Rnd));
       Free (Input);
       if Result /= 0 then
          raise Failure with "mpfr_set_str failure";
       end if;
    end Set;
 
-   --  TODO: Add 'Image attribute on Mpfr_Float type when GCC FSF will support
+   --  TODO: Add 'Image attribute on Float type when GCC FSF will support
    --  Ada 2022, see:
    --  https://stackoverflow.com/questions/67969309/ada-customise-image.
 
@@ -184,9 +188,9 @@ package body AdMPFR is
    ---------------
 
    function To_String
-     (X    : Mpfr_Float;
-      Base : Base_T := 10;
-      Rnd  : Rnd_T  := Rndn) return String
+     (X    : Mpfloat;
+      Base : Admpfr.Base := 10;
+      Rnd  : Rounding  := Rndn) return String
    is
       --  TODO: Rely on mpfr_get_str_ndigits for now but allows the user to set
       --  the number of digits to print by adding a parameter to this function.
@@ -198,18 +202,18 @@ package body AdMPFR is
         (mpfr_get_str_ndigits (int (Base), mpfr_get_prec (X.Value'Access)), 7);
 
       Significand_Buffer : String (1 .. Integer (Number_Digits + 2));
-      Exponent           : Exp_T;
+      Exponent           : mpfr_exp_t;
 
       Exponent_S, Number : Unbounded_String;
       Significand        : chars_ptr;
    begin
       Significand := mpfr_get_str
-                       (Significand_Buffer'Address,
-                        Exponent'Address,
-                        int (Base),
-                        Number_Digits,
-                        X.Value'Access,
-                        Rnd_T_Pos_To_Int (Rnd));
+        (Significand_Buffer'Address,
+         Exponent'Address,
+         int (Base),
+         Number_Digits,
+         X.Value'Access,
+         Rounding_To_Mpfr_Rnd_T (Rnd));
 
       --  Remove 1 if first digit is not zero as we'll insert the implicit
       --  radix point in the significand.
@@ -226,7 +230,7 @@ package body AdMPFR is
 
       --  Convert Exponent to a string
 
-      Exponent_S := To_Unbounded_String (Exp_T'Image (Exponent));
+      Exponent_S := To_Unbounded_String (mpfr_exp_t'Image (Exponent));
 
       --  Format exponent as mpfr_printf("%RNe")
 
@@ -255,22 +259,22 @@ package body AdMPFR is
    -- Get_Prec --
    --------------
 
-   function Get_Prec (X : Mpfr_Float) return Prec_T is
+   function Get_Prec (X : Mpfloat) return Precision is
    begin
-      return mpfr_get_prec (X.Value'Access);
+      return Precision (mpfr_get_prec (X.Value'Access));
    end Get_Prec;
 
    --------------
    -- Set_Prec --
    --------------
 
-   procedure Set_Prec (X : Mpfr_Float; Prec : Prec_T) is
+   procedure Set_Prec (X : Mpfloat; Prec : Precision) is
    begin
       if Prec > Prec_Max or Prec < Prec_Min then
          raise Failure with "precision out of bounds";
       else
-         mpfr_set_prec (X.Value'Access, Prec);
+         mpfr_set_prec (X.Value'Access, mpfr_prec_t (Prec));
       end if;
    end Set_Prec;
 
-end AdMPFR;
+end Admpfr;
