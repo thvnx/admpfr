@@ -27,7 +27,7 @@ class AdmpfrDriver(DiffTestDriver):
             package Compiler is
                for Switches ("Ada") use
                  ("-g", "-O0", "-gnata", "-gnatVa", "-gnatQ", "-gnatyg", "-gnateE",
-                  "-gnatwaCJe", "-fstack-check", "-gnatwae");
+                  "-gnatwaCJe", "-fstack-check", "-gnatwae", "-gnat2022");
             end Compiler;
 
             package Linker is
