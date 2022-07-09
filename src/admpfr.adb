@@ -19,6 +19,8 @@ with Interfaces.C.Strings;  use Interfaces.C.Strings;
 
 package body AdMPFR is
 
+   --  Direct mpfr calls
+
    procedure mpfr_init (X : access Mpfr_T) with
      Import        => True,
      Convention    => C,
@@ -68,6 +70,8 @@ package body AdMPFR is
      Convention    => C,
      External_Name => "mpfr_get_str_ndigits";
 
+   --  Calls to admpfr C wrappers
+
    function mpfr_get_prec (X : access constant Mpfr_T) return Prec_T with
      Import        => True,
      Convention    => C,
@@ -78,8 +82,12 @@ package body AdMPFR is
      Convention    => C,
      External_Name => "mpfr_set_prec";
 
+   ----------------------
+   -- Rnd_T_Pos_To_Int --
+   ----------------------
+
    function Rnd_T_Pos_To_Int (Rnd : Rnd_T) return int is
-      function C_Stub (Rnd : int) return int
+      function c_stub (Rnd : int) return int
       with
         Import        => True,
         Convention    => C,
@@ -87,10 +95,16 @@ package body AdMPFR is
 
       Res : int;
    begin
-      Res := C_Stub (Rnd_T'Pos (Rnd));
-      pragma Assert (Res >= 0);
+      Res := c_stub (Rnd_T'Pos (Rnd));
+      if Res < 0 then
+         raise Failure with "invalid rounding mode";
+      end if;
       return Res;
    end Rnd_T_Pos_To_Int;
+
+   -----------------
+   -- Mpfr_Printf --
+   -----------------
 
    procedure Mpfr_Printf (Template : String; R : Rnd_T; X : Mpfr_Float) is
       function Printf_Stub (T : chars_ptr;
@@ -112,20 +126,36 @@ package body AdMPFR is
       end if;
    end Mpfr_Printf;
 
+   -----------------
+   -- Mpfr_Printf --
+   -----------------
+
    procedure Mpfr_Printf (Template : String; X : Mpfr_Float) is
    begin
       Mpfr_Printf (Template, Rndn, X);
    end Mpfr_Printf;
+
+   ----------------
+   -- Initialize --
+   ----------------
 
    procedure Initialize (X : in out Mpfr_Float) is
    begin
       mpfr_init (X.Value'Access);
    end Initialize;
 
+   --------------
+   -- Finalize --
+   --------------
+
    procedure Finalize (X : in out Mpfr_Float) is
    begin
       mpfr_clear (X.Value'Access);
    end Finalize;
+
+   ---------
+   -- Set --
+   ---------
 
    procedure Set
      (Rop  : out Mpfr_Float;
@@ -148,6 +178,10 @@ package body AdMPFR is
    --  TODO: Add 'Image attribute on Mpfr_Float type when GCC FSF will support
    --  Ada 2022, see:
    --  https://stackoverflow.com/questions/67969309/ada-customise-image.
+
+   ---------------
+   -- To_String --
+   ---------------
 
    function To_String
      (X    : Mpfr_Float;
@@ -217,10 +251,18 @@ package body AdMPFR is
       return To_String (Number);
    end To_String;
 
+   --------------
+   -- Get_Prec --
+   --------------
+
    function Get_Prec (X : Mpfr_Float) return Prec_T is
    begin
       return mpfr_get_prec (X.Value'Access);
    end Get_Prec;
+
+   --------------
+   -- Set_Prec --
+   --------------
 
    procedure Set_Prec (X : Mpfr_Float; Prec : Prec_T) is
    begin
