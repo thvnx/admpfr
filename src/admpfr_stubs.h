@@ -17,5 +17,8 @@
 #define ADMPFR_STUBS_H
 
 mpfr_rnd_t rnd_t_pos_to_int (int r);
+mpfr_prec_t mpfr_prec_min ();
+mpfr_prec_t mpfr_prec_max ();
+int mpfr_printf_stub (const char *template, mpfr_rnd_t r, mpfr_t x);
 
 #endif /* ADMPFR_STUBS_H */

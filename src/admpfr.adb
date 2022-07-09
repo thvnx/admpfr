@@ -92,6 +92,31 @@ package body AdMPFR is
       return Res;
    end Rnd_T_Pos_To_Int;
 
+   procedure Mpfr_Printf (Template : String; R : Rnd_T; X : Mpfr_Float) is
+      function Printf_Stub (T : chars_ptr;
+                            R : int;
+                            X : access constant Mpfr_T) return int
+      with
+        Import        => True,
+        Convention    => C,
+        External_Name => "mpfr_printf_stub";
+
+      Res : int;
+   begin
+      Res := Printf_Stub (New_String (Template),
+                          Rnd_T_Pos_To_Int (R),
+                          X.Value'Access);
+
+      if Res < 0 then
+         raise Failure;
+      end if;
+   end Mpfr_Printf;
+
+   procedure Mpfr_Printf (Template : String; X : Mpfr_Float) is
+   begin
+      Mpfr_Printf (Template, Rndn, X);
+   end Mpfr_Printf;
+
    procedure Initialize (X : in out Mpfr_Float) is
    begin
       mpfr_init (X.Value'Access);

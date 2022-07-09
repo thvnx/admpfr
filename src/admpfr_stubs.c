@@ -43,3 +43,8 @@ mpfr_prec_t mpfr_prec_max ()
 {
   return MPFR_PREC_MAX;
 }
+
+int mpfr_printf_stub (const char *template, mpfr_rnd_t r, mpfr_t x)
+{
+  return mpfr_printf (template, r, x);
+}

@@ -43,6 +43,9 @@ package AdMPFR is
    function Get_Prec (X : Mpfr_Float) return Prec_T;
    procedure Set_Prec (X : Mpfr_Float; Prec : Prec_T);
 
+   procedure Mpfr_Printf (Template : String; X : Mpfr_Float);
+   procedure Mpfr_Printf (Template : String; R : Rnd_T; X : Mpfr_Float);
+
    Failure : exception;
 
 private
