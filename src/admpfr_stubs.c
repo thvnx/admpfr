@@ -18,7 +18,9 @@
 #include "admpfr_stubs.h"
 
 
-int rnd_t_pos_to_int (int r)
+// Assuming that mpfr_rnd_t is an int, mpfr_prec_t is a long.
+
+mpfr_rnd_t rnd_t_pos_to_int (int r)
 {
   switch (r)
     {
@@ -32,12 +34,12 @@ int rnd_t_pos_to_int (int r)
     }
 }
 
-long mpfr_prec_min ()
+mpfr_prec_t mpfr_prec_min ()
 {
   return MPFR_PREC_MIN;
 }
 
-long mpfr_prec_max ()
+mpfr_prec_t mpfr_prec_max ()
 {
   return MPFR_PREC_MAX;
 }

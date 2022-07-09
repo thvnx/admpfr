@@ -16,6 +16,6 @@
 #ifndef ADMPFR_STUBS_H
 #define ADMPFR_STUBS_H
 
-int rnd_t_pos_to_int (int r);
+mpfr_rnd_t rnd_t_pos_to_int (int r);
 
 #endif /* ADMPFR_STUBS_H */
