@@ -24,7 +24,7 @@ package Admpfr is
 
    type Base is range 2 .. 62;
 
-   type Rounding is (Rndn, Rndz, Rndu, Rndd, Rnda, Rndf);
+   type Rounding is (RNDN, RNDZ, RNDU, RNDD, RNDA, RNDF);
    --  Stick to the order declared in mpfr.h's mpfr_rnd_t enum
 
    type Precision is new Standard.Long_Integer;
@@ -33,19 +33,19 @@ package Admpfr is
      (Rop  : out Mpfloat;
       S    : String;
       Base : Admpfr.Base := 10;
-      Rnd  : Rounding  := Rndn);
+      Rnd  : Rounding  := RNDN);
 
    function To_String
      (X    : Mpfloat;
       Base : Admpfr.Base := 10;
-      Rnd  : Rounding  := Rndn) return String;
+      Rnd  : Rounding  := RNDN) return String;
 
    function Get_Prec (X : Mpfloat) return Precision;
    procedure Set_Prec (X : Mpfloat; Prec : Precision);
 
    procedure Mpfr_Printf (Template : String;
                           X : Mpfloat;
-                          R : Rounding := Rndn);
+                          R : Rounding := RNDN);
 
    Failure : exception;
 

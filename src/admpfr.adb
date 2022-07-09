@@ -112,7 +112,7 @@ package body Admpfr is
 
    procedure Mpfr_Printf (Template : String;
                           X : Mpfloat;
-                          R : Rounding := Rndn) is
+                          R : Rounding := RNDN) is
       function Printf_Stub (T : chars_ptr;
                             R : mpfr_rnd_t;
                             X : access constant mpfr_t) return int
@@ -158,7 +158,7 @@ package body Admpfr is
      (Rop  : out Mpfloat;
       S    : String;
       Base : Admpfr.Base := 10;
-      Rnd  : Rounding  := Rndn)
+      Rnd  : Rounding  := RNDN)
    is
       Result : int;
       Input  : chars_ptr := New_String (S);
@@ -183,7 +183,7 @@ package body Admpfr is
    function To_String
      (X    : Mpfloat;
       Base : Admpfr.Base := 10;
-      Rnd  : Rounding  := Rndn) return String
+      Rnd  : Rounding  := RNDN) return String
    is
       --  TODO: Rely on mpfr_get_str_ndigits for now but allows the user to set
       --  the number of digits to print by adding a parameter to this function.
