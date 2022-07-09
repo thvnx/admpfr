@@ -13,8 +13,8 @@
 --  You should have received a copy of the GNU General Public License
 --  along with Foobar.  If not, see <https://www.gnu.org/licenses/>.
 
-with Ada.Finalization;     use Ada.Finalization;
-with Interfaces.C;         use Interfaces.C;
+with Ada.Finalization; use Ada.Finalization;
+with Interfaces.C;     use Interfaces.C;
 
 with System;
 
