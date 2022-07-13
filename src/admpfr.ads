@@ -52,10 +52,10 @@ package Admpfr is
 
 private
 
-   type mpfr_exp_t is new long;
-   type mpfr_prec_t is new long;
-   type mpfr_rnd_t is new int;
-   type mpfr_sign_t is new int;
+   subtype mpfr_exp_t is long;
+   subtype mpfr_prec_t is long;
+   subtype mpfr_rnd_t is int;
+   subtype mpfr_sign_t is int;
 
    type mpfr_t is limited record
       Mpfr_Prec : mpfr_prec_t;
