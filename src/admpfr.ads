@@ -71,7 +71,7 @@ private
          Value : aliased mpfr_t;
       end record;
 
-   function Rounding_To_Mpfr_Rnd_T (Rnd : Rounding) return mpfr_rnd_t;
+   function To_Mpfr_Rnd_T (Rnd : Rounding) return mpfr_rnd_t;
 
    procedure Initialize (X : in out Mpfloat);
    procedure Finalize   (X : in out Mpfloat);
