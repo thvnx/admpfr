@@ -99,9 +99,6 @@ package body Admpfr is
       --  TODO: Rely on mpfr_get_str_ndigits for now but allows the user to set
       --  the number of digits to print by adding a parameter to this function.
 
-      --  Default behavior mimics mpfr_printf("%.RNe", X),
-      --  at least for base 10!
-
       Number_Digits : constant size_t := size_t'Max
         (mpfr_get_str_ndigits (abs int (Base),
                                mpfr_get_prec (X.Value'Access)), 7);
