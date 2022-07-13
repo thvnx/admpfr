@@ -30,14 +30,13 @@ package body Admpfr is
    -----------------
 
    procedure Mpfr_Printf (Template : String;
-                          X : Mpfloat;
-                          R : Rounding := RNDN) is
-      Res : int;
+                          X        : Mpfloat;
+                          R        : Rounding := RNDN) is
+      Res : constant int :=
+        printf_stub (New_String (Template),
+                     Rounding'Pos (R),
+                     X.Value'Access);
    begin
-      Res := printf_stub (New_String (Template),
-                          Rounding'Pos (R),
-                          X.Value'Access);
-
       if Res < 0 then
          raise Failure with "mpfr_printf failure";
       end if;
@@ -69,15 +68,18 @@ package body Admpfr is
      (Rop  : out Mpfloat;
       S    : String;
       Base : Admpfr.Base := 10;
-      Rnd  : Rounding  := RNDN)
+      Rnd  : Rounding    := RNDN)
    is
-      Result : int;
+      Result : int       := -1;
       Input  : chars_ptr := New_String (S);
    begin
-      Result := mpfr_set_str
-        (Rop.Value'Access, Input, int (Base),
-         Rounding'Pos (Rnd));
+      Result := mpfr_set_str (Rop.Value'Access,
+                              Input,
+                              int (Base),
+                              Rounding'Pos (Rnd));
+
       Free (Input);
+
       if Result /= 0 then
          raise Failure with "mpfr_set_str failure";
       end if;
@@ -94,14 +96,15 @@ package body Admpfr is
    function To_String
      (X    : Mpfloat;
       Base : Admpfr.Base := 10;
-      Rnd  : Rounding  := RNDN) return String
+      Rnd  : Rounding    := RNDN) return String
    is
       --  TODO: Rely on mpfr_get_str_ndigits for now but allows the user to set
       --  the number of digits to print by adding a parameter to this function.
 
-      Number_Digits : constant size_t := size_t'Max
-        (mpfr_get_str_ndigits (abs int (Base),
-                               mpfr_get_prec (X.Value'Access)), 7);
+      Number_Digits : constant size_t :=
+        size_t'Max (mpfr_get_str_ndigits (abs int (Base),
+                                          mpfr_get_prec (X.Value'Access)),
+                    7);
 
       Significand_Buffer : String (1 .. Integer (Number_Digits + 2));
       Exponent           : mpfr_exp_t;
@@ -109,13 +112,12 @@ package body Admpfr is
       Exponent_S, Number : Unbounded_String;
       Significand        : chars_ptr;
    begin
-      Significand := mpfr_get_str
-        (Significand_Buffer'Address,
-         Exponent'Address,
-         int (Base),
-         Number_Digits,
-         X.Value'Access,
-         Rounding'Pos (Rnd));
+      Significand := mpfr_get_str (Significand_Buffer'Address,
+                                   Exponent'Address,
+                                   int (Base),
+                                   Number_Digits,
+                                   X.Value'Access,
+                                   Rounding'Pos (Rnd));
 
       --  Remove 1 if first digit is not zero as we'll insert the implicit
       --  radix point in the significand.

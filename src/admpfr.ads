@@ -88,8 +88,8 @@ package Admpfr is
    --  stored in x, use `Prec_Round` (TODO) instead.
 
    procedure Mpfr_Printf (Template : String;
-                          X : Mpfloat;
-                          R : Rounding := RNDN);
+                          X        : Mpfloat;
+                          R        : Rounding := RNDN);
    --  Format string `Template`. The format specification accepted by
    --  `Mpfr_Printf` is an extension of the printf one. See the mpfr
    --  documentation for a detailed description of the `Template` formats.
