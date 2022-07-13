@@ -18,9 +18,14 @@ begin
    Put_Line (To_String (F));
 
    for R in Rounding'Range loop
-      for B in Base'Range loop
-         Set (A, "-0.1", Base => B, Rnd => R);
-         Put_Line (To_String (A, Base => B, Rnd => R));
+      Set (A, "-0.1", Rnd => R);
+      for B in -36 .. 62 loop
+         begin
+            Put_Line (To_String (A, Base => Base (B), Rnd => R));
+         exception
+            when
+              others => Put_Line ("Base not in range?: " & B'Image);
+         end;
       end loop;
    end loop;
 end Test;

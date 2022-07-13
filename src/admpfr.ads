@@ -22,7 +22,8 @@ package Admpfr is
 
    type Mpfloat is tagged limited private;
 
-   type Base is range 2 .. 62;
+   type Base is range -36 .. 62 with
+     Dynamic_Predicate => abs Base /= 1;
 
    type Rounding is (RNDN, RNDZ, RNDU, RNDD, RNDA, RNDF);
    --  !!! Stick to the order declared in the C mpfr_rnd_t enum !!!
@@ -34,12 +35,16 @@ package Admpfr is
      (Rop  : out Mpfloat;
       S    : String;
       Base : Admpfr.Base := 10;
-      Rnd  : Rounding  := RNDN);
+      Rnd  : Rounding  := RNDN)
+   with
+     Pre => Base = 0 or Base > 1;
 
    function To_String
      (X    : Mpfloat;
       Base : Admpfr.Base := 10;
-      Rnd  : Rounding  := RNDN) return String;
+      Rnd  : Rounding  := RNDN) return String
+   with
+     Pre => Base /= 0;
 
    function Get_Prec (X : Mpfloat) return Precision;
    procedure Set_Prec (X : Mpfloat; Prec : Precision);

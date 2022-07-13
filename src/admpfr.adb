@@ -103,7 +103,8 @@ package body Admpfr is
       --  at least for base 10!
 
       Number_Digits : constant size_t := size_t'Max
-        (mpfr_get_str_ndigits (int (Base), mpfr_get_prec (X.Value'Access)), 7);
+        (mpfr_get_str_ndigits (abs int (Base),
+                               mpfr_get_prec (X.Value'Access)), 7);
 
       Significand_Buffer : String (1 .. Integer (Number_Digits + 2));
       Exponent           : mpfr_exp_t;
