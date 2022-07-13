@@ -18,21 +18,7 @@
 #include "admpfr_stubs.h"
 
 
-// Assuming that mpfr_rnd_t is an int, mpfr_prec_t is a long.
-
-mpfr_rnd_t rounding_to_mpfr_rnd_t (int r)
-{
-  switch (r)
-    {
-    case 0: return MPFR_RNDN;
-    case 1: return MPFR_RNDZ;
-    case 2: return MPFR_RNDU;
-    case 3: return MPFR_RNDD;
-    case 4: return MPFR_RNDA;
-    case 5: return MPFR_RNDF;
-    default: return -1;
-    }
-}
+// Assuming that mpfr_prec_t is a long.
 
 mpfr_prec_t mpfr_prec_min ()
 {

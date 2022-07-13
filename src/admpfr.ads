@@ -25,7 +25,8 @@ package Admpfr is
    type Base is range 2 .. 62;
 
    type Rounding is (RNDN, RNDZ, RNDU, RNDD, RNDA, RNDF);
-   --  Stick to the order declared in mpfr.h's mpfr_rnd_t enum
+   --  !!! Stick to the order declared in the C mpfr_rnd_t enum !!!
+   for Rounding'Size use int'Size;
 
    type Precision is new Standard.Long_Integer;
 
@@ -70,8 +71,6 @@ private
       record
          Value : aliased mpfr_t;
       end record;
-
-   function To_Mpfr_Rnd_T (Rnd : Rounding) return mpfr_rnd_t;
 
    procedure Initialize (X : in out Mpfloat);
    procedure Finalize   (X : in out Mpfloat);
