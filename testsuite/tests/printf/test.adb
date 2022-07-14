@@ -15,4 +15,12 @@ begin
          end;
       end loop;
    end loop;
+
+   Set (A, "0.1");
+   Mpfr_Printf ("%.RUe" & ASCII.LF, A);
+   Mpfr_Printf ("%.RDe" & ASCII.LF, A);
+   Mpfr_Printf ("%.RYe" & ASCII.LF, A);
+   Mpfr_Printf ("%.RZe" & ASCII.LF, A);
+   Mpfr_Printf ("%.RNe" & ASCII.LF, A);
+   Mpfr_Printf ("%.R*e" & ASCII.LF, A, RNDN);
 end Test;

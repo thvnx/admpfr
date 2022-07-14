@@ -134,4 +134,6 @@ private
    procedure Initialize (X : in out Mpfloat);
    procedure Finalize   (X : in out Mpfloat);
 
+   procedure Reformat_Printf_Args (T : in out String; R : in out Rounding);
+
 end Admpfr;

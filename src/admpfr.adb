@@ -25,6 +25,28 @@ package body Admpfr is
    Prec_Min : constant Precision := Precision (mpfr_prec_min);
    Prec_Max : constant Precision := Precision (mpfr_prec_max);
 
+   --------------------------
+   -- Reformat_Printf_Args --
+   --------------------------
+
+   procedure Reformat_Printf_Args (T : in out String; R : in out Rounding) is
+   begin
+      for I in 1 .. T'Length loop
+         if T (I) = 'R' and then R = RNDN then
+            case T (I + 1) is
+               when 'N' => T (I + 1) := '*';
+               when 'U' => T (I + 1) := '*'; R := RNDU;
+               when 'D' => T (I + 1) := '*'; R := RNDD;
+               when 'Y' => T (I + 1) := '*'; R := RNDA;
+               when 'Z' => T (I + 1) := '*'; R := RNDZ;
+               when '*' => null;
+               when others => raise Failure;
+            end case;
+         end if;
+         exit when T (I) = '*';
+      end loop;
+   end Reformat_Printf_Args;
+
    -----------------
    -- Mpfr_Printf --
    -----------------
@@ -32,14 +54,25 @@ package body Admpfr is
    procedure Mpfr_Printf (Template : String;
                           X        : Mpfloat;
                           R        : Rounding := RNDN) is
-      Res : constant int :=
-        printf_stub (New_String (Template),
-                     Rounding'Pos (R),
-                     X.Value'Access);
+      Res   : int := -1;
+      Input : chars_ptr := Null_Ptr;
+      Tpl   : String := Template;
+      Rnd   : Rounding := R;
    begin
-      if Res < 0 then
-         raise Failure with "mpfr_printf failure";
-      end if;
+      begin
+         Reformat_Printf_Args (Tpl, Rnd);
+         Input := New_String (Tpl);
+         Res := printf_stub (Input, Rounding'Pos (Rnd), X.Value'Access);
+         Free (Input);
+
+         if Res < 0 then
+            raise Failure with "mpfr_printf failure";
+         end if;
+
+      exception
+         when Storage_Error =>
+            raise Failure with "mpfr_printf malformation";
+      end;
    end Mpfr_Printf;
 
    ------------------
@@ -53,17 +86,31 @@ package body Admpfr is
       Buf : String (1 .. 256);
       --  TODO: find a way to compute a safe upper bound for Buf. mpfr_sprintf
       --  will overflow if the result is bigger than that.
-   begin
-      Res := sprintf_stub (Buf'Address,
-                           New_String (Template),
-                           Rounding'Pos (R),
-                           X.Value'Access);
 
-      if Res > 0 then
-         return Buf (1 .. Integer (Res));
-      else
-         raise Failure with "mpfr_sprintf failure";
-      end if;
+      Input : chars_ptr := Null_Ptr;
+      Tpl   : String := Template;
+      Rnd   : Rounding := R;
+   begin
+      begin
+         Reformat_Printf_Args (Tpl, Rnd);
+         Input := New_String (Tpl);
+
+         Res := sprintf_stub (Buf'Address,
+                              Input,
+                              Rounding'Pos (Rnd),
+                              X.Value'Access);
+         Free (Input);
+
+         if Res > 0 then
+            return Buf (1 .. Integer (Res));
+         else
+            raise Failure with "mpfr_sprintf failure";
+         end if;
+
+      exception
+         when Storage_Error =>
+            raise Failure with "mpfr_sprintf malformation";
+      end;
    end Mpfr_Sprintf;
 
    ----------------
