@@ -21,8 +21,8 @@ jobs:
         run: |
           /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
           brew install mpfr
-          wget https://github.com/alire-project/alire/releases/download/v1.1.2/alr-1.1.2-bin-x86_64-macos.zip
-          unzip alr-1.1.2-bin-x86_64-macos.zip
+          wget https://github.com/alire-project/alire/releases/download/v1.2.0/alr-1.2.0-bin-x86_64-macos.zip
+          unzip alr-1.2.0-bin-x86_64-macos.zip
           bin/alr get gprbuild
           bin/alr get gnat_native
           pip3 install e3-testsuite
