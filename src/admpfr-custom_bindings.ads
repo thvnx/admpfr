@@ -40,4 +40,13 @@ private package Admpfr.Custom_Bindings is
      Convention    => C,
      External_Name => "mpfr_printf_stub";
 
+   function sprintf_stub (B : System.Address;
+                          T : chars_ptr;
+                          R : mpfr_rnd_t;
+                          X : access constant mpfr_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_sprintf_stub";
+
 end Admpfr.Custom_Bindings;

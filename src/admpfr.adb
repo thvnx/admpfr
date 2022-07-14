@@ -42,6 +42,30 @@ package body Admpfr is
       end if;
    end Mpfr_Printf;
 
+   ------------------
+   -- Mpfr_Sprintf --
+   ------------------
+
+   function Mpfr_Sprintf (Template : String;
+                          X        : Mpfloat;
+                          R        : Rounding := RNDN) return String is
+      Res : int := -1;
+      Buf : String (1 .. 256);
+      --  TODO: find a way to compute a safe upper bound for Buf. mpfr_sprintf
+      --  will overflow if the result is bigger than that.
+   begin
+      Res := sprintf_stub (Buf'Address,
+                           New_String (Template),
+                           Rounding'Pos (R),
+                           X.Value'Access);
+
+      if Res > 0 then
+         return Buf (1 .. Integer (Res));
+      else
+         raise Failure with "mpfr_sprintf failure";
+      end if;
+   end Mpfr_Sprintf;
+
    ----------------
    -- Initialize --
    ----------------

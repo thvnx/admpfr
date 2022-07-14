@@ -34,3 +34,8 @@ int mpfr_printf_stub (const char *template, mpfr_rnd_t r, mpfr_t x)
 {
   return mpfr_printf (template, r, x);
 }
+
+int mpfr_sprintf_stub (char *buf, const char *template, mpfr_rnd_t r, mpfr_t x)
+{
+  return mpfr_sprintf (buf, template, r, x);
+}

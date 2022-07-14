@@ -100,6 +100,13 @@ package Admpfr is
    --  the default precision, rounded toward +Inf, use:
    --    `Mpfr_Printf ("%.R*e" & ASCII.LF, X, R)`.
 
+   function Mpfr_Sprintf (Template : String;
+                          X        : Mpfloat;
+                          R        : Rounding := RNDN) return String;
+   --  Format string `Template`. `Mpfr_Sprintf` has the same behavior than
+   --  `Mpfr_Printf` (it is based on `mpfr_sprintf`). It returns the formated
+   --  `Template` as a string.
+
    Failure : exception;
 
 private

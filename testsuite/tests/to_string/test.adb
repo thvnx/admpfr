@@ -28,4 +28,18 @@ begin
          end;
       end loop;
    end loop;
+
+   for B in 2 .. 62 loop
+      begin
+         Set (A, "0.1", Base => Base (B));
+         if Mpfr_Sprintf ("%.R*e", A, RNDN) /= A.To_String then
+            Put_Line ("diff: " &
+                        Mpfr_Sprintf ("%.R*e", A, RNDN) &
+                        " /= " & A.To_String);
+         end if;
+      exception
+         when
+           others => Put_Line ("Base not in range?: " & B'Image);
+      end;
+   end loop;
 end Test;
