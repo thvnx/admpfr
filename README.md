@@ -2,7 +2,7 @@
 
 This package introduces a new type: `Mpfloat`, allowing to use `mpfr_t` C
 objects in Ada code. `Mpfloat` is a `Limited_Controlled` type, therefore memory
-initialization and freeing is automatically handled by AdMPFR, thanks to the
+initialization and freeing is automatically handled by Admpfr, thanks to the
 `Initialize` and `Finalize` operations given by the controlled type.
 
 Only setting and printing operations have been implemented so far, but a
@@ -18,8 +18,8 @@ with Admpfr;      use Admpfr;
 procedure Main is
    N : Mpfloat;
 begin
-   Set (N, "0.1");
-   Put_Line (To_String (N));
+   N.Set ("0.1");
+   Put_Line (N.To_String);
 end Main;
 ```
 will print:

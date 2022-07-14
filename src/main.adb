@@ -4,6 +4,6 @@ with Admpfr;      use Admpfr;
 procedure Main is
    N : Mpfloat;
 begin
-   Set (N, "0.1");
-   Put_Line (To_String (N));
+   N.Set ("0.1");
+   Put_Line (N.To_String);
 end Main;
