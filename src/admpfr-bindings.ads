@@ -58,6 +58,80 @@ private package Admpfr.Bindings is
 
    --  Assignment Functions
 
+   function mpfr_set
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_set";
+
+   function mpfr_set_ui
+     (Rop : access constant mpfr_t;
+      Op  : unsigned_long;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_set_ui";
+
+   function mpfr_set_si
+     (Rop : access constant mpfr_t;
+      Op  : long;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_set_si";
+
+   function mpfr_set_flt
+     (Rop : access constant mpfr_t;
+      Op  : C_float;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_set_flt";
+
+   function mpfr_set_d
+     (Rop : access constant mpfr_t;
+      Op  : double;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_set_d";
+
+   function mpfr_set_ld
+     (Rop : access constant mpfr_t;
+      Op  : long_double;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_set_ld";
+
+   function mpfr_set_ui_2exp
+     (Rop : access constant mpfr_t;
+      Op  : unsigned_long;
+      E   : mpfr_exp_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_set_ui_2exp";
+
+   function mpfr_set_si_2exp
+     (Rop : access constant mpfr_t;
+      Op  : long;
+      E   : mpfr_exp_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_set_si_2exp";
+
    function mpfr_set_str
      (Rop  : access mpfr_t;
       S    : chars_ptr;
@@ -67,6 +141,39 @@ private package Admpfr.Bindings is
      Import        => True,
      Convention    => C,
      External_Name => "mpfr_set_str";
+
+   function mpfr_strtofr
+     (Rop    : access constant mpfr_t;
+      Nptr   : Interfaces.C.Strings.chars_ptr;
+      Endptr : System.Address;
+      Base   : int;
+      Rnd    : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_strtofr";
+
+   procedure mpfr_set_nan (X : access constant mpfr_t) with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_set_nan";
+
+   procedure mpfr_set_inf (X : access constant mpfr_t; Sign : int) with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_set_inf";
+
+   procedure mpfr_set_zero (X : access constant mpfr_t; Sign : int) with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_set_zero";
+
+   procedure mpfr_swap (X : access constant mpfr_t;
+                        Y : access constant mpfr_t)
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_swap";
 
    --  Conversion Functions
 
