@@ -19,20 +19,30 @@ private package Admpfr.Bindings is
 
    --  Initialization Functions
 
+   procedure mpfr_init2 (X : access mpfr_t; Prec : mpfr_prec_t) with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_init2";
+
    procedure mpfr_clear (X : access mpfr_t) with
      Import        => True,
      Convention    => C,
      External_Name => "mpfr_clear";
 
-   function mpfr_get_prec (X : access constant mpfr_t) return mpfr_prec_t with
-     Import        => True,
-     Convention    => C,
-     External_Name => "mpfr_get_prec";
-
    procedure mpfr_init (X : access mpfr_t) with
      Import        => True,
      Convention    => C,
      External_Name => "mpfr_init";
+
+   procedure mpfr_set_default_prec (Prec : mpfr_prec_t) with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_set_default_prec";
+
+   function mpfr_get_default_prec return mpfr_prec_t with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_get_default_prec";
 
    procedure mpfr_set_prec (X : access constant mpfr_t;
                             Prec : mpfr_prec_t)
@@ -40,6 +50,11 @@ private package Admpfr.Bindings is
      Import        => True,
      Convention    => C,
      External_Name => "mpfr_set_prec";
+
+   function mpfr_get_prec (X : access constant mpfr_t) return mpfr_prec_t with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_get_prec";
 
    --  Assignment Functions
 
