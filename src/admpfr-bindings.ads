@@ -17,15 +17,31 @@ with Interfaces.C.Strings; use Interfaces.C.Strings;
 
 private package Admpfr.Bindings is
 
-   procedure mpfr_init (X : access mpfr_t) with
-     Import        => True,
-     Convention    => C,
-     External_Name => "mpfr_init";
+   --  Initialization Functions
 
    procedure mpfr_clear (X : access mpfr_t) with
      Import        => True,
      Convention    => C,
      External_Name => "mpfr_clear";
+
+   function mpfr_get_prec (X : access constant mpfr_t) return mpfr_prec_t with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_get_prec";
+
+   procedure mpfr_init (X : access mpfr_t) with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_init";
+
+   procedure mpfr_set_prec (X : access constant mpfr_t;
+                            Prec : mpfr_prec_t)
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_set_prec";
+
+   --  Assignment Functions
 
    function mpfr_set_str
      (Rop  : access mpfr_t;
@@ -36,6 +52,8 @@ private package Admpfr.Bindings is
      Import        => True,
      Convention    => C,
      External_Name => "mpfr_set_str";
+
+   --  Conversion Functions
 
    function mpfr_get_str
      (S      : System.Address;
@@ -55,17 +73,5 @@ private package Admpfr.Bindings is
      Import        => True,
      Convention    => C,
      External_Name => "mpfr_get_str_ndigits";
-
-   function mpfr_get_prec (X : access constant mpfr_t) return mpfr_prec_t with
-     Import        => True,
-     Convention    => C,
-     External_Name => "mpfr_get_prec";
-
-   procedure mpfr_set_prec (X : access constant mpfr_t;
-                            Prec : mpfr_prec_t)
-   with
-     Import        => True,
-     Convention    => C,
-     External_Name => "mpfr_set_prec";
 
 end Admpfr.Bindings;

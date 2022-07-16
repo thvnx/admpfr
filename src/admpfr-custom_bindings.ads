@@ -27,11 +27,6 @@ private package Admpfr.Custom_Bindings is
      Convention    => C,
      External_Name => "mpfr_prec_max";
 
-   function rounding_to_mpfr_rnd_t (Rnd : mpfr_rnd_t) return mpfr_rnd_t with
-     Import        => True,
-     Convention    => C,
-     External_Name => "rounding_to_mpfr_rnd_t";
-
    function printf_stub (T : chars_ptr;
                          R : mpfr_rnd_t;
                          X : access constant mpfr_t) return int
