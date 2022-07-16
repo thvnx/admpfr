@@ -182,6 +182,76 @@ private package Admpfr.Bindings is
 
    --  Conversion Functions
 
+   function mpfr_get_flt (Op  : access constant mpfr_t;
+                          Rnd : mpfr_rnd_t) return C_float
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_get_flt";
+
+   function mpfr_get_d (Op  : access constant mpfr_t;
+                        Rnd : mpfr_rnd_t) return double
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_get_d";
+
+   function mpfr_get_ld (Op  : access constant mpfr_t;
+                         Rnd : mpfr_rnd_t) return long_double
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_get_ld";
+
+   function mpfr_get_si (Op  : access constant mpfr_t;
+                         Rnd : mpfr_rnd_t) return long
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_get_si";
+
+   function mpfr_get_ui (Op  : access constant mpfr_t;
+                         Rnd : mpfr_rnd_t) return unsigned_long
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_get_ui";
+
+   function mpfr_get_d_2exp
+     (Exp : access long;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return double
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_get_d_2exp";
+
+   function mpfr_get_ld_2exp
+     (Exp : access long;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return long_double
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_get_ld_2exp";
+
+   function mpfr_frexp
+     (Exp : access mpfr_exp_t;
+      X   : access constant mpfr_t;
+      Y   : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_frexp";
+
+   function mpfr_get_str_ndigits (Base : int;
+                                  Prec : mpfr_prec_t) return size_t
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_get_str_ndigits";
+
    function mpfr_get_str
      (S      : System.Address;
       Expptr : System.Address;
@@ -194,11 +264,39 @@ private package Admpfr.Bindings is
      Convention    => C,
      External_Name => "mpfr_get_str";
 
-   function mpfr_get_str_ndigits (Base : int;
-                                  Prec : mpfr_prec_t) return size_t
+   function mpfr_fits_ulong_p (Op  : access constant mpfr_t;
+                               Rnd : mpfr_rnd_t) return int
    with
      Import        => True,
      Convention    => C,
-     External_Name => "mpfr_get_str_ndigits";
+     External_Name => "mpfr_fits_ulong_p";
+
+   function mpfr_fits_slong_p (Op  : access constant mpfr_t;
+                               Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_fits_slong_p";
+
+   function mpfr_fits_uint_p (Op  : access constant mpfr_t;
+                              Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_fits_uint_p";
+
+   function mpfr_fits_sint_p (Op  : access constant mpfr_t;
+                              Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_fits_sint_p";
+
+   function mpfr_fits_ushort_p (Op  : access constant mpfr_t;
+                                Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_fits_ushort_p";
 
 end Admpfr.Bindings;
