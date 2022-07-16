@@ -175,6 +175,11 @@ private package Admpfr.Bindings is
      Convention    => C,
      External_Name => "mpfr_swap";
 
+   --  Combined Initialization and Assignment Functions
+
+   --  NOTE: since initialization is handled by a controlled type,
+   --  initialization and assignment functions won't be binded here.
+
    --  Conversion Functions
 
    function mpfr_get_str
