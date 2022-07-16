@@ -19,17 +19,17 @@ private package Admpfr.Bindings is
 
    --  Initialization Functions
 
-   procedure mpfr_init2 (X : access mpfr_t; Prec : mpfr_prec_t) with
+   procedure mpfr_init2 (X : access constant mpfr_t; Prec : mpfr_prec_t) with
      Import        => True,
      Convention    => C,
      External_Name => "mpfr_init2";
 
-   procedure mpfr_clear (X : access mpfr_t) with
+   procedure mpfr_clear (X : access constant mpfr_t) with
      Import        => True,
      Convention    => C,
      External_Name => "mpfr_clear";
 
-   procedure mpfr_init (X : access mpfr_t) with
+   procedure mpfr_init (X : access constant mpfr_t) with
      Import        => True,
      Convention    => C,
      External_Name => "mpfr_init";
