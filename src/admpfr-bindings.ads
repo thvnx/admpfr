@@ -901,4 +901,547 @@ private package Admpfr.Bindings is
      Convention    => C,
      External_Name => "mpfr_total_order_p";
 
+   --  Transcendental Functions
+
+   function mpfr_log
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_log";
+
+   function mpfr_log_ui
+     (Rop : access constant mpfr_t;
+      Op  : unsigned_long;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_log_ui";
+
+   function mpfr_log2
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_log2";
+
+   function mpfr_log10
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_log10";
+
+   function mpfr_log1p
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_log1p";
+
+   function mpfr_exp
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_exp";
+
+   function mpfr_exp2
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_exp2";
+
+   function mpfr_exp10
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_exp10";
+
+   function mpfr_expm1
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_expm1";
+
+   function mpfr_pow
+     (Rop : access constant mpfr_t;
+      Op1 : access constant mpfr_t;
+      Op2 : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_pow";
+
+   function mpfr_pow_ui
+     (Rop : access constant mpfr_t;
+      Op1 : access constant mpfr_t;
+      Op2 : unsigned_long;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_pow_ui";
+
+   function mpfr_pow_si
+     (Rop : access constant mpfr_t;
+      Op1 : access constant mpfr_t;
+      Op2 : long;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_pow_si";
+
+   function mpfr_ui_pow_ui
+     (Rop : access constant mpfr_t;
+      Op1 : unsigned_long;
+      Op2 : unsigned_long;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_ui_pow_ui";
+
+   function mpfr_ui_pow
+     (Rop : access constant mpfr_t;
+      Op1 : unsigned_long;
+      Op2 : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_ui_pow";
+
+   function mpfr_cos
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_cos";
+
+   function mpfr_sin
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_sin";
+
+   function mpfr_tan
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_tan";
+
+   function mpfr_sin_cos
+     (Sop : access constant mpfr_t;
+      Cop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_sin_cos";
+
+   function mpfr_sec
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_sec";
+
+   function mpfr_csc
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_csc";
+
+   function mpfr_cot
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_cot";
+
+   function mpfr_acos
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_acos";
+
+   function mpfr_asin
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_asin";
+
+   function mpfr_atan
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_atan";
+
+   function mpfr_atan2
+     (Rop : access constant mpfr_t;
+      X   : access constant mpfr_t;
+      Y   : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_atan2";
+
+   function mpfr_cosh
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_cosh";
+
+   function mpfr_sinh
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_sinh";
+
+   function mpfr_tanh
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_tanh";
+
+   function mpfr_sinh_cosh
+     (Sop : access constant mpfr_t;
+      Cop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_sinh_cosh";
+
+   function mpfr_sech
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_sech";
+
+   function mpfr_csch
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_csch";
+
+   function mpfr_coth
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_coth";
+
+   function mpfr_acosh
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_acosh";
+
+   function mpfr_asinh
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_asinh";
+
+   function mpfr_atanh
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_atanh";
+
+   function mpfr_eint
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_eint";
+
+   function mpfr_li2
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_li2";
+
+   function mpfr_gamma
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_gamma";
+
+   function mpfr_gamma_inc
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Op2 : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_gamma_inc";
+
+   function mpfr_lngamma
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_lngamma";
+
+   function mpfr_lgamma
+     (Rop   : access constant mpfr_t;
+      Signp : access int;
+      Op    : access constant mpfr_t;
+      Rnd   : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_lgamma";
+
+   function mpfr_digamma
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_digamma";
+
+   function mpfr_beta
+     (Rop : access constant mpfr_t;
+      Op1 : access constant mpfr_t;
+      Op2 : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_beta";
+
+   function mpfr_zeta
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_zeta";
+
+   function mpfr_zeta_ui
+     (Rop : access constant mpfr_t;
+      Op : unsigned_long;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_zeta_ui";
+
+   function mpfr_erf
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_erf";
+
+   function mpfr_erfc
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_erfc";
+
+   function mpfr_j0
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_j0";
+
+   function mpfr_j1
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_j1";
+
+   function mpfr_jn
+     (Rop : access constant mpfr_t;
+      N   : long;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_jn";
+
+   function mpfr_y0
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_y0";
+
+   function mpfr_y1
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_y1";
+
+   function mpfr_yn
+     (Rop : access constant mpfr_t;
+      N   : long;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_yn";
+
+   function mpfr_agm
+     (Rop : access constant mpfr_t;
+      Op1 : access constant mpfr_t;
+      Op2 : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_agm";
+
+   function mpfr_ai
+     (Rop : access constant mpfr_t;
+      X   : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_ai";
+
+   function mpfr_const_log2
+     (Rop : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_const_log2";
+
+   function mpfr_const_pi
+     (Rop : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_const_pi";
+
+   function mpfr_const_euler
+     (Rop : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_const_euler";
+
+   function mpfr_const_catalan
+     (Rop : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_const_catalan";
+
 end Admpfr.Bindings;
