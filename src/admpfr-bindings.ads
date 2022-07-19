@@ -731,4 +731,174 @@ private package Admpfr.Bindings is
      Convention    => C,
      External_Name => "mpfr_dot";
 
+   --  Comparison Functions
+
+   function mpfr_cmp
+     (Op1 : access constant mpfr_t;
+      Op2 : access constant mpfr_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_cmp";
+
+   function mpfr_cmp_ui
+     (Op1 : access constant mpfr_t;
+      Op2 : unsigned_long) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_cmp_ui";
+
+   function mpfr_cmp_si
+     (Op1 : access constant mpfr_t;
+      Op2 : long) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_cmp_si";
+
+   function mpfr_cmp_d
+     (Op1 : access constant mpfr_t;
+      Op2 : double) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_cmp_d";
+
+   function mpfr_cmp_ld
+     (Op1 : access constant mpfr_t;
+      Op2 : long_double) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_cmp_ld";
+
+   function mpfr_cmp_ui_2exp
+     (Op1 : access constant mpfr_t;
+      Op2 : unsigned_long;
+      E   : mpfr_exp_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_cmp_ui_2exp";
+
+   function mpfr_cmp_si_2exp
+     (Op1 : access constant mpfr_t;
+      Op2 : long;
+      E   : mpfr_exp_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_cmp_si_2exp";
+
+   function mpfr_cmpabs
+     (Op1 : access constant mpfr_t;
+      Op2 : access constant mpfr_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_cmpabs";
+
+   function mpfr_cmpabs_ui
+     (Op1 : access constant mpfr_t;
+      Op2 : unsigned_long) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_cmpabs_ui";
+
+   function mpfr_nan_p (Op : access constant mpfr_t) return int with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_nan_p";
+
+   function mpfr_inf_p (Op : access constant mpfr_t) return int with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_inf_p";
+
+   function mpfr_number_p (Op : access constant mpfr_t) return int with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_number_p";
+
+   function mpfr_zero_p (Op : access constant mpfr_t) return int with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_zero_p";
+
+   function mpfr_regular_p (Op : access constant mpfr_t) return int with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_regular_p";
+
+   function mpfr_sgn (Op : access constant mpfr_t) return int with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_sgn";
+
+   function mpfr_greater_p
+     (Op1 : access constant mpfr_t;
+      Op2 : access constant mpfr_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_greater_p";
+
+   function mpfr_greaterequal_p
+     (Op1 : access constant mpfr_t;
+      Op2 : access constant mpfr_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_greaterequal_p";
+
+   function mpfr_less_p
+     (Op1 : access constant mpfr_t;
+      Op2 : access constant mpfr_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_less_p";
+
+   function mpfr_lessequal_p
+     (Op1 : access constant mpfr_t;
+      Op2 : access constant mpfr_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_lessequal_p";
+
+   function mpfr_equal_p
+     (Op1 : access constant mpfr_t;
+      Op2 : access constant mpfr_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_equal_p";
+
+   function mpfr_lessgreater_p
+     (Op1 : access constant mpfr_t;
+      Op2 : access constant mpfr_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_lessgreater_p";
+
+   function mpfr_unordered_p
+     (Op1 : access constant mpfr_t;
+      Op2 : access constant mpfr_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_unordered_p";
+
+   function mpfr_total_order_p
+     (Op1 : access constant mpfr_t;
+      Op2 : access constant mpfr_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_total_order_p";
+
 end Admpfr.Bindings;
