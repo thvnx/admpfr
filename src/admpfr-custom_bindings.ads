@@ -20,12 +20,12 @@ private package Admpfr.Custom_Bindings is
    function mpfr_prec_min return mpfr_prec_t with
      Import        => True,
      Convention    => C,
-     External_Name => "mpfr_prec_min";
+     External_Name => "admpfr_prec_min";
 
    function mpfr_prec_max return mpfr_prec_t with
      Import        => True,
      Convention    => C,
-     External_Name => "mpfr_prec_max";
+     External_Name => "admpfr_prec_max";
 
    function printf_stub (T : chars_ptr;
                          R : mpfr_rnd_t;
@@ -33,7 +33,7 @@ private package Admpfr.Custom_Bindings is
    with
      Import        => True,
      Convention    => C,
-     External_Name => "mpfr_printf_stub";
+     External_Name => "admpfr_printf_stub";
 
    function sprintf_stub (B : System.Address;
                           T : chars_ptr;
@@ -42,7 +42,7 @@ private package Admpfr.Custom_Bindings is
    with
      Import        => True,
      Convention    => C,
-     External_Name => "mpfr_sprintf_stub";
+     External_Name => "admpfr_sprintf_stub";
 
    --  TODO: mpfr_round_nearest_away
 

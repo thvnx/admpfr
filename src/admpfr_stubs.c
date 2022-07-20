@@ -20,22 +20,22 @@
 
 // Assuming that mpfr_prec_t is a long.
 
-mpfr_prec_t mpfr_prec_min ()
+mpfr_prec_t admpfr_prec_min ()
 {
   return MPFR_PREC_MIN;
 }
 
-mpfr_prec_t mpfr_prec_max ()
+mpfr_prec_t admpfr_prec_max ()
 {
   return MPFR_PREC_MAX;
 }
 
-int mpfr_printf_stub (const char *template, mpfr_rnd_t r, mpfr_t x)
+int admpfr_printf_stub (const char *template, mpfr_rnd_t r, mpfr_t x)
 {
   return mpfr_printf (template, r, x);
 }
 
-int mpfr_sprintf_stub (char *buf, const char *template, mpfr_rnd_t r, mpfr_t x)
+int admpfr_sprintf_stub (char *buf, const char *template, mpfr_rnd_t r, mpfr_t x)
 {
   return mpfr_sprintf (buf, template, r, x);
 }

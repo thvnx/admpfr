@@ -16,9 +16,9 @@
 #ifndef ADMPFR_STUBS_H
 #define ADMPFR_STUBS_H
 
-mpfr_prec_t mpfr_prec_min ();
-mpfr_prec_t mpfr_prec_max ();
-int mpfr_printf_stub (const char *template, mpfr_rnd_t r, mpfr_t x);
-int mpfr_sprintf_stub (char *buf, const char *template, mpfr_rnd_t r, mpfr_t x);
+mpfr_prec_t admpfr_prec_min ();
+mpfr_prec_t admpfr_prec_max ();
+int admpfr_printf_stub (const char *template, mpfr_rnd_t r, mpfr_t x);
+int admpfr_sprintf_stub (char *buf, const char *template, mpfr_rnd_t r, mpfr_t x);
 
 #endif /* ADMPFR_STUBS_H */
