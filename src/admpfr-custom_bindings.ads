@@ -46,4 +46,29 @@ private package Admpfr.Custom_Bindings is
 
    --  TODO: mpfr_round_nearest_away
 
+   function mpfr_version return int with
+     Import        => True,
+     Convention    => C,
+     External_Name => "admpfr_version";
+
+   function mpfr_version_major return int with
+     Import        => True,
+     Convention    => C,
+     External_Name => "admpfr_version_major";
+
+   function mpfr_version_minor return int with
+     Import        => True,
+     Convention    => C,
+     External_Name => "admpfr_version_minor";
+
+   function mpfr_version_patchlevel return int with
+     Import        => True,
+     Convention    => C,
+     External_Name => "admpfr_version_patchlevel";
+
+   function mpfr_version_string return System.Address with
+     Import        => True,
+     Convention    => C,
+     External_Name => "admpfr_version_string";
+
 end Admpfr.Custom_Bindings;

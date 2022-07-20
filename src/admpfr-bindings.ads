@@ -1691,4 +1691,124 @@ private package Admpfr.Bindings is
      Convention    => C,
      External_Name => "mpfr_print_rnd_mode";
 
+   --  Miscellaneous Functions
+
+   procedure mpfr_nexttoward
+     (X : access constant mpfr_t;
+      Y : access constant mpfr_t)
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_nexttoward";
+
+   procedure mpfr_nextabove (X : access constant mpfr_t) with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_nextabove";
+
+   procedure mpfr_nextbelow (X : access constant mpfr_t) with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_nextbelow";
+
+   function mpfr_min
+     (Rop : access constant mpfr_t;
+      Op1 : access constant mpfr_t;
+      Op2 : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_min";
+
+   function mpfr_max
+     (Rop : access constant mpfr_t;
+      Op1 : access constant mpfr_t;
+      Op2 : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_max";
+
+   --  NOTE: *random* functions not supported
+
+   function mpfr_get_exp (X : access constant mpfr_t) return mpfr_exp_t with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_get_exp";
+
+   function mpfr_set_exp
+     (X : access constant mpfr_t;
+      E : mpfr_exp_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_set_exp";
+
+   function mpfr_signbit (Op : access constant mpfr_t) return int with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_signbit";
+
+   function mpfr_setsign
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      S   : int;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_setsign";
+
+   function mpfr_copysign
+     (Rop : access constant mpfr_t;
+      Op1 : access constant mpfr_t;
+      Op2 : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_copysign";
+
+   function mpfr_get_version return System.Address with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_get_version";
+
+   function mpfr_get_patches return System.Address with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_get_patches";
+
+   function mpfr_buildopt_tls_p return int with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_buildopt_tls_p";
+
+   function mpfr_buildopt_float128_p return int with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_buildopt_float128_p";
+
+   function mpfr_buildopt_decimal_p return int with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_buildopt_decimal_p";
+
+   function mpfr_buildopt_gmpinternals_p return int with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_buildopt_gmpinternals_p";
+
+   function mpfr_buildopt_sharedcache_p return int with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_buildopt_sharedcache_p";
+
+   function mpfr_buildopt_tune_case return System.Address with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_buildopt_tune_case";
+
 end Admpfr.Bindings;

@@ -39,3 +39,28 @@ int admpfr_sprintf_stub (char *buf, const char *template, mpfr_rnd_t r, mpfr_t x
 {
   return mpfr_sprintf (buf, template, r, x);
 }
+
+int admpfr_version ()
+{
+  return MPFR_VERSION;
+}
+
+int admpfr_version_major ()
+{
+  return MPFR_VERSION_MAJOR;
+}
+
+int admpfr_version_minor ()
+{
+  return MPFR_VERSION_MINOR;
+}
+
+char *admpfr_version_string ()
+{
+  return MPFR_VERSION_STRING;
+}
+
+int admpfr_version_patchlevel ()
+{
+  return MPFR_VERSION_PATCHLEVEL;
+}
