@@ -47,6 +47,10 @@ package Admpfr is
    --  Precision reprensents the C mpfr_prec_t type. It should be large enough
    --  to hold the range supported by the C library (assuming long here).
 
+   --  TODO: rely on Ada range checking for precision instead of relying in
+   --  `Prec_Min`/`Prec_Max`. Range is defined from 1 to Long_Integer'Last -
+   --  256.
+
    procedure Set
      (Rop  : out Mpfloat;
       S    : String;
@@ -76,6 +80,26 @@ package Admpfr is
    --
    --  Default behavior mimics mpfr_printf("%.RNe", X), (at least for base 10)!
 
+   function Prec_Min return Precision;
+   --  Return the minimum number of bits that can be used to represent the
+   --  significand of a `Mpfloat`.
+
+   function Prec_Max return Precision;
+   --  Return the maximum number of bits that can be used to represent the
+   --  significand of a `Mpfloat`.
+
+   procedure Set_Default_Prec (Prec : Precision);
+   --  Set the default precision to be exactly `Prec` bits, where `Prec` can be
+   --  any integer between `Prec_Min` and `Prec_Max`. The precision of a
+   --  variable means the number of bits used to store its significand. All
+   --  subsequent `Mpfloat` object creations will use this precision, but
+   --  previously initialized variables are unaffected. The default precision
+   --  is set to 53 bits initially.
+
+   function Get_Default_Prec return Precision;
+   --  Return the current default MPFR precision in bits. See the documentation
+   --  of `Set_default_prec`.
+
    function Get_Prec (X : Mpfloat) return Precision;
    --  Return the precision of `X`, i.e., the number of bits used to store its
    --  significand.
@@ -83,9 +107,8 @@ package Admpfr is
    procedure Set_Prec (X : Mpfloat; Prec : Precision);
    --  Set the precision of `X` to be exactly `Prec` bits, and set its value to
    --  NaN. The previous value stored in `X` is lost. The precision `Prec` can
-   --  be any value between `Prec_Min` (TODO: make it public) and `Prec_Max`
-   --  (TODO: make it public). In case you want to keep the previous value
-   --  stored in x, use `Prec_Round` (TODO) instead.
+   --  be any value between `Prec_Min` and `Prec_Max`. In case you want to keep
+   --  the previous value stored in x, use `Prec_Round` (TODO) instead.
 
    procedure Mpfr_Printf (Template : String;
                           X        : Mpfloat;
