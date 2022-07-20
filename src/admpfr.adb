@@ -172,7 +172,7 @@ package body Admpfr is
 
    procedure Set
      (Rop : out Mpfloat;
-      Op : Long_Integer;
+      Op  : Long_Integer;
       Rnd : Rounding := RNDN) is
    begin
       Rop.Ternary :=
@@ -199,7 +199,7 @@ package body Admpfr is
 
    procedure Set
      (Rop : out Mpfloat;
-      Op : Long_Float;
+      Op  : Long_Float;
       Rnd : Rounding := RNDN) is
    begin
       Rop.Ternary :=
