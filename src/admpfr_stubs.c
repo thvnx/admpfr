@@ -18,18 +18,6 @@
 #include "admpfr_stubs.h"
 
 
-// Assuming that mpfr_prec_t is a long.
-
-mpfr_prec_t admpfr_prec_min ()
-{
-  return MPFR_PREC_MIN;
-}
-
-mpfr_prec_t admpfr_prec_max ()
-{
-  return MPFR_PREC_MAX;
-}
-
 int admpfr_printf_stub (const char *template, mpfr_rnd_t r, mpfr_t x)
 {
   return mpfr_printf (template, r, x);

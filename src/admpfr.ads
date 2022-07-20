@@ -40,13 +40,9 @@ package Admpfr is
    --  CAUTION: stick to the order declared in the mpfr.h header in order to
    --  ensure reproductible results between C and Ada mpfr-based applications.
 
-   type Precision is new Standard.Long_Integer;
-   --  Precision reprensents the C mpfr_prec_t type. It should be large enough
-   --  to hold the range supported by the C library (assuming long here).
-
-   --  TODO: rely on Ada range checking for precision instead of relying in
-   --  `Prec_Min`/`Prec_Max`. Range is defined from 1 to Long_Integer'Last -
-   --  256.
+   type Precision is range 1 .. Long_Integer'Last - 256;
+   --  Precision reprensents the C mpfr_prec_t type. The MPFR library defines
+   --  the lower bound to 1 and the higher bound to Long_Integer'Last - 256.
 
    function Get_Default_Prec return Precision;
    --  Return the current default MPFR precision in bits. See the documentation
@@ -88,11 +84,11 @@ package Admpfr is
    --
    --  Default behavior mimics mpfr_printf("%.RNe", X), (at least for base 10)!
 
-   function Prec_Min return Precision;
+   function Prec_Min return Precision is (Precision'First);
    --  Return the minimum number of bits that can be used to represent the
    --  significand of a `Mpfloat`.
 
-   function Prec_Max return Precision;
+   function Prec_Max return Precision is (Precision'Last);
    --  Return the maximum number of bits that can be used to represent the
    --  significand of a `Mpfloat`.
 

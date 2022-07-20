@@ -22,21 +22,6 @@ with Admpfr.Custom_Bindings; use Admpfr.Custom_Bindings;
 
 package body Admpfr is
 
-   Prec_Min_Cst : constant Precision := Precision (mpfr_prec_min);
-   Prec_Max_Cst : constant Precision := Precision (mpfr_prec_max);
-
-   --------------
-   -- Prec_Min --
-   --------------
-
-   function Prec_Min return Precision is (Prec_Min_Cst);
-
-   --------------
-   -- Prec_Max --
-   --------------
-
-   function Prec_Max return Precision is (Prec_Max_Cst);
-
    --------------------------
    -- Reformat_Printf_Args --
    --------------------------
@@ -261,11 +246,7 @@ package body Admpfr is
 
    procedure Set_Prec (X : Mpfloat; Prec : Precision) is
    begin
-      if Prec > Prec_Max or Prec < Prec_Min then
-         raise Failure with "precision out of bounds";
-      else
-         mpfr_set_prec (X.Value'Access, mpfr_prec_t (Prec));
-      end if;
+      mpfr_set_prec (X.Value'Access, mpfr_prec_t (Prec));
    end Set_Prec;
 
    ----------------------
@@ -274,11 +255,7 @@ package body Admpfr is
 
    procedure Set_Default_Prec (Prec : Precision) is
    begin
-      if Prec > Prec_Max or Prec < Prec_Min then
-         raise Failure with "precision out of bounds";
-      else
-         mpfr_set_default_prec (mpfr_prec_t (Prec));
-      end if;
+      mpfr_set_default_prec (mpfr_prec_t (Prec));
    end Set_Default_Prec;
 
    ----------------------
