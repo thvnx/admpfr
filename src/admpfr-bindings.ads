@@ -14,6 +14,7 @@
 --  along with Foobar.  If not, see <https://www.gnu.org/licenses/>.
 
 with Interfaces.C.Strings; use Interfaces.C.Strings;
+with Interfaces.C_Streams;
 
 private package Admpfr.Bindings is
 
@@ -1443,5 +1444,45 @@ private package Admpfr.Bindings is
      Import        => True,
      Convention    => C,
      External_Name => "mpfr_const_catalan";
+
+   --  Input and Output Functions
+
+   function mpfr_out_str (Stream : Interfaces.C_Streams.FILEs;
+                          Base   : int;
+                          N      : size_t;
+                          Op     : access constant mpfr_t;
+                          Rnd    : mpfr_rnd_t) return size_t
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_out_str";
+
+   function mpfr_inp_str (Rop    : access constant mpfr_t;
+                          Stream : Interfaces.C_Streams.FILEs;
+                          Base   : int;
+                          Rnd    : mpfr_rnd_t) return size_t
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_int_str";
+
+   function mpfr_fpif_export (Stream : Interfaces.C_Streams.FILEs;
+                              Rop    : access constant mpfr_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_fpif_export";
+
+   function mpfr_fpif_import (Op     : access constant mpfr_t;
+                              Stream : Interfaces.C_Streams.FILEs) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_fpif_import";
+
+   procedure mpfr_dump (Op : access constant mpfr_t) with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_dump";
 
 end Admpfr.Bindings;
