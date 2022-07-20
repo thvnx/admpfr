@@ -1485,4 +1485,166 @@ private package Admpfr.Bindings is
      Convention    => C,
      External_Name => "mpfr_dump";
 
+   --  Integer and Remainder Related Functions
+
+   function mpfr_rint
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_rint";
+
+   function mpfr_ceil
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_ceil";
+
+   function mpfr_floor
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_floor";
+
+   function mpfr_round
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_round";
+
+   function mpfr_roundeven
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_roundeven";
+
+   function mpfr_trunc
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_trunc";
+
+   function mpfr_rint_ceil
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_rint_ceil";
+
+   function mpfr_rint_floor
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_rint_floor";
+
+   function mpfr_rint_round
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_rint_round";
+
+   function mpfr_rint_roundeven
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_rint_roundeven";
+
+   function mpfr_rint_trunc
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_rint_trunc";
+
+   function mpfr_frac
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_frac";
+
+   function mpfr_modf
+     (Iop : access constant mpfr_t;
+      Fop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_modf";
+
+   function mpfr_fmod
+     (R   : access constant mpfr_t;
+      X   : access constant mpfr_t;
+      Y   : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_fmod";
+
+   function mpfr_fmodquo
+     (R   : access constant mpfr_t;
+      Q   : access long;
+      X   : access constant mpfr_t;
+      Y   : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_fmodquo";
+
+   function mpfr_remainder
+     (R   : access constant mpfr_t;
+      X   : access constant mpfr_t;
+      Y   : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_remainder";
+
+   function mpfr_remquo
+     (R   : access constant mpfr_t;
+      Q   : access long;
+      X   : access constant mpfr_t;
+      Y   : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_remquo";
+
+   function mpfr_integer_p (Op : access constant mpfr_t) return int with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_integer_p";
+
 end Admpfr.Bindings;
