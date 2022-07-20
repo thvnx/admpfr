@@ -1,0 +1,7 @@
+name = "admpfr"
+description = "Ada bindings for MPFR"
+version = "4.1.0-dev"
+
+authors = ["Laurent Thévenoux"]
+maintainers = ["Laurent Thévenoux <laurent@thevenoux.net>"]
+maintainers-logins = ["thvnx"]
