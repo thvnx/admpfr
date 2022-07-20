@@ -20,9 +20,6 @@ with System;
 
 package Admpfr is
 
-   type Mpfloat is tagged limited private;
-   --  Mpfloat is the Ada counterpart of the mpfr_t C type
-
    type Base is range -36 .. 62 with
      Dynamic_Predicate => abs Base /= 1;
    --  Base is in range [-36 .. -2; 0; 2 .. 62]. Admpfr uses Dynamic_Predicate
@@ -50,6 +47,17 @@ package Admpfr is
    --  TODO: rely on Ada range checking for precision instead of relying in
    --  `Prec_Min`/`Prec_Max`. Range is defined from 1 to Long_Integer'Last -
    --  256.
+
+   function Get_Default_Prec return Precision;
+   --  Return the current default MPFR precision in bits. See the documentation
+   --  of `Set_default_prec`.
+
+   type Mpfloat (Prec : Precision := Get_Default_Prec) is
+     tagged limited private;
+   --  `Mpfloat` is the Ada counterpart of the mpfr_t C type. The `Prec`
+   --  constraint can be used to set the precision of the `Mpfloat` number (it
+   --  uses mpfr_init2 under the hood), which is set to the default MPFR
+   --  precision.
 
    procedure Set
      (Rop  : out Mpfloat;
@@ -95,10 +103,6 @@ package Admpfr is
    --  subsequent `Mpfloat` object creations will use this precision, but
    --  previously initialized variables are unaffected. The default precision
    --  is set to 53 bits initially.
-
-   function Get_Default_Prec return Precision;
-   --  Return the current default MPFR precision in bits. See the documentation
-   --  of `Set_default_prec`.
 
    function Get_Prec (X : Mpfloat) return Precision;
    --  Return the precision of `X`, i.e., the number of bits used to store its
@@ -150,7 +154,8 @@ private
    --  can be of a different type depending on the machine the library has been
    --  built for. mpfr_t record must stricty stick to the C mpfr_t struct.
 
-   type Mpfloat is new Limited_Controlled with
+   type Mpfloat (Prec : Precision := Get_Default_Prec) is
+     new Limited_Controlled with
       record
          Value : aliased mpfr_t;
       end record;

@@ -131,7 +131,11 @@ package body Admpfr is
 
    procedure Initialize (X : in out Mpfloat) is
    begin
-      mpfr_init (X.Value'Access);
+      mpfr_init2 (X.Value'Access, mpfr_prec_t (X.Prec));
+   exception
+      when Program_Error =>
+         raise Failure with "error during Mpfloat (Prec :=" &
+           X.Prec'Image & ") initialization";
    end Initialize;
 
    --------------
