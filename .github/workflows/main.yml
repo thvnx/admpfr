@@ -17,19 +17,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Set up Alire
+        uses: alire-project/setup-alire@v1
+
       - name: Set up env
         run: |
           /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
           brew install mpfr
-          wget https://github.com/alire-project/alire/releases/download/v1.2.0/alr-1.2.0-bin-x86_64-macos.zip
-          unzip alr-1.2.0-bin-x86_64-macos.zip
-          bin/alr get gprbuild
-          bin/alr get gnat_native
           pip3 install e3-testsuite
 
       - name: Build and test admpfr
         run: |
           export LIBRARY_PATH=/usr/local/lib
-          cd gnat_native*/ && export PATH=$PATH:$PWD/bin && cd -
-          cd gprbuild*/ && export PATH=$PATH:$PWD/bin && cd -
+          export C_INCLUDE_PATH=/usr/local/include
+          alr build
+          eval `alr printenv`
           ./testsuite/testsuite.py --failure-exit-code=1
