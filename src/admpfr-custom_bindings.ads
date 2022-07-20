@@ -44,4 +44,6 @@ private package Admpfr.Custom_Bindings is
      Convention    => C,
      External_Name => "mpfr_sprintf_stub";
 
+   --  TODO: mpfr_round_nearest_away
+
 end Admpfr.Custom_Bindings;

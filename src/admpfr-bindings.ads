@@ -1647,4 +1647,48 @@ private package Admpfr.Bindings is
      Convention    => C,
      External_Name => "mpfr_integer_p";
 
+   --  Rounding-Related Functions
+
+   procedure mpfr_set_default_rounding_mode (Rnd : mpfr_rnd_t) with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_set_default_rounding_mode";
+
+   function mpfr_get_default_rounding_mode return mpfr_rnd_t with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_get_default_rounding_mode";
+
+   function mpfr_prec_round
+     (X    : access constant mpfr_t;
+      Prec : mpfr_prec_t;
+      Rnd  : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_prec_round";
+
+   function mpfr_can_round
+     (B    : access constant mpfr_t;
+      Err  : mpfr_exp_t;
+      Rnd1 : mpfr_rnd_t;
+      Rnd2 : mpfr_rnd_t;
+      Prec : mpfr_prec_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_can_round";
+
+   function mpfr_min_prec (X : access constant mpfr_t) return mpfr_prec_t with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_min_prec";
+
+   function mpfr_print_rnd_mode
+     (Rnd : mpfr_rnd_t) return Interfaces.C.Strings.chars_ptr
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_print_rnd_mode";
+
 end Admpfr.Bindings;
