@@ -1811,4 +1811,185 @@ private package Admpfr.Bindings is
      Convention    => C,
      External_Name => "mpfr_buildopt_tune_case";
 
+   --  Exception Related Functions
+
+   function mpfr_get_emin return mpfr_exp_t with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_get_emin";
+
+   function mpfr_get_emax return mpfr_exp_t with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_get_emax";
+
+   function mpfr_set_emin (arg1 : mpfr_exp_t) return int with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_set_emin";
+
+   function mpfr_set_emax (arg1 : mpfr_exp_t) return int with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_set_emax";
+
+   function mpfr_get_emin_min return mpfr_exp_t with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_get_emin_min";
+
+   function mpfr_get_emin_max return mpfr_exp_t with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_get_emin_max";
+
+   function mpfr_get_emax_min return mpfr_exp_t with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_get_emax_min";
+
+   function mpfr_get_emax_max return mpfr_exp_t with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_get_emax_max";
+
+   function mpfr_check_range
+     (X   : access constant mpfr_t;
+      T   : int;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_check_range";
+
+   function mpfr_subnormalize
+     (X   : access constant mpfr_t;
+      T   : int;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_subnormalize";
+
+   procedure mpfr_clear_underflow  with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_clear_underflow";
+
+   procedure mpfr_clear_overflow with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_clear_overflow";
+
+   procedure mpfr_clear_divby0 with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_clear_divby0";
+
+   procedure mpfr_clear_nanflag with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_clear_nanflag";
+
+   procedure mpfr_clear_inexflag with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_clear_inexflag";
+
+   procedure mpfr_clear_erangeflag with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_clear_erangeflag";
+
+   procedure mpfr_clear_flags with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_clear_flags";
+
+   procedure mpfr_set_underflow with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_set_underflow";
+
+   procedure mpfr_set_overflow with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_set_overflow";
+
+   procedure mpfr_set_divby0 with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_set_divby0";
+
+   procedure mpfr_set_nanflag with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_set_nanflag";
+
+   procedure mpfr_set_inexflag with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_set_inexflag";
+
+   procedure mpfr_set_erangeflag with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_set_erangeflag";
+
+   function mpfr_underflow_p return int with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_underflow_p";
+
+   function mpfr_overflow_p return int with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_overflow_p";
+
+   function mpfr_divby0_p return int with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_divby0_p";
+
+   function mpfr_nanflag_p return int with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_nanflag_p";
+
+   function mpfr_inexflag_p return int with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_inexflag_p";
+
+   function mpfr_erangeflag_p return int with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_erangeflag_p";
+
+   procedure mpfr_flags_clear (Mask : mpfr_flags_t) with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_flags_clear";
+
+   procedure mpfr_flags_set (Mask : mpfr_flags_t) with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_flags_set";
+
+   function mpfr_flags_test (Mask : mpfr_flags_t) return mpfr_flags_t with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_flags_test";
+
+   function mpfr_flags_save return mpfr_flags_t with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_flags_save";
+
+   procedure mpfr_flags_restore (Flags : mpfr_flags_t; Mask : mpfr_flags_t)
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_flags_restore";
+
 end Admpfr.Bindings;

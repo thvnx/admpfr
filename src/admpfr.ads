@@ -115,6 +115,7 @@ private
    subtype mpfr_prec_t is long;
    subtype mpfr_rnd_t is int;
    subtype mpfr_sign_t is int;
+   subtype mpfr_flags_t is unsigned;
 
    type mpfr_t is limited record
       Mpfr_Prec : mpfr_prec_t;
