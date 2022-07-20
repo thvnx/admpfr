@@ -55,6 +55,21 @@ package Admpfr is
    --  uses mpfr_init2 under the hood), which is set to the default MPFR
    --  precision.
 
+   type Ternary_Value is (EXACT, GREATER, LOWER, NOT_SET);
+   --  Represents the C returning value of type int, called the ternary value
+   --  (see MPFR documentation for more details). If the ternary value is
+   --  `EXACT`, it means that the value stored in the destination variable is
+   --  the exact result of the corresponding mathematical function. If the
+   --  ternary value is `GREATER` (resp. `LOWER`), it means the value stored in
+   --  the destination variable is greater (resp. lower) than the exact result.
+   --  If the ternary value is `NOT_SET`, it means that the destination
+   --  variable has not been set yet.
+
+   procedure Set (Rop : out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDN);
+   --  Set the value of `Rop` from `Op`, rounded toward the given direction
+   --  `Rnd`. The sign of a NaN is propagated in order to mimic the IEEE 754
+   --  copy operation. But contrary to IEEE 754, the NaN flag is set as usual.
+
    procedure Set
      (Rop  : out Mpfloat;
       S    : String;
@@ -68,9 +83,15 @@ package Admpfr is
    --  `String_To_Mpfloat` (TODO) for a detailed description of the valid
    --  string formats and base values.
    --
-   --  Note: it is preferable to use `Str_To_Mpfloat` if one wants to
+   --  Note: it is preferable to use `String_To_Mpfloat` if one wants to
    --  distinguish between an infinite rop value coming from an infinite s or
    --  from an overflow.
+   --
+   --  TODO: base this procedure on mpfr_strtofr to benefit from the returning
+   --  ternary value.
+
+   function Get_Ternary_Value (X : Mpfloat) return Ternary_Value;
+   --  Return the ternary value of `X`
 
    function To_String
      (X    : Mpfloat;
@@ -153,12 +174,14 @@ private
    type Mpfloat (Prec : Precision := Get_Default_Prec) is
      new Limited_Controlled with
       record
-         Value : aliased mpfr_t;
+         Value   : aliased mpfr_t;
+         Ternary : Ternary_Value := NOT_SET;
       end record;
 
    procedure Initialize (X : in out Mpfloat);
    procedure Finalize   (X : in out Mpfloat);
 
    procedure Reformat_Printf_Args (T : in out String; R : in out Rounding);
+   function To_Ternary_Value (T : int) return Ternary_Value;
 
 end Admpfr;

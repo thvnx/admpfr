@@ -132,6 +132,40 @@ package body Admpfr is
       mpfr_clear (X.Value'Access);
    end Finalize;
 
+   -----------------------
+   -- Get_Ternary_Value --
+   -----------------------
+
+   function Get_Ternary_Value (X : Mpfloat) return Ternary_Value is
+     (X.Ternary);
+
+   ----------------------
+   -- To_Ternary_Value --
+   ----------------------
+
+   function To_Ternary_Value (T : int) return Ternary_Value is
+   begin
+      if T > 0 then
+         return GREATER;
+      elsif T < 0 then
+         return LOWER;
+      else
+         return EXACT;
+      end if;
+   end To_Ternary_Value;
+
+   ---------
+   -- Set --
+   ---------
+
+   procedure Set (Rop : out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDN) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_set (Rop.Value'Access,
+                                    Op.Value'Access,
+                                    Rounding'Pos (Rnd)));
+   end Set;
+
    ---------
    -- Set --
    ---------

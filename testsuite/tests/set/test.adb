@@ -19,4 +19,18 @@ begin
          end;
       end loop;
    end loop;
+
+   declare
+      D, E : Mpfloat (12);
+   begin
+      Put_Line (A.Get_Ternary_Value'Image);
+      Put_Line (B.Get_Ternary_Value'Image);
+      Put_Line (C.Get_Ternary_Value'Image);
+      Set (C, E);
+      Put_Line (C.Get_Ternary_Value'Image);
+      Set (D, A);
+      Put_Line (D.Get_Ternary_Value'Image);
+      Set (E, B);
+      Put_Line (E.Get_Ternary_Value'Image);
+   end;
 end Test;
