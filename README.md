@@ -12,7 +12,7 @@ complete binding to the C library will follow.
 
 The following code:
 ```ada
-with Ada.Text_Io; use Ada.Text_Io;
+with Ada.Text_IO; use Ada.Text_IO;
 with Admpfr;      use Admpfr;
 
 procedure Main is
