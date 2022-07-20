@@ -171,6 +171,21 @@ package body Admpfr is
    ---------
 
    procedure Set
+     (Rop : out Mpfloat;
+      Op : Long_Integer;
+      Rnd : Rounding := RNDN) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_set_si (Rop.Value'Access,
+                                       long (Op),
+                                       Rounding'Pos (Rnd)));
+   end Set;
+
+   ---------
+   -- Set --
+   ---------
+
+   procedure Set
      (Rop  : out Mpfloat;
       S    : String;
       Base : Admpfr.Base := 10;

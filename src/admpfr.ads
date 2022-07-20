@@ -71,6 +71,15 @@ package Admpfr is
    --  copy operation. But contrary to IEEE 754, the NaN flag is set as usual.
 
    procedure Set
+     (Rop : out Mpfloat;
+      Op : Long_Integer;
+      Rnd : Rounding := RNDN);
+   --  Set the value of `Rop` from `Op`, rounded toward the given direction
+   --  `Rnd`. The sign of a NaN is propagated in order to mimic the IEEE 754
+   --  copy operation. But contrary to IEEE 754, the NaN flag is set as usual.
+   --  The input 0 is converted to +0.
+
+   procedure Set
      (Rop  : out Mpfloat;
       S    : String;
       Base : Admpfr.Base := 10;

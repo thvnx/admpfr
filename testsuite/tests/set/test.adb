@@ -33,4 +33,15 @@ begin
       Set (E, B);
       Put_Line (E.Get_Ternary_Value'Image);
    end;
+
+   declare
+      F, G, H : Mpfloat (2);
+   begin
+      Set (F, 0);
+      Put_Line (F.Get_Ternary_Value'Image);
+      Set (G, -567);
+      Put_Line (G.Get_Ternary_Value'Image);
+      Set (H, 567);
+      Put_Line (H.Get_Ternary_Value'Image);
+   end;
 end Test;
