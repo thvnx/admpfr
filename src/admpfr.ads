@@ -65,6 +65,9 @@ package Admpfr is
    --  If the ternary value is `NOT_SET`, it means that the destination
    --  variable has not been set yet.
 
+   subtype Exponent is Long_Integer;
+   --  Represents the exponent mpfr_exp_t C type
+
    procedure Set (Rop : out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDN);
    --  Set the value of `Rop` from `Op`, rounded toward the given direction
    --  `Rnd`. The sign of a NaN is propagated in order to mimic the IEEE 754
@@ -84,6 +87,15 @@ package Admpfr is
    --  Set the value of `Rop` from `Op`, rounded toward the given direction
    --  `Rnd`. The sign of a NaN is propagated in order to mimic the IEEE 754
    --  copy operation. But contrary to IEEE 754, the NaN flag is set as usual.
+
+   procedure Set
+     (Rop : out Mpfloat;
+      Op  : Long_Integer;
+      E   : Exponent;
+      Rnd : Rounding := RNDN);
+   --  Set the value of `Rop` from `Op` multiplied by two to the power `E`,
+   --  rounded toward the given direction `Rnd`. Note that the input 0 is
+   --  converted to +0.
 
    procedure Set
      (Rop  : out Mpfloat;

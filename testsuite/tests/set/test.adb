@@ -58,4 +58,13 @@ begin
       Set (K, C);
       Put_Line (K.Get_Ternary_Value'Image);
    end;
+
+   declare
+      A, B : Mpfloat;
+   begin
+      Set (A, 1, 10);
+      Put_Line (A.Get_Ternary_Value'Image);
+      Set (B, 1, 10_000);
+      Put_Line (B.Get_Ternary_Value'Image);
+   end;
 end Test;
