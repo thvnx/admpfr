@@ -134,7 +134,7 @@ private package Admpfr.Bindings is
      External_Name => "mpfr_set_si_2exp";
 
    function mpfr_set_str
-     (Rop  : access mpfr_t;
+     (Rop  : access constant mpfr_t;
       S    : chars_ptr;
       Base : int;
       Rnd  : mpfr_rnd_t) return int
@@ -146,7 +146,7 @@ private package Admpfr.Bindings is
    function mpfr_strtofr
      (Rop    : access constant mpfr_t;
       Nptr   : Interfaces.C.Strings.chars_ptr;
-      Endptr : System.Address;
+      Endptr : access constant Interfaces.C.Strings.chars_ptr;
       Base   : int;
       Rnd    : mpfr_rnd_t) return int
    with

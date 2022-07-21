@@ -26,6 +26,7 @@ begin
       Put_Line (A.Get_Ternary_Value'Image);
       Put_Line (B.Get_Ternary_Value'Image);
       Put_Line (C.Get_Ternary_Value'Image);
+      Put_Line (D.Get_Ternary_Value'Image);
       Set (C, E);
       Put_Line (C.Get_Ternary_Value'Image);
       Set (D, A);

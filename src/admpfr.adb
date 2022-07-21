@@ -235,19 +235,27 @@ package body Admpfr is
       Base : Admpfr.Base := 10;
       Rnd  : Rounding    := RNDN)
    is
-      Result : int       := -1;
       Input  : chars_ptr := New_String (S);
+      Endptr : aliased chars_ptr := Null_Ptr;
    begin
-      Result := mpfr_set_str (Rop.Value'Access,
-                              Input,
-                              int (Base),
-                              Rounding'Pos (Rnd));
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_strtofr (Rop.Value'Access,
+                                        Input,
+                                        Endptr'Access,
+                                        int (Base),
+                                        Rounding'Pos (Rnd)));
 
       Free (Input);
 
-      if Result /= 0 then
-         raise Failure with "mpfr_set_str failure";
-      end if;
+      declare
+         Invalid_Data : constant String := Value (Endptr);
+      begin
+         if Invalid_Data /= "" then
+            raise Failure with "invalid data: '" & Invalid_Data &
+              "' to set number from string: '" & S & "'";
+         end if;
+      end;
+
    end Set;
 
    --  TODO: Add 'Image attribute on Float type when GCC FSF will support
