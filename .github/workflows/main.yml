@@ -31,5 +31,4 @@ jobs:
           export LIBRARY_PATH=/usr/local/lib
           export C_INCLUDE_PATH=/usr/local/include
           alr build
-          eval `alr printenv`
-          ./testsuite/testsuite.py --failure-exit-code=1
+          alr exec -- ./testsuite/testsuite.py --failure-exit-code=1
