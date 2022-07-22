@@ -71,6 +71,10 @@ package Admpfr is
    subtype Exponent is Long_Integer;
    --  Represents the exponent mpfr_exp_t C type
 
+   type Sign is (Neg, Pos);
+   for Sign use (Neg => -1, Pos => 0);
+   --  Mpfloat sign
+
    procedure Set (Rop : out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDN);
    --  Set the value of `Rop` from `Op`, rounded toward the given direction
    --  `Rnd`. The sign of a NaN is propagated in order to mimic the IEEE 754
@@ -158,6 +162,20 @@ package Admpfr is
    --  9, a, b, ..., z, A, B, ..., Z, _). Note: one has an optional sign for
    --  all data, even NaN. For example, '-@nAn@(This_Is_Not_17)' is a valid
    --  representation for NaN in base 17.
+
+   procedure Set_Nan (X : out Mpfloat);
+   procedure Set_Inf (X : out Mpfloat; S : Sign);
+   procedure Set_Zero (X : out Mpfloat; S : Sign);
+   --  Set the variable `X` to NaN (Not-a-Number), infinity or zero
+   --  respectively. In `Set_Nan`, the sign bit of the result is unspecified.
+   --
+   --  TODO: ternary value of `X` won't change here, add another one for that
+   --  case?
+
+   procedure Swap (X : in out Mpfloat; Y : in out Mpfloat);
+   --  Swap `X` and `Y`. In particular, the values are exchanged without
+   --  rounding (this may be different from three `Set` calls using a third
+   --  auxiliary variable).
 
    function Get_Ternary_Value (X : Mpfloat) return Ternary_Value;
    --  Return the ternary value of `X`

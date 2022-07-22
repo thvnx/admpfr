@@ -68,4 +68,22 @@ begin
       Set (B, 1, 10_000);
       Put_Line (B.Get_Ternary_Value'Image);
    end;
+
+   declare
+      A, B, C : Mpfloat;
+   begin
+      Set_Nan (A);
+      Put_Line (A.To_String);
+      Put_Line (A.Get_Ternary_Value'Image);
+      Set_Inf (B, Neg);
+      Put_Line (B.To_String);
+      Put_Line (B.Get_Ternary_Value'Image);
+      Set_Zero (C, Pos);
+      Put_Line (C.To_String);
+      Put_Line (C.Get_Ternary_Value'Image);
+
+      Swap (B, C);
+      Put_Line (B.To_String);
+      Put_Line (C.To_String);
+   end;
 end Test;

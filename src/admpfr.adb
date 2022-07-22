@@ -258,6 +258,45 @@ package body Admpfr is
 
    end Set;
 
+   -------------
+   -- Set_Nan --
+   -------------
+
+   procedure Set_Nan (X : out Mpfloat) is
+   begin
+      mpfr_set_nan (X.Value'Access);
+   end Set_Nan;
+
+   -------------
+   -- Set_Inf --
+   -------------
+
+   procedure Set_Inf (X : out Mpfloat; S : Sign) is
+   begin
+      mpfr_set_inf (X.Value'Access, S'Enum_Rep);
+   end Set_Inf;
+
+   --------------
+   -- Set_Zero --
+   --------------
+
+   procedure Set_Zero (X : out Mpfloat; S : Sign) is
+   begin
+      mpfr_set_zero (X.Value'Access, S'Enum_Rep);
+   end Set_Zero;
+
+   ----------
+   -- Swap --
+   ----------
+
+   procedure Swap (X : in out Mpfloat; Y : in out Mpfloat) is
+      T : constant Ternary_Value := X.Ternary;
+   begin
+      mpfr_swap (X.Value'Access, Y.Value'Access);
+      X.Ternary := Y.Ternary;
+      Y.Ternary := T;
+   end Swap;
+
    --  TODO: Add 'Image attribute on Float type when GCC FSF will support
    --  Ada 2022, see:
    --  https://stackoverflow.com/questions/67969309/ada-customise-image.
@@ -291,6 +330,14 @@ package body Admpfr is
                                    Number_Digits,
                                    X.Value'Access,
                                    Rounding'Pos (Rnd));
+
+      --  Special treatment for NaN and inf values
+
+      for I in 1 .. 2 loop
+         if Significand_Buffer (I) = '@' then
+            return Significand_Buffer (1 .. I + 5);
+         end if;
+      end loop;
 
       --  Remove 1 if first digit is not zero as we'll insert the implicit
       --  radix point in the significand.
