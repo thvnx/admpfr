@@ -245,11 +245,15 @@ package body Admpfr is
                                         int (Base),
                                         Rounding'Pos (Rnd)));
 
-      Free (Input);
-
       declare
          Invalid_Data : constant String := Value (Endptr);
       begin
+         --  Free Input only after having took the Value of Endptr. If not the
+         --  memory content pointed by Endptr can sligthly change and contains
+         --  corrupted data. This is not clear to me why though.
+
+         Free (Input);
+
          if Invalid_Data /= "" then
             raise Failure with "invalid data: '" & Invalid_Data &
               "' to set number from string: '" & S & "'";
