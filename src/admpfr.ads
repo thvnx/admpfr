@@ -184,6 +184,18 @@ package Admpfr is
    function Get_Ternary_Value (X : Mpfloat) return Ternary_Value;
    --  Return the ternary value of `X`
 
+   function Get_Float (Op : Mpfloat; Rnd : Rounding := RNDN) return Float;
+   function Get_Long_Float
+     (Op  : Mpfloat;
+      Rnd : Rounding := RNDN) return Long_Float;
+   function Get_Long_Long_Float
+     (Op  : Mpfloat;
+      Rnd : Rounding := RNDN) return Long_Long_Float;
+   --  Convert `Op` to a Float (respectively Long_Float, Long_Long_Float) using
+   --  the rounding mode `Rnd`. If `Op` is NaN or an Inf, a Failure exception
+   --  is raised. If `Op` is zero, these functions return a zero, trying to
+   --  preserve its sign, if possible.
+
    function To_String
      (X    : Mpfloat;
       Base : Admpfr.Base := 10;

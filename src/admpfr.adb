@@ -316,6 +316,50 @@ package body Admpfr is
       Y.Ternary := T;
    end Swap;
 
+   ---------------
+   -- Get_Float --
+   ---------------
+
+   function Get_Float (Op : Mpfloat; Rnd : Rounding := RNDN) return Float is
+   begin
+      return Float (mpfr_get_flt (Op.Value'Access, Rounding'Pos (Rnd)));
+   exception
+      when Constraint_Error =>
+         raise Failure with "invalid data, can't convert: " & Op.To_String
+            & " to Float";
+   end Get_Float;
+
+   --------------------
+   -- Get_Long_Float --
+   --------------------
+
+   function Get_Long_Float
+     (Op  : Mpfloat;
+      Rnd : Rounding := RNDN) return Long_Float is
+   begin
+      return Long_Float (mpfr_get_d (Op.Value'Access, Rounding'Pos (Rnd)));
+   exception
+      when Constraint_Error =>
+         raise Failure with "invalid data, can't convert: " & Op.To_String
+            & " to Long_Float";
+   end Get_Long_Float;
+
+   -------------------------
+   -- Get_Long_Long_Float --
+   -------------------------
+
+   function Get_Long_Long_Float
+     (Op  : Mpfloat;
+      Rnd : Rounding := RNDN) return Long_Long_Float is
+   begin
+      return Long_Long_Float
+        (mpfr_get_ld (Op.Value'Access, Rounding'Pos (Rnd)));
+   exception
+      when Constraint_Error =>
+         raise Failure with "invalid data, can't convert: " & Op.To_String
+            & " to Long_Long_Float";
+   end Get_Long_Long_Float;
+
    --  TODO: Add 'Image attribute on Float type when GCC FSF will support
    --  Ada 2022, see:
    --  https://stackoverflow.com/questions/67969309/ada-customise-image.
