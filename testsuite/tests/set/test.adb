@@ -50,7 +50,8 @@ begin
       A : constant Float := Float'Last;
       B : constant Long_Float := Long_Float'First;
       C : constant Float := 0.0;
-      I, J, K : Mpfloat;
+      D : constant Long_Long_Float := Long_Long_Float'Last;
+      I, J, K, L : Mpfloat;
    begin
       Set (I, A);
       Put_Line (I.Get_Ternary_Value'Image);
@@ -58,6 +59,8 @@ begin
       Put_Line (J.Get_Ternary_Value'Image);
       Set (K, C);
       Put_Line (K.Get_Ternary_Value'Image);
+      Set (L, D);
+      Put_Line (L.Get_Ternary_Value'Image);
    end;
 
    declare
