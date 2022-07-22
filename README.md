@@ -8,7 +8,39 @@ initialization and freeing is automatically handled by Admpfr, thanks to the
 Only setting and printing operations have been implemented so far, but a
 complete binding to the C library will follow.
 
-## Example:
+## Build
+
+First, note that usage of Admpfr is still experimental. The easiest way to try
+it is to modify the `src/main.adb` file.
+
+### Prerequisities
+
+- An Ada 2012 compiler.
+- [MPFR 4.1.0](https://www.mpfr.org).
+- (Optional) AdaCore's [e3-testsuite](https://github.com/AdaCore/e3-testsuite).
+
+### Using Alire
+
+Simply get [Alire](https://alire.ada.dev/) and run the following commands:
+
+```bash
+$ cd admpfr
+# Export some variable if MPFR is installed in a custom location
+$ export LIBRARY_PATH=/usr/local/lib
+$ export C_INCLUDE_PATH=/usr/local/include
+$ alr build
+$ ./obj/main
+1.0000000000000001e-01
+```
+
+You can also run the testsuite to ensure everything is properly supported on
+your system:
+
+```bash
+$ alr exec -- testsuite/testsuite.py
+```
+
+## Example
 
 The following code:
 ```ada
