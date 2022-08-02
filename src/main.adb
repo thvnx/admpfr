@@ -5,5 +5,5 @@ procedure Main is
    N : Mpfloat;
 begin
    N.Set ("0.1");
-   Put_Line (N.To_String);
+   Put_Line (N'Image);
 end Main;

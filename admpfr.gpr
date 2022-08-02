@@ -9,7 +9,7 @@ project AdMPFR is
    package Compiler is
       for Switches ("Ada") use
         ("-g", "-O0", "-gnata", "-gnatVa", "-gnatQ", "-gnatyg", "-gnateE",
-         "-gnatwaCJe", "-fstack-check", "-gnatwae");
+         "-gnatwaCJe", "-fstack-check", "-gnatwae", "-gnat2022");
       for Switches ("C") use ("-g", "-Wall" ,"-Werror");
    end Compiler;
 

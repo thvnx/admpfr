@@ -16,6 +16,7 @@
 with Ada.Finalization; use Ada.Finalization;
 with Interfaces.C;     use Interfaces.C;
 
+with Ada.Strings.Text_Buffers;
 with System;
 
 package Admpfr is
@@ -57,6 +58,12 @@ package Admpfr is
    --  constraint can be used to set the precision of the `Mpfloat` number (it
    --  uses mpfr_init2 under the hood), which is set to the default MPFR
    --  precision.
+
+   procedure Mpfloat_Image
+     (Buffer : in out Ada.Strings.Text_Buffers.Root_Buffer_Type'Class;
+      Arg    : Mpfloat);
+
+   for Mpfloat'Put_Image use Mpfloat_Image;
 
    type Ternary_Value is (EXACT, GREATER, LOWER, NOT_SET);
    --  Represents the C returning value of type int, called the ternary value

@@ -360,10 +360,6 @@ package body Admpfr is
             & " to Long_Long_Float";
    end Get_Long_Long_Float;
 
-   --  TODO: Add 'Image attribute on Float type when GCC FSF will support
-   --  Ada 2022, see:
-   --  https://stackoverflow.com/questions/67969309/ada-customise-image.
-
    ---------------
    -- To_String --
    ---------------
@@ -375,6 +371,9 @@ package body Admpfr is
    is
       --  TODO: Rely on mpfr_get_str_ndigits for now but allows the user to set
       --  the number of digits to print by adding a parameter to this function.
+
+      --  Default behavior mimics mpfr_printf("%.RNe", X),
+      --  at least for base 10!
 
       Number_Digits : constant size_t :=
         size_t'Max (mpfr_get_str_ndigits (abs int (Base),
@@ -441,6 +440,18 @@ package body Admpfr is
 
       return To_String (Number);
    end To_String;
+
+   --------------------
+   --  Mpfloat_Image --
+   --------------------
+
+   procedure Mpfloat_Image
+     (Buffer : in out Ada.Strings.Text_Buffers.Root_Buffer_Type'Class;
+      Arg    :        Mpfloat)
+   is
+   begin
+      Buffer.Put (Arg.To_String);
+   end Mpfloat_Image;
 
    --------------
    -- Get_Prec --

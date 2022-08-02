@@ -15,7 +15,7 @@ it is to modify the `src/main.adb` file.
 
 ### Prerequisities
 
-- An Ada 2012 compiler.
+- An Ada 2022 compiler.
 - [MPFR 4.1.0](https://www.mpfr.org).
 - (Optional) AdaCore's [e3-testsuite](https://github.com/AdaCore/e3-testsuite).
 
@@ -51,7 +51,7 @@ procedure Main is
    N : Mpfloat;
 begin
    N.Set ("0.1");
-   Put_Line (N.To_String);
+   Put_Line (N'Image);
 end Main;
 ```
 will print:
