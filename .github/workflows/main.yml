@@ -1,4 +1,4 @@
-name: admpfr CI (macOS)
+name: admpfr CI
 
 on: 
   push:
@@ -30,5 +30,28 @@ jobs:
         run: |
           export LIBRARY_PATH=/usr/local/lib
           export C_INCLUDE_PATH=/usr/local/include
+          alr build
+          alr exec -- ./testsuite/testsuite.py --failure-exit-code=1
+
+  ubuntu:
+    strategy:
+      matrix:
+        platform: [ubuntu-22.04]
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Alire
+        uses: alire-project/setup-alire@v1
+
+      - name: Set up env
+        run: |
+          sudo apt install libmpfr-dev
+          pip3 install e3-testsuite
+
+      - name: Build and test admpfr
+        run: |
           alr build
           alr exec -- ./testsuite/testsuite.py --failure-exit-code=1
