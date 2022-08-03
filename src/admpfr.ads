@@ -215,6 +215,20 @@ package Admpfr is
    --  if `Op` is not an integer, the inexact flag is set. See also
    --  `Fits_Long_Integer` (TODO).
 
+   function Get_Long_Float
+     (Op  : Mpfloat;
+      Exp : out Long_Integer;
+      Rnd : Rounding := RNDN) return Long_Float;
+   function Get_Long_Long_Float
+     (Op  : Mpfloat;
+      Exp : out Long_Integer;
+      Rnd : Rounding := RNDN) return Long_Long_Float;
+   --  Return d and set `Exp` such that 0.5<=abs(d)<1 and d times 2 raised to
+   --  `Exp` equals `Op` rounded to Long_Float (resp. Long_Long_Float)
+   --  precision, using the given rounding mode. If `Op` is zero, then a zero
+   --  of the same sign is returned, and `Exp` is set to 0. If `Op` is NaN or
+   --  an infinity, then a Failure exception is raised.
+
    function To_String
      (X    : Mpfloat;
       Base : Admpfr.Base := 10;

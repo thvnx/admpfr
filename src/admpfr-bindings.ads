@@ -219,7 +219,7 @@ private package Admpfr.Bindings is
      External_Name => "mpfr_get_ui";
 
    function mpfr_get_d_2exp
-     (Exp : access long;
+     (Exp : access constant long;
       Op  : access constant mpfr_t;
       Rnd : mpfr_rnd_t) return double
    with
@@ -228,7 +228,7 @@ private package Admpfr.Bindings is
      External_Name => "mpfr_get_d_2exp";
 
    function mpfr_get_ld_2exp
-     (Exp : access long;
+     (Exp : access constant long;
       Op  : access constant mpfr_t;
       Rnd : mpfr_rnd_t) return long_double
    with

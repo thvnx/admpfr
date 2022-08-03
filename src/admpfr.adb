@@ -371,6 +371,52 @@ package body Admpfr is
       return Long_Integer (mpfr_get_si (Op.Value'Access, Rounding'Pos (Rnd)));
    end Get_Long_Integer;
 
+   --------------------
+   -- Get_Long_Float --
+   --------------------
+
+   function Get_Long_Float
+     (Op  : Mpfloat;
+      Exp : out Long_Integer;
+      Rnd : Rounding := RNDN) return Long_Float
+   is
+      L : aliased long;
+   begin
+      return LF : constant Long_Float := Long_Float
+        (mpfr_get_d_2exp (L'Access,
+                          Op.Value'Access,
+                          Rounding'Pos (Rnd))) do
+         Exp := Long_Integer (L);
+      end return;
+   exception
+      when Constraint_Error =>
+         raise Failure with "invalid data, can't convert: " & Op.To_String
+            & " to Long_Float";
+   end Get_Long_Float;
+
+   -------------------------
+   -- Get_Long_Long_Float --
+   -------------------------
+
+   function Get_Long_Long_Float
+     (Op  : Mpfloat;
+      Exp : out Long_Integer;
+      Rnd : Rounding := RNDN) return Long_Long_Float
+   is
+      L : aliased long;
+   begin
+      return LLF : constant Long_Long_Float := Long_Long_Float
+        (mpfr_get_ld_2exp (L'Access,
+                           Op.Value'Access,
+                           Rounding'Pos (Rnd))) do
+         Exp := Long_Integer (L);
+      end return;
+   exception
+      when Constraint_Error =>
+         raise Failure with "invalid data, can't convert: " & Op.To_String
+            & " to Long_Long_Float";
+   end Get_Long_Long_Float;
+
    ---------------
    -- To_String --
    ---------------
