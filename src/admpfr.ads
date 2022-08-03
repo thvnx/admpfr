@@ -203,6 +203,18 @@ package Admpfr is
    --  is raised. If `Op` is zero, these functions return a zero, trying to
    --  preserve its sign, if possible.
 
+   function Get_Long_Integer
+     (Op  : Mpfloat;
+      Rnd : Rounding := RNDN) return Long_Integer;
+   --  Convert `op` to a Long_Integer after rounding it to an integer with
+   --  respect to `Rnd`. If `Op` is NaN, 0 is returned and the erange flag
+   --  is set. If `Op` is too big for the return type, the function returns
+   --  the maximum or the minimum of the corresponding C type, depending on
+   --  the direction of the overflow; the erange flag is set too. When there
+   --  is no such range error, if the return value differs from `Op`, i.e.,
+   --  if `Op` is not an integer, the inexact flag is set. See also
+   --  `Fits_Long_Integer` (TODO).
+
    function To_String
      (X    : Mpfloat;
       Base : Admpfr.Base := 10;

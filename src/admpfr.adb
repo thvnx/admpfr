@@ -360,6 +360,17 @@ package body Admpfr is
             & " to Long_Long_Float";
    end Get_Long_Long_Float;
 
+   ----------------------
+   -- Get_Long_Integer --
+   ----------------------
+
+   function Get_Long_Integer
+     (Op  : Mpfloat;
+      Rnd : Rounding := RNDN) return Long_Integer is
+   begin
+      return Long_Integer (mpfr_get_si (Op.Value'Access, Rounding'Pos (Rnd)));
+   end Get_Long_Integer;
+
    ---------------
    -- To_String --
    ---------------
