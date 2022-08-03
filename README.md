@@ -1,3 +1,5 @@
+![main](https://github.com/thvnx/admpfr/actions/workflows/main.yml/badge.svg)
+
 # Ada bindings for MPFR
 
 This package introduces a new type: `Mpfloat`, allowing to use `mpfr_t` C
