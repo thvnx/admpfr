@@ -417,6 +417,26 @@ package body Admpfr is
             & " to Long_Long_Float";
    end Get_Long_Long_Float;
 
+   ---------
+   -- Set --
+   ---------
+
+   procedure Set
+     (Rop : out Mpfloat;
+      Exp : out Long_Integer;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN)
+   is
+      L : aliased mpfr_exp_t;
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_frexp (L'Access,
+                                      Rop.Value'Access,
+                                      Op.Value'Access,
+                                      Rounding'Pos (Rnd)));
+      Exp := Long_Integer (L);
+   end Set;
+
    ---------------
    -- To_String --
    ---------------

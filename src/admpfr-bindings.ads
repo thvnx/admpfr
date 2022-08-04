@@ -237,7 +237,7 @@ private package Admpfr.Bindings is
      External_Name => "mpfr_get_ld_2exp";
 
    function mpfr_frexp
-     (Exp : access mpfr_exp_t;
+     (Exp : access constant mpfr_exp_t;
       X   : access constant mpfr_t;
       Y   : access constant mpfr_t;
       Rnd : mpfr_rnd_t) return int

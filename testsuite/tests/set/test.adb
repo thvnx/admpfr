@@ -89,4 +89,30 @@ begin
       Put_Line (B.To_String);
       Put_Line (C.To_String);
    end;
+
+   declare
+      A : Mpfloat (100);
+      B : Mpfloat (12);
+      E : Long_Integer;
+   begin
+      A.Set (Float (0.1));
+      B.Set (E, A);
+      Put_Line (B.To_String & " " & E'Image);
+      Put_Line (B.Get_Ternary_Value'Image);
+
+      A.Set (Float (0.0));
+      B.Set (E, A);
+      Put_Line (B.To_String & " " & E'Image);
+      Put_Line (B.Get_Ternary_Value'Image);
+
+      A.Set_Inf (Pos);
+      B.Set (E, A);
+      Put_Line (B.To_String);
+      Put_Line (B.Get_Ternary_Value'Image);
+
+      A.Set_Nan;
+      B.Set (E, A);
+      Put_Line (B.To_String);
+      Put_Line (B.Get_Ternary_Value'Image);
+   end;
 end Test;

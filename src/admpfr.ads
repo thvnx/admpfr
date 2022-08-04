@@ -229,6 +229,17 @@ package Admpfr is
    --  of the same sign is returned, and `Exp` is set to 0. If `Op` is NaN or
    --  an infinity, then a Failure exception is raised.
 
+   procedure Set
+     (Rop : out Mpfloat;
+      Exp : out Long_Integer;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   --  Set `Exp` and `Rop` such that 0.5<=abs(`Rop`)<1 and `Rop` times 2 raised
+   --  to `Exp` equals `Op` rounded to the precision of `Rop`, using the given
+   --  rounding mode. If `Op` is zero, then `Rop` is set to a zero of the same
+   --  sign and `Exp` is set to 0. If `Op` is NaN or an infinity, then `Rop` is
+   --  set to the same value and `Exp` is undefined.
+
    function To_String
      (X    : Mpfloat;
       Base : Admpfr.Base := 10;
