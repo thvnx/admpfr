@@ -530,6 +530,34 @@ package body Admpfr is
       Buffer.Put (Arg.To_String);
    end Mpfloat_Image;
 
+   -----------------------
+   -- Fits_Long_Integer --
+   -----------------------
+
+   function Fits_Long_Integer
+     (Op  : Mpfloat;
+      Rnd : Rounding := RNDN) return Boolean
+   is
+      Fits : constant int := mpfr_fits_slong_p (Op.Value'Access,
+                                                Rounding'Pos (Rnd));
+   begin
+      return (if Fits /= 0 then True else False);
+   end Fits_Long_Integer;
+
+   ------------------
+   -- Fits_Integer --
+   ------------------
+
+   function Fits_Integer
+     (Op  : Mpfloat;
+      Rnd : Rounding := RNDN) return Boolean
+   is
+      Fits : constant int := mpfr_fits_sint_p (Op.Value'Access,
+                                               Rounding'Pos (Rnd));
+   begin
+      return (if Fits /= 0 then True else False);
+   end Fits_Integer;
+
    --------------
    -- Get_Prec --
    --------------

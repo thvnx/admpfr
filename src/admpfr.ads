@@ -213,7 +213,7 @@ package Admpfr is
    --  the direction of the overflow; the erange flag is set too. When there
    --  is no such range error, if the return value differs from `Op`, i.e.,
    --  if `Op` is not an integer, the inexact flag is set. See also
-   --  `Fits_Long_Integer` (TODO).
+   --  `Fits_Long_Integer`.
 
    function Get_Long_Float
      (Op  : Mpfloat;
@@ -251,6 +251,16 @@ package Admpfr is
    --  original C library.
    --
    --  Default behavior mimics mpfr_printf("%.RNe", X), (at least for base 10)!
+
+   function Fits_Long_Integer
+     (Op  : Mpfloat;
+      Rnd : Rounding := RNDN) return Boolean;
+   function Fits_Integer
+     (Op  : Mpfloat;
+      Rnd : Rounding := RNDN) return Boolean;
+   --  Return whether `Op` would fit in the respective Ada data type,
+   --  respectively Long_Integer and Integer, when rounded to an integer in
+   --  the direction `Rnd`.
 
    function Prec_Min return Precision is (Precision'First);
    --  Return the minimum number of bits that can be used to represent the
