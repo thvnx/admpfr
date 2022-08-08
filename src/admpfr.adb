@@ -608,6 +608,90 @@ package body Admpfr is
                                       Rounding'Pos (Rnd)));
    end Add;
 
+   ---------
+   -- Sub --
+   ---------
+
+   procedure Sub
+     (Rop      : in out Mpfloat;
+      Op1, Op2 : Mpfloat;
+      Rnd      : Rounding := RNDN) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_sub (Rop.Value'Access,
+                                    Op1.Value'Access,
+                                    Op2.Value'Access,
+                                    Rounding'Pos (Rnd)));
+   end Sub;
+
+   ---------
+   -- Sub --
+   ---------
+
+   procedure Sub
+     (Rop : in out Mpfloat;
+      Op1 : Mpfloat;
+      Op2 : Long_Integer;
+      Rnd  : Rounding := RNDN) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_sub_si (Rop.Value'Access,
+                                       Op1.Value'Access,
+                                       long (Op2),
+                                       Rounding'Pos (Rnd)));
+   end Sub;
+
+   ---------
+   -- Sub --
+   ---------
+
+   procedure Sub
+     (Rop : in out Mpfloat;
+      Op1 : Mpfloat;
+      Op2 : Long_Float;
+      Rnd : Rounding := RNDN) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_sub_d (Rop.Value'Access,
+                                      Op1.Value'Access,
+                                      double (Op2),
+                                      Rounding'Pos (Rnd)));
+   end Sub;
+
+      ---------
+   -- Sub --
+   ---------
+
+   procedure Sub
+     (Rop : in out Mpfloat;
+      Op1 : Long_Integer;
+      Op2 : Mpfloat;
+      Rnd  : Rounding := RNDN) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_si_sub (Rop.Value'Access,
+                                       long (Op1),
+                                       Op2.Value'Access,
+                                       Rounding'Pos (Rnd)));
+   end Sub;
+
+   ---------
+   -- Sub --
+   ---------
+
+   procedure Sub
+     (Rop : in out Mpfloat;
+      Op1 : Long_Float;
+      Op2 : Mpfloat;
+      Rnd : Rounding := RNDN) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_d_sub (Rop.Value'Access,
+                                      double (Op1),
+                                      Op2.Value'Access,
+                                      Rounding'Pos (Rnd)));
+   end Sub;
+
    --------------
    -- Get_Prec --
    --------------
