@@ -582,7 +582,7 @@ package body Admpfr is
      (Rop : in out Mpfloat;
       Op1 : Mpfloat;
       Op2 : Long_Integer;
-      Rnd  : Rounding := RNDN) is
+      Rnd : Rounding := RNDN) is
    begin
       Rop.Ternary :=
         To_Ternary_Value (mpfr_add_si (Rop.Value'Access,
@@ -632,7 +632,7 @@ package body Admpfr is
      (Rop : in out Mpfloat;
       Op1 : Mpfloat;
       Op2 : Long_Integer;
-      Rnd  : Rounding := RNDN) is
+      Rnd : Rounding := RNDN) is
    begin
       Rop.Ternary :=
         To_Ternary_Value (mpfr_sub_si (Rop.Value'Access,
@@ -658,7 +658,7 @@ package body Admpfr is
                                       Rounding'Pos (Rnd)));
    end Sub;
 
-      ---------
+   ---------
    -- Sub --
    ---------
 
@@ -666,7 +666,7 @@ package body Admpfr is
      (Rop : in out Mpfloat;
       Op1 : Long_Integer;
       Op2 : Mpfloat;
-      Rnd  : Rounding := RNDN) is
+      Rnd : Rounding := RNDN) is
    begin
       Rop.Ternary :=
         To_Ternary_Value (mpfr_si_sub (Rop.Value'Access,
