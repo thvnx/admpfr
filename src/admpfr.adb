@@ -692,6 +692,56 @@ package body Admpfr is
                                       Rounding'Pos (Rnd)));
    end Sub;
 
+   ---------
+   -- Mul --
+   ---------
+
+   procedure Mul
+     (Rop      : in out Mpfloat;
+      Op1, Op2 : Mpfloat;
+      Rnd      : Rounding := RNDN) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_mul (Rop.Value'Access,
+                                    Op1.Value'Access,
+                                    Op2.Value'Access,
+                                    Rounding'Pos (Rnd)));
+   end Mul;
+
+   ---------
+   -- Mul --
+   ---------
+
+   procedure Mul
+     (Rop : in out Mpfloat;
+      Op1 : Mpfloat;
+      Op2 : Long_Integer;
+      Rnd : Rounding := RNDN) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_mul_si (Rop.Value'Access,
+                                       Op1.Value'Access,
+                                       long (Op2),
+                                       Rounding'Pos (Rnd)));
+   end Mul;
+
+   ---------
+   -- Mul --
+   ---------
+
+   procedure Mul
+     (Rop : in out Mpfloat;
+      Op1 : Mpfloat;
+      Op2 : Long_Float;
+      Rnd : Rounding := RNDN) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_mul_d (Rop.Value'Access,
+                                      Op1.Value'Access,
+                                      double (Op2),
+                                      Rounding'Pos (Rnd)));
+   end Mul;
+
    --------------
    -- Get_Prec --
    --------------
