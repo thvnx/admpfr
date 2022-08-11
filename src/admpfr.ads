@@ -402,4 +402,58 @@ private
    procedure Reformat_Printf_Args (T : in out String; R : in out Rounding);
    function To_Ternary_Value (T : int) return Ternary_Value;
 
+   generic
+      with function mpfr_fn (Rop : access constant mpfr_t;
+                             Op1 : access constant mpfr_t;
+                             Op2 : access constant mpfr_t;
+                             Rnd : mpfr_rnd_t) return int;
+   procedure Mpfr_Fn_2
+     (Rop      : in out Mpfloat;
+      Op1, Op2 : Mpfloat;
+      Rnd      : Rounding := RNDN);
+
+   generic
+      with function mpfr_fn (Rop : access constant mpfr_t;
+                             Op1 : access constant mpfr_t;
+                             Op2 : long;
+                             Rnd : mpfr_rnd_t) return int;
+   procedure Mpfr_Fn_2_I
+     (Rop : in out Mpfloat;
+      Op1 : Mpfloat;
+      Op2 : Long_Integer;
+      Rnd : Rounding := RNDN);
+
+   generic
+      with function mpfr_fn (Rop : access constant mpfr_t;
+                             Op1 : long;
+                             Op2 : access constant mpfr_t;
+                             Rnd : mpfr_rnd_t) return int;
+   procedure Mpfr_Fn_2_Ib
+     (Rop : in out Mpfloat;
+      Op1 : Long_Integer;
+      Op2 : Mpfloat;
+      Rnd : Rounding := RNDN);
+
+   generic
+      with function mpfr_fn (Rop : access constant mpfr_t;
+                             Op1 : access constant mpfr_t;
+                             Op2 : double;
+                             Rnd : mpfr_rnd_t) return int;
+   procedure Mpfr_Fn_2_F
+     (Rop : in out Mpfloat;
+      Op1 : Mpfloat;
+      Op2 : Long_Float;
+      Rnd : Rounding := RNDN);
+
+   generic
+      with function mpfr_fn (Rop : access constant mpfr_t;
+                             Op1 : double;
+                             Op2 : access constant mpfr_t;
+                             Rnd : mpfr_rnd_t) return int;
+   procedure Mpfr_Fn_2_Fb
+     (Rop : in out Mpfloat;
+      Op1 : Long_Float;
+      Op2 : Mpfloat;
+      Rnd : Rounding := RNDN);
+
 end Admpfr;
