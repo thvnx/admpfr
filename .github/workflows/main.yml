@@ -55,3 +55,26 @@ jobs:
         run: |
           alr build
           alr exec -- ./testsuite/testsuite.py --failure-exit-code=1
+
+  windows:
+    strategy:
+      matrix:
+        platform: [windows-latest]
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Alire
+        uses: alire-project/setup-alire@v1
+
+#      - name: Set up env
+#        run: |
+#          sudo apt install libmpfr-dev
+#          pip3 install e3-testsuite
+
+      - name: Build and test admpfr
+        run: |
+          alr build
+          alr exec -- ./testsuite/testsuite.py --failure-exit-code=1
