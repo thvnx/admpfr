@@ -559,6 +559,23 @@ package body Admpfr is
    end Fits_Integer;
 
    ---------------
+   -- Mpfr_Fn_1 --
+   ---------------
+
+   procedure Mpfr_Fn_1
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_fn (Rop.Value'Access,
+                                   Op.Value'Access,
+                                   Rounding'Pos (Rnd)));
+   end Mpfr_Fn_1;
+
+   procedure Mpfr_Sqr is new Mpfr_Fn_1 (mpfr_sqr);
+
+   ---------------
    -- Mpfr_Fn_2 --
    ---------------
 
@@ -769,6 +786,15 @@ package body Admpfr is
       Op1 : Mpfloat;
       Op2 : Long_Float;
       Rnd : Rounding := RNDN) renames Mpfr_Mul;
+
+   ---------
+   -- Sqr --
+   ---------
+
+   procedure Sqr
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Sqr;
 
    ---------
    -- Div --

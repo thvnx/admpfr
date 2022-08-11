@@ -323,6 +323,9 @@ package Admpfr is
    --  Set `Rop` to `Op1` times `Op2` rounded in the direction `Rnd`. The
    --  IEEE 754 rules are used, in particular for signed zeros.
 
+   procedure Sqr (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDN);
+   --  Set `Rop` to the square of `Op` rounded in the direction `Rnd`.
+
    procedure Div
      (Rop      : in out Mpfloat;
       Op1, Op2 : Mpfloat;
@@ -428,6 +431,15 @@ private
 
    procedure Reformat_Printf_Args (T : in out String; R : in out Rounding);
    function To_Ternary_Value (T : int) return Ternary_Value;
+
+   generic
+      with function mpfr_fn (Rop : access constant mpfr_t;
+                             Op  : access constant mpfr_t;
+                             Rnd : mpfr_rnd_t) return int;
+   procedure Mpfr_Fn_1
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
 
    generic
       with function mpfr_fn (Rop : access constant mpfr_t;
