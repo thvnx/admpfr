@@ -323,6 +323,33 @@ package Admpfr is
    --  Set `Rop` to `Op1` times `Op2` rounded in the direction `Rnd`. The
    --  IEEE 754 rules are used, in particular for signed zeros.
 
+   procedure Div
+     (Rop      : in out Mpfloat;
+      Op1, Op2 : Mpfloat;
+      Rnd      : Rounding := RNDN);
+   procedure Div
+     (Rop : in out Mpfloat;
+      Op1 : Mpfloat;
+      Op2 : Long_Integer;
+      Rnd : Rounding := RNDN);
+   procedure Div
+     (Rop : in out Mpfloat;
+      Op1 : Mpfloat;
+      Op2 : Long_Float;
+      Rnd : Rounding := RNDN);
+   procedure Div
+     (Rop : in out Mpfloat;
+      Op1 : Long_Integer;
+      Op2 : Mpfloat;
+      Rnd : Rounding := RNDN);
+   procedure Div
+     (Rop : in out Mpfloat;
+      Op1 : Long_Float;
+      Op2 : Mpfloat;
+      Rnd : Rounding := RNDN);
+   --  Set `Rop` to `Op1 / Op2` rounded in the direction `Rnd`. The IEEE 754
+   --  rules are used, in particular for signed zeros.
+
    function Prec_Min return Precision is (Precision'First);
    --  Return the minimum number of bits that can be used to represent the
    --  significand of a `Mpfloat`.

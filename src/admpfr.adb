@@ -577,6 +577,7 @@ package body Admpfr is
    procedure Mpfr_Add is new Mpfr_Fn_2 (mpfr_add);
    procedure Mpfr_Sub is new Mpfr_Fn_2 (mpfr_sub);
    procedure Mpfr_Mul is new Mpfr_Fn_2 (mpfr_mul);
+   procedure Mpfr_Div is new Mpfr_Fn_2 (mpfr_div);
 
    -----------------
    -- Mpfr_Fn_2_I --
@@ -598,6 +599,7 @@ package body Admpfr is
    procedure Mpfr_Add is new Mpfr_Fn_2_I (mpfr_add_si);
    procedure Mpfr_Sub is new Mpfr_Fn_2_I (mpfr_sub_si);
    procedure Mpfr_Mul is new Mpfr_Fn_2_I (mpfr_mul_si);
+   procedure Mpfr_Div is new Mpfr_Fn_2_I (mpfr_div_si);
 
    ------------------
    -- Mpfr_Fn_2_Ib --
@@ -617,6 +619,7 @@ package body Admpfr is
    end Mpfr_Fn_2_Ib;
 
    procedure Mpfr_Sub is new Mpfr_Fn_2_Ib (mpfr_si_sub);
+   procedure Mpfr_Div is new Mpfr_Fn_2_Ib (mpfr_si_div);
 
    -----------------
    -- Mpfr_Fn_2_F --
@@ -638,6 +641,7 @@ package body Admpfr is
    procedure Mpfr_Add is new Mpfr_Fn_2_F (mpfr_add_d);
    procedure Mpfr_Sub is new Mpfr_Fn_2_F (mpfr_sub_d);
    procedure Mpfr_Mul is new Mpfr_Fn_2_F (mpfr_mul_d);
+   procedure Mpfr_Div is new Mpfr_Fn_2_F (mpfr_div_d);
 
    ------------------
    -- Mpfr_Fn_2_Fb --
@@ -657,6 +661,7 @@ package body Admpfr is
    end Mpfr_Fn_2_Fb;
 
    procedure Mpfr_Sub is new Mpfr_Fn_2_Fb (mpfr_d_sub);
+   procedure Mpfr_Div is new Mpfr_Fn_2_Fb (mpfr_d_div);
 
    ---------
    -- Add --
@@ -764,6 +769,55 @@ package body Admpfr is
       Op1 : Mpfloat;
       Op2 : Long_Float;
       Rnd : Rounding := RNDN) renames Mpfr_Mul;
+
+   ---------
+   -- Div --
+   ---------
+
+   procedure Div
+     (Rop      : in out Mpfloat;
+      Op1, Op2 : Mpfloat;
+      Rnd      : Rounding := RNDN) renames Mpfr_Div;
+
+   ---------
+   -- Div --
+   ---------
+
+   procedure Div
+     (Rop : in out Mpfloat;
+      Op1 : Mpfloat;
+      Op2 : Long_Integer;
+      Rnd : Rounding := RNDN) renames Mpfr_Div;
+
+   ---------
+   -- Div --
+   ---------
+
+   procedure Div
+     (Rop : in out Mpfloat;
+      Op1 : Mpfloat;
+      Op2 : Long_Float;
+      Rnd : Rounding := RNDN) renames Mpfr_Div;
+
+   ---------
+   -- Div --
+   ---------
+
+   procedure Div
+     (Rop : in out Mpfloat;
+      Op1 : Long_Integer;
+      Op2 : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Div;
+
+   ---------
+   -- Div --
+   ---------
+
+   procedure Div
+     (Rop : in out Mpfloat;
+      Op1 : Long_Float;
+      Op2 : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Div;
 
    --------------
    -- Get_Prec --
