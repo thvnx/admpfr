@@ -531,6 +531,15 @@ private package Admpfr.Bindings is
      Convention    => C,
      External_Name => "mpfr_div_d";
 
+   function mpfr_sqrt
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_sqrt";
+
    function mpfr_sqrt_ui
      (Rop : access constant mpfr_t;
       Op  : unsigned_long;
