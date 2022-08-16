@@ -377,6 +377,26 @@ package Admpfr is
    --  the one of the rSqrt function recommended by the IEEE 754-2008 standard
    --  (Section 9.2.1), which is -Inf instead of +Inf.
 
+   procedure Cbrt
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   procedure Rootn
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      N   : Long_Integer;
+      Rnd : Rounding := RNDN)
+   with
+     Pre => N >= 0;
+   --  Set `Rop` to the nth root (with n = 3, the cubic root, for `Cbrt`) of
+   --  `Op` rounded in the direction `Rnd`. For n = 0, set `Rop` to NaN. For n
+   --  odd (resp. even) and `Op` negative (including -Inf), set `Rop` to a
+   --  negative number (resp. NaN). If `Op` is zero, set `Rop` to zero with the
+   --  sign obtained by the usual limit rules, i.e., the same sign as `Op` if n
+   --  is odd, and positive if n is even.
+
+   --  mpfr_root is not implemented since deprecated, use `Rootn` instead.
+
    function Prec_Min return Precision is (Precision'First);
    --  Return the minimum number of bits that can be used to represent the
    --  significand of a `Mpfloat`.

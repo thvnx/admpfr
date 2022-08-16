@@ -576,6 +576,7 @@ package body Admpfr is
    procedure Mpfr_Sqr is new Mpfr_Fn_1 (mpfr_sqr);
    procedure Mpfr_Sqrt is new Mpfr_Fn_1 (mpfr_sqrt);
    procedure Mpfr_Rec_Sqrt is new Mpfr_Fn_1 (mpfr_rec_sqrt);
+   procedure Mpfr_Cbrt is new Mpfr_Fn_1 (mpfr_cbrt);
 
    ---------------
    -- Mpfr_Fn_2 --
@@ -879,6 +880,32 @@ package body Admpfr is
      (Rop : in out Mpfloat;
       Op  : Mpfloat;
       Rnd : Rounding := RNDN) renames Mpfr_Rec_Sqrt;
+
+   ----------
+   -- Cbrt --
+   ----------
+
+   procedure Cbrt
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Cbrt;
+
+   -----------
+   -- Rootn --
+   -----------
+
+   procedure Rootn
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      N   : Long_Integer;
+      Rnd : Rounding := RNDN) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_rootn_ui (Rop.Value'Access,
+                                         Op.Value'Access,
+                                         unsigned_long (N),
+                                         Rounding'Pos (Rnd)));
+   end Rootn;
 
    --------------
    -- Get_Prec --
