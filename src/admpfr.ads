@@ -353,6 +353,30 @@ package Admpfr is
    --  Set `Rop` to `Op1 / Op2` rounded in the direction `Rnd`. The IEEE 754
    --  rules are used, in particular for signed zeros.
 
+   procedure Sqrt
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   procedure Sqrt
+     (Rop : in out Mpfloat;
+      Op  : Long_Integer;
+      Rnd : Rounding := RNDN)
+   with
+     Pre => Op >= 0;
+   --  Set `Rop` to the square root of `Op` rounded in the direction `Rnd`. Set
+   --  `Rop` to -0 if `Op` is -0, to be consistent with the IEEE 754 standard.
+   --  Set `Rop` to NaN if `Op` is negative.
+
+   procedure Rec_Sqrt
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   --  Set `Rop` to the reciprocal square root of `Op` rounded in the direction
+   --  `Rnd`. Set `Rop` to +Inf if `Op` is +/-0, +0 if `Op` is +Inf, and NaN if
+   --  `Op` is negative. Warning! Therefore the result on -0 is different from
+   --  the one of the rSqrt function recommended by the IEEE 754-2008 standard
+   --  (Section 9.2.1), which is -Inf instead of +Inf.
+
    function Prec_Min return Precision is (Precision'First);
    --  Return the minimum number of bits that can be used to represent the
    --  significand of a `Mpfloat`.
