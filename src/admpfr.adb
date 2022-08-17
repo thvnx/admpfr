@@ -623,6 +623,8 @@ package body Admpfr is
    procedure Mpfr_Sub is new Mpfr_Fn_2_I (mpfr_sub_si);
    procedure Mpfr_Mul is new Mpfr_Fn_2_I (mpfr_mul_si);
    procedure Mpfr_Div is new Mpfr_Fn_2_I (mpfr_div_si);
+   procedure Mpfr_Mul_2 is new Mpfr_Fn_2_I (mpfr_mul_2si);
+   procedure Mpfr_Div_2 is new Mpfr_Fn_2_I (mpfr_div_2si);
 
    ------------------
    -- Mpfr_Fn_2_Ib --
@@ -936,6 +938,26 @@ package body Admpfr is
      (Rop      : in out Mpfloat;
       Op1, Op2 : Mpfloat;
       Rnd      : Rounding := RNDN) renames Mpfr_Dim;
+
+   -----------
+   -- Mul_2 --
+   -----------
+
+   procedure Mul_2
+     (Rop : in out Mpfloat;
+      Op1 : Mpfloat;
+      Op2 : Long_Integer;
+      Rnd : Rounding := RNDN) renames Mpfr_Mul_2;
+
+   -----------
+   -- Div_2 --
+   -----------
+
+   procedure Div_2
+     (Rop : in out Mpfloat;
+      Op1 : Mpfloat;
+      Op2 : Long_Integer;
+      Rnd : Rounding := RNDN) renames Mpfr_Div_2;
 
    --------------
    -- Get_Prec --

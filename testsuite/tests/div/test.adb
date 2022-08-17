@@ -21,4 +21,7 @@ begin
 
    M.Div (6.0, N);
    Put_Line (M'Image);
+
+   M.Div_2 (N, 8);
+   Put_Line (M'Image);
 end Test;

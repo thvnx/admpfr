@@ -423,6 +423,24 @@ package Admpfr is
    --  `Op1 - Op2` rounded in the direction `Rnd` if `Op1 > op2`, +0 if
    --  `Op1 <= Op2`, and NaN if `Op1` or `Op2` is NaN.
 
+   procedure Mul_2
+     (Rop : in out Mpfloat;
+      Op1 : Mpfloat;
+      Op2 : Long_Integer;
+      Rnd : Rounding := RNDN);
+   --  Set `Rop` to `Op1` times 2 raised to `Op2` rounded in the direction
+   --  `Rnd`. Just increases the exponent by `Op2` when `Rop` and `Op1` are
+   --  identical.
+
+   procedure Div_2
+     (Rop : in out Mpfloat;
+      Op1 : Mpfloat;
+      Op2 : Long_Integer;
+      Rnd : Rounding := RNDN);
+   --  Set `Rop` to `Op1` divided by 2 raised to `Op2` rounded in the direction
+   --  `Rnd`. Just decreases the exponent by `Op2` when `Rop` and `Op1` are
+   --  identical.
+
    function Prec_Min return Precision is (Precision'First);
    --  Return the minimum number of bits that can be used to represent the
    --  significand of a `Mpfloat`.

@@ -15,4 +15,7 @@ begin
 
    M.Mul (N, 6.0);
    Put_Line (M'Image);
+
+   M.Mul_2 (N, 8);
+   Put_Line (M'Image);
 end Test;
