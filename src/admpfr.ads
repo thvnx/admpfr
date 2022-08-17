@@ -441,6 +441,14 @@ package Admpfr is
    --  `Rnd`. Just decreases the exponent by `Op2` when `Rop` and `Op1` are
    --  identical.
 
+   procedure Fac
+     (Rop : in out Mpfloat;
+      Op  : Long_Integer;
+      Rnd : Rounding := RNDN)
+   with
+     Pre => Op >= 0;
+   --  Set `Rop` to the factorial of `Op`, rounded in the direction `Rnd`.
+
    function Prec_Min return Precision is (Precision'First);
    --  Return the minimum number of bits that can be used to represent the
    --  significand of a `Mpfloat`.

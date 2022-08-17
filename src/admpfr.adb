@@ -959,6 +959,21 @@ package body Admpfr is
       Op2 : Long_Integer;
       Rnd : Rounding := RNDN) renames Mpfr_Div_2;
 
+   ---------
+   -- Fac --
+   ---------
+
+   procedure Fac
+     (Rop : in out Mpfloat;
+      Op  : Long_Integer;
+      Rnd : Rounding := RNDN) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_fac_ui (Rop.Value'Access,
+                                       unsigned_long (Op),
+                                       Rounding'Pos (Rnd)));
+   end Fac;
+
    --------------
    -- Get_Prec --
    --------------
