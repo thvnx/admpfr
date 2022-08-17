@@ -601,6 +601,7 @@ package body Admpfr is
    procedure Mpfr_Mul is new Mpfr_Fn_2 (mpfr_mul);
    procedure Mpfr_Div is new Mpfr_Fn_2 (mpfr_div);
    procedure Mpfr_Dim is new Mpfr_Fn_2 (mpfr_dim);
+   procedure Mpfr_Hypot is new Mpfr_Fn_2 (mpfr_hypot);
 
    -----------------
    -- Mpfr_Fn_2_I --
@@ -1043,6 +1044,15 @@ package body Admpfr is
                                      Op4.Value'Access,
                                      Rounding'Pos (Rnd)));
    end Fmms;
+
+   -----------
+   -- Hypot --
+   -----------
+
+   procedure Hypot
+     (Rop  : in out Mpfloat;
+      X, Y : Mpfloat;
+      Rnd  : Rounding := RNDN) renames Mpfr_Hypot;
 
    --------------
    -- Get_Prec --

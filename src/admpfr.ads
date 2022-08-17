@@ -477,6 +477,14 @@ package Admpfr is
    --  (or that of `Op3` times `Op4`), the result `Rop` is computed as if the
    --  two intermediate products were computed with rounding toward zero.
 
+   procedure Hypot
+     (Rop  : in out Mpfloat;
+      X, Y : Mpfloat;
+      Rnd  : Rounding := RNDN);
+   --  Set `Rop` to the Euclidean norm of `X` and `Y`, i.e., the square root
+   --  of the sum of the squares of `X` and `Y`, rounded in the direction
+   --  `Rnd`.
+
    function Prec_Min return Precision is (Precision'First);
    --  Return the minimum number of bits that can be used to represent the
    --  significand of a `Mpfloat`.
