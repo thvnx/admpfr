@@ -415,6 +415,14 @@ package Admpfr is
    --  variable, otherwise a rounding might occur if the precision of `Rop`
    --  is less than that of `Op`.
 
+   procedure Dim
+     (Rop      : in out Mpfloat;
+      Op1, Op2 : Mpfloat;
+      Rnd      : Rounding := RNDN);
+   --  Set `Rop` to the positive difference of `Op1` and `Op2`, i.e.,
+   --  `Op1 - Op2` rounded in the direction `Rnd` if `Op1 > op2`, +0 if
+   --  `Op1 <= Op2`, and NaN if `Op1` or `Op2` is NaN.
+
    function Prec_Min return Precision is (Precision'First);
    --  Return the minimum number of bits that can be used to represent the
    --  significand of a `Mpfloat`.

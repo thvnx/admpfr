@@ -600,6 +600,7 @@ package body Admpfr is
    procedure Mpfr_Sub is new Mpfr_Fn_2 (mpfr_sub);
    procedure Mpfr_Mul is new Mpfr_Fn_2 (mpfr_mul);
    procedure Mpfr_Div is new Mpfr_Fn_2 (mpfr_div);
+   procedure Mpfr_Dim is new Mpfr_Fn_2 (mpfr_dim);
 
    -----------------
    -- Mpfr_Fn_2_I --
@@ -926,6 +927,15 @@ package body Admpfr is
      (Rop : in out Mpfloat;
       Op  : Mpfloat;
       Rnd : Rounding := RNDN) renames Mpfr_Abs;
+
+   ---------
+   -- Dim --
+   ---------
+
+   procedure Dim
+     (Rop      : in out Mpfloat;
+      Op1, Op2 : Mpfloat;
+      Rnd      : Rounding := RNDN) renames Mpfr_Dim;
 
    --------------
    -- Get_Prec --
