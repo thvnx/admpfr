@@ -397,6 +397,24 @@ package Admpfr is
 
    --  mpfr_root is not implemented since deprecated, use `Rootn` instead.
 
+   procedure Neg
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   --  Set `Rop` to `-Op`, rounded in the direction `Rnd`. Just changes or
+   --  adjusts the sign if `Rop` and `Op` are the same variable, otherwise a
+   --  rounding might occur if the precision of `Rop` is less than that of
+   --  `Op`.
+
+   procedure Absolute
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   --  Set `Rop` to the absolute value of `Op`, rounded in the direction `Rnd`.
+   --  Just changes or adjusts the sign if `Rop` and `Op` are the same
+   --  variable, otherwise a rounding might occur if the precision of `Rop`
+   --  is less than that of `Op`.
+
    function Prec_Min return Precision is (Precision'First);
    --  Return the minimum number of bits that can be used to represent the
    --  significand of a `Mpfloat`.

@@ -577,6 +577,8 @@ package body Admpfr is
    procedure Mpfr_Sqrt is new Mpfr_Fn_1 (mpfr_sqrt);
    procedure Mpfr_Rec_Sqrt is new Mpfr_Fn_1 (mpfr_rec_sqrt);
    procedure Mpfr_Cbrt is new Mpfr_Fn_1 (mpfr_cbrt);
+   procedure Mpfr_Neg is new Mpfr_Fn_1 (mpfr_neg);
+   procedure Mpfr_Abs is new Mpfr_Fn_1 (mpfr_abs);
 
    ---------------
    -- Mpfr_Fn_2 --
@@ -906,6 +908,24 @@ package body Admpfr is
                                          unsigned_long (N),
                                          Rounding'Pos (Rnd)));
    end Rootn;
+
+   ---------
+   -- Neg --
+   ---------
+
+   procedure Neg
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Neg;
+
+   --------------
+   -- Absolute --
+   --------------
+
+   procedure Absolute
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Abs;
 
    --------------
    -- Get_Prec --
