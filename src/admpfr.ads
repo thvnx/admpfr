@@ -449,6 +449,34 @@ package Admpfr is
      Pre => Op >= 0;
    --  Set `Rop` to the factorial of `Op`, rounded in the direction `Rnd`.
 
+   procedure Fma
+     (Rop           : in out Mpfloat;
+      Op1, Op2, Op3 : Mpfloat;
+      Rnd           : Rounding := RNDN);
+   procedure Fms
+     (Rop           : in out Mpfloat;
+      Op1, Op2, Op3 : Mpfloat;
+      Rnd           : Rounding := RNDN);
+   --  Set `Rop` to `(Op1 times Op2) + Op3` (resp. `(Op1 times Op2) - Op3)`
+   --  rounded in the direction `Rnd`. Concerning special values (signed
+   --  zeros, infinities, NaN), these functions behave like a multiplication
+   --  followed by a separate addition or subtraction. That is, the fused
+   --  operation matters only for rounding.
+
+   procedure Fmma
+     (Rop                : in out Mpfloat;
+      Op1, Op2, Op3, Op4 : Mpfloat;
+      Rnd                : Rounding := RNDN);
+   procedure Fmms
+     (Rop                : in out Mpfloat;
+      Op1, Op2, Op3, Op4 : Mpfloat;
+      Rnd                : Rounding := RNDN);
+   --  Set `Rop` to `(Op1 times Op2) + (Op3 times Op4)` (resp.
+   --  `(Op1 times Op2) - (Op3 times Op4)`) rounded in the direction `Rnd`.
+   --  In case the computation of `Op1` times `Op2` overflows or underflows
+   --  (or that of `Op3` times `Op4`), the result `Rop` is computed as if the
+   --  two intermediate products were computed with rounding toward zero.
+
    function Prec_Min return Precision is (Precision'First);
    --  Return the minimum number of bits that can be used to represent the
    --  significand of a `Mpfloat`.

@@ -974,6 +974,76 @@ package body Admpfr is
                                        Rounding'Pos (Rnd)));
    end Fac;
 
+   ---------
+   -- Fma --
+   ---------
+
+   procedure Fma
+     (Rop           : in out Mpfloat;
+      Op1, Op2, Op3 : Mpfloat;
+      Rnd           : Rounding := RNDN) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_fma (Rop.Value'Access,
+                                    Op1.Value'Access,
+                                    Op2.Value'Access,
+                                    Op3.Value'Access,
+                                    Rounding'Pos (Rnd)));
+   end Fma;
+
+   ---------
+   -- Fms --
+   ---------
+
+   procedure Fms
+     (Rop           : in out Mpfloat;
+      Op1, Op2, Op3 : Mpfloat;
+      Rnd           : Rounding := RNDN) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_fms (Rop.Value'Access,
+                                    Op1.Value'Access,
+                                    Op2.Value'Access,
+                                    Op3.Value'Access,
+                                    Rounding'Pos (Rnd)));
+   end Fms;
+
+   ----------
+   -- Fmma --
+   ----------
+
+   procedure Fmma
+     (Rop                : in out Mpfloat;
+      Op1, Op2, Op3, Op4 : Mpfloat;
+      Rnd                : Rounding := RNDN) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_fmma (Rop.Value'Access,
+                                     Op1.Value'Access,
+                                     Op2.Value'Access,
+                                     Op3.Value'Access,
+                                     Op4.Value'Access,
+                                     Rounding'Pos (Rnd)));
+   end Fmma;
+
+   ----------
+   -- Fmms --
+   ----------
+
+   procedure Fmms
+     (Rop                : in out Mpfloat;
+      Op1, Op2, Op3, Op4 : Mpfloat;
+      Rnd                : Rounding := RNDN) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_fmms (Rop.Value'Access,
+                                     Op1.Value'Access,
+                                     Op2.Value'Access,
+                                     Op3.Value'Access,
+                                     Op4.Value'Access,
+                                     Rounding'Pos (Rnd)));
+   end Fmms;
+
    --------------
    -- Get_Prec --
    --------------
