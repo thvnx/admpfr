@@ -1,3 +1,5 @@
 driver: admpfr
 control:
-- [XFAIL, "True", "doesn't catch program error on macos"]
+- [XFAIL, "env.build.os.name == 'windows'",
+   "no exception raised if long if 4 bytes and there is more than 4 Gb of memory (typically on windows)"]
+- [XFAIL, "env.build.os.name == 'darwin'", "doesn't catch program error on macos"]

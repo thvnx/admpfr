@@ -1,4 +1,4 @@
  53
  1
-GNU MP: Cannot allocate memory (size=1152921504606846760)
-error during Mpfloat (Prec := 9223372036854774015) initialization
+GNU MP: Cannot allocate memory (size=1152921504606846952)
+error during Mpfloat (Prec := 9223372036854775551) initialization
