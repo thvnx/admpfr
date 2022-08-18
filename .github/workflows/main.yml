@@ -55,3 +55,32 @@ jobs:
         run: |
           alr build
           alr exec -- ./testsuite/testsuite.py --failure-exit-code=1
+
+  windows:
+    strategy:
+      matrix:
+        platform: [windows-latest]
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - name: Set up git
+        run: |
+          git config --global core.autocrlf false
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Alire
+        uses: alire-project/setup-alire@v1
+
+      - name: Set up env
+        run: |
+          C:\Users\runneradmin\.cache\alire\msys64\usr\bin\pacman --noconfirm -S mingw-w64-x86_64-mpfr
+          # pip3 install e3-testsuite
+
+      - name: Build and test admpfr
+        run: |
+          alr build
+          # TODO: run the testsuite, just run main.exe for now
+          .\obj\main.exe
+          # alr exec -- ./testsuite/testsuite.py --failure-exit-code=1
