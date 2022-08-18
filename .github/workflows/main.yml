@@ -75,7 +75,7 @@ jobs:
 
       - name: Set up env
         run: |
-          C:\Users\runneradmin\.cache\alire\msys64\usr\bin\pacman --noconfirm -S mpfr
+          C:\Users\runneradmin\.cache\alire\msys64\usr\bin\pacman --noconfirm -S mingw-w64-x86_64-mpfr
           #TODO pip3 install e3-testsuite
 
       - name: Build and test admpfr
