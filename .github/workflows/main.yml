@@ -76,10 +76,11 @@ jobs:
       - name: Set up env
         run: |
           C:\Users\runneradmin\.cache\alire\msys64\usr\bin\pacman --noconfirm -S mingw-w64-x86_64-mpfr
-          #TODO pip3 install e3-testsuite
+          # pip3 install e3-testsuite
 
       - name: Build and test admpfr
         run: |
           alr build
+          # TODO: run the testsuite, just run main.exe for now
           .\obj\main.exe
-          #TODO alr exec -- ./testsuite/testsuite.py --failure-exit-code=1
+          # alr exec -- ./testsuite/testsuite.py --failure-exit-code=1

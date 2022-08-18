@@ -6,6 +6,9 @@ project AdMPFR is
    for Main use ("main.adb");
    for Object_Dir use "obj";
 
+   type Target_type is ("Windows_NT", "UNIX");
+   Target : Target_type := external ("OS", "UNIX");
+
    package Compiler is
       for Switches ("Ada") use
         ("-g", "-O0", "-gnata", "-gnatVa", "-gnatQ", "-gnatyg", "-gnateE",
@@ -14,7 +17,10 @@ project AdMPFR is
    end Compiler;
 
    package Linker is
-      for Default_Switches ("ada") use ("-lmpfr", "-lgmp"); -- TODO: only for windows?
+      case Target is
+         when "Windows_NT" => for Default_Switches ("ada") use ("-lmpfr", "-lgmp");
+         when "UNIX"       => for Default_Switches ("ada") use ("-lmpfr");
+      end case;
    end Linker;
 
 end AdMPFR;
