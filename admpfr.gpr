@@ -14,7 +14,7 @@ project AdMPFR is
    end Compiler;
 
    package Linker is
-      for Default_Switches ("ada") use ("-lmpfr");
+      for Default_Switches ("ada") use ("-lmpfr", "-lgmp"); -- TODO: only for windows?
    end Linker;
 
 end AdMPFR;
