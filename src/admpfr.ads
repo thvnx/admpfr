@@ -59,6 +59,8 @@ package Admpfr is
    --  uses mpfr_init2 under the hood), which is set to the default MPFR
    --  precision.
 
+   type Mpfloat_Array is array (Integer range <>) of Mpfloat;
+
    procedure Mpfloat_Image
      (Buffer : in out Ada.Strings.Text_Buffers.Root_Buffer_Type'Class;
       Arg    : Mpfloat);
@@ -484,6 +486,32 @@ package Admpfr is
    --  Set `Rop` to the Euclidean norm of `X` and `Y`, i.e., the square root
    --  of the sum of the squares of `X` and `Y`, rounded in the direction
    --  `Rnd`.
+
+   procedure Sum
+     (Rop : in out Mpfloat;
+      Arr : Mpfloat_Array;
+      Rnd : Rounding := RNDN);
+   --  Set `Rop` to the sum of all elements of `Arr`, correctly rounded in the
+   --  direction `Rnd`. If the array is empty, then the result is +0, and if
+   --  `Arr'Length = 1`, then the function is equivalent to `Set`. For the
+   --  special exact cases, the result is the same as the one obtained with
+   --  a succession of additions (`Add`) in infinite precision. In particular,
+   --  if the result is an exact zero and `Arr'Length >= 1`:
+   --  - if all the inputs have the same sign (i.e., all +0 or all -0), then
+   --    the result has the same sign as the inputs;
+   --  - otherwise, either because all inputs are zeros with at least a +0 and
+   --    a -0, or because some inputs are non-zero (but they globally cancel),
+   --    the result is +0, except for the `RNDD` rounding mode, where it is -0.
+
+   procedure Dot
+     (Rop  : in out Mpfloat;
+      Arr1 : Mpfloat_Array;
+      Arr2 : Mpfloat_Array;
+      Rnd  : Rounding := RNDN);
+   --  Set `Rop` to the dot product of elements of `Arr1` by those of `Arr2`,
+   --  correctly rounded in the direction `Rnd`. The product size is defined
+   --  by min (Arr1'Length, Arr2`Length). This function is experimental, and
+   --  does not yet handle intermediate overflows and underflows.
 
    function Prec_Min return Precision is (Precision'First);
    --  Return the minimum number of bits that can be used to represent the

@@ -1054,6 +1054,62 @@ package body Admpfr is
       X, Y : Mpfloat;
       Rnd  : Rounding := RNDN) renames Mpfr_Hypot;
 
+   ---------
+   -- Sum --
+   ---------
+
+   procedure Sum
+     (Rop : in out Mpfloat;
+      Arr : Mpfloat_Array;
+      Rnd : Rounding := RNDN)
+   is
+      N : constant Integer := Arr'Length;
+
+      type mpfr_ptr_array is array (Integer range 1 .. N)
+        of access constant mpfr_t with Convention => C;
+      Tab : mpfr_ptr_array;
+   begin
+      for I in 1 .. N loop
+         Tab (I) := Arr (I).Value'Access;
+      end loop;
+
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_sum (Rop.Value'Access,
+                                    Tab'Address,
+                                    unsigned_long (N),
+                                    Rounding'Pos (Rnd)));
+   end Sum;
+
+   ---------
+   -- Dot --
+   ---------
+
+   procedure Dot
+     (Rop  : in out Mpfloat;
+      Arr1 : Mpfloat_Array;
+      Arr2 : Mpfloat_Array;
+      Rnd  : Rounding := RNDN)
+   is
+      N : constant Integer :=
+         (if Arr1'Length <= Arr2'Length then Arr1'Length else Arr2'Length);
+
+      type mpfr_ptr_array is array (Integer range 1 .. N)
+        of access constant mpfr_t with Convention => C;
+      A, B : mpfr_ptr_array;
+   begin
+      for I in 1 .. N loop
+         A (I) := Arr1 (I).Value'Access;
+         B (I) := Arr2 (I).Value'Access;
+      end loop;
+
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_dot (Rop.Value'Access,
+                                    A'Address,
+                                    B'Address,
+                                    unsigned_long (N),
+                                    Rounding'Pos (Rnd)));
+   end Dot;
+
    --------------
    -- Get_Prec --
    --------------
