@@ -24,6 +24,9 @@ class AdmpfrDriver(DiffTestDriver):
             for Main use ("test.adb");
             for Object_Dir use "obj";
 
+            type Target_type is ("Windows_NT", "UNIX");
+            Target : Target_type := external ("OS", "UNIX");
+
             package Compiler is
                for Switches ("Ada") use
                  ("-g", "-O0", "-gnata", "-gnatVa", "-gnatQ", "-gnatyg", "-gnateE",
@@ -31,7 +34,12 @@ class AdmpfrDriver(DiffTestDriver):
             end Compiler;
 
             package Linker is
-               for Default_Switches ("ada") use ("-lmpfr");
+               case Target is
+                  when "Windows_NT" =>
+                     for Default_Switches ("ada") use ("-lmpfr", "-lgmp");
+                  when "UNIX"       =>
+                     for Default_Switches ("ada") use ("-lmpfr");
+               end case;
             end Linker;
 
             end Test;

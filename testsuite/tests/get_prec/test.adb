@@ -13,7 +13,8 @@ begin
 
    begin
       declare
-         O : Mpfloat (16#7FFF_FFFF_FFFF_F8FF#);
+         O : Mpfloat (Precision'Last);
+         --  16#7FFF_FFFF_FFFF_FEFF# if Precision is 8 bytes (unix)
       begin
          Put_Line (Get_Prec (O)'Image);
       end;

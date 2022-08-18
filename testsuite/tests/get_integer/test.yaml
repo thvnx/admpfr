@@ -1,1 +1,4 @@
 driver: admpfr
+control:
+- [XFAIL, "env.build.os.name == 'windows'",
+   "windows long is 4 bytes, output expects 8 bytes long values"]

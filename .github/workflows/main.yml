@@ -76,11 +76,11 @@ jobs:
       - name: Set up env
         run: |
           C:\Users\runneradmin\.cache\alire\msys64\usr\bin\pacman --noconfirm -S mingw-w64-x86_64-mpfr
-          # pip3 install e3-testsuite
+          # Install e3-core and e3-testsuite from source to benefit from the rlimit bugfix
+          pip install git+https://github.com/AdaCore/e3-core.git@master
+          pip install git+https://github.com/AdaCore/e3-testsuite.git@master
 
       - name: Build and test admpfr
         run: |
           alr build
-          # TODO: run the testsuite, just run main.exe for now
-          .\obj\main.exe
-          # alr exec -- ./testsuite/testsuite.py --failure-exit-code=1
+          alr exec -- python.exe .\testsuite\testsuite.py --failure-exit-code=1
