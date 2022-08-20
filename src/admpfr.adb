@@ -1222,6 +1222,70 @@ package body Admpfr is
    function Is_Regular (Op : Mpfloat) return Boolean is
      (if mpfr_regular_p (Op.Value'Access) /= 0 then True else False);
 
+   -------------
+   -- Greater --
+   -------------
+
+   function Greater (Op1, Op2 : Mpfloat) return Boolean is
+     (if mpfr_greater_p (Op1.Value'Access, Op2.Value'Access) /= 0
+      then True else False);
+
+   ------------------
+   -- Greaterequal --
+   ------------------
+
+   function Greaterequal (Op1, Op2 : Mpfloat) return Boolean is
+     (if mpfr_greaterequal_p (Op1.Value'Access, Op2.Value'Access) /= 0
+      then True else False);
+
+   ----------
+   -- Less --
+   ----------
+
+   function Less (Op1, Op2 : Mpfloat) return Boolean is
+     (if mpfr_less_p (Op1.Value'Access, Op2.Value'Access) /= 0
+      then True else False);
+
+   ---------------
+   -- Lessequal --
+   ---------------
+
+   function Lessequal (Op1, Op2 : Mpfloat) return Boolean is
+     (if mpfr_lessequal_p (Op1.Value'Access, Op2.Value'Access) /= 0
+      then True else False);
+
+   -----------
+   -- Equal --
+   -----------
+
+   function Equal (Op1, Op2 : Mpfloat) return Boolean is
+     (if mpfr_equal_p (Op1.Value'Access, Op2.Value'Access) /= 0
+      then True else False);
+
+   -----------------
+   -- Lessgreater --
+   -----------------
+
+   function Lessgreater (Op1, Op2 : Mpfloat) return Boolean is
+     (if mpfr_lessgreater_p (Op1.Value'Access, Op2.Value'Access) /= 0
+      then True else False);
+
+   ---------------
+   -- Unordered --
+   ---------------
+
+   function Unordered (Op1, Op2 : Mpfloat) return Boolean is
+     (if mpfr_unordered_p (Op1.Value'Access, Op2.Value'Access) /= 0
+      then True else False);
+
+   -----------------
+   -- Total_Order --
+   -----------------
+
+   function Total_Order (Op1, Op2 : Mpfloat) return Boolean is
+     (if mpfr_total_order_p (Op1.Value'Access, Op2.Value'Access) /= 0
+      then True else False);
+
    --------------
    -- Get_Prec --
    --------------

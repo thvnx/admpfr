@@ -555,6 +555,38 @@ package Admpfr is
    --  (i.e., neither NaN nor an infinity), zero, or a regular number
    --  (i.e., neither NaN, nor an infinity nor zero).
 
+   function Greater (Op1, Op2 : Mpfloat) return Boolean;
+   function Greaterequal (Op1, Op2 : Mpfloat) return Boolean;
+   function Less (Op1, Op2 : Mpfloat) return Boolean;
+   function Lessequal (Op1, Op2 : Mpfloat) return Boolean;
+   function Equal (Op1, Op2 : Mpfloat) return Boolean;
+   --  Return whether `Op1 > Op2`, `Op1 >= Op2`, `Op1 < Op2`, `Op1 <= Op2`,
+   --  `Op1 = Op2` respectively. Those functions return False whenever
+   --  `Op1` and/or `Op2` is NaN.
+
+   function Lessgreater (Op1, Op2 : Mpfloat) return Boolean;
+   --  Return whether `Op1 < Op2` or `Op1 > Op2` (i.e., neither `Op1`,
+   --  nor `Op2` is NaN, and `Op1 <> Op2`) or not (i.e., `Op1` and/or `Op2`
+   --  is NaN, or `Op1 = Op2`).
+
+   function Unordered (Op1, Op2 : Mpfloat) return Boolean;
+   --  Return whether `Op1` or `Op2` is a NaN (i.e., they cannot be compared).
+
+   function Total_Order (Op1, Op2 : Mpfloat) return Boolean;
+   --  This function implements the totalOrder predicate from IEEE 754-2008,
+   --  where -NaN < -Inf < negative finite numbers < -0 < +0 < positive finite
+   --  numbers < +Inf < +NaN.
+
+   function "=" (Op1, Op2 : Mpfloat) return Boolean is (Equal (Op1, Op2));
+   --  Note: due to how Ada set the "/=" operator being the negation of "=",
+   --  its use is discouraged since it returns the wrong result if `Op1` or
+   --  `Op2` is NaN.
+   function ">" (Op1, Op2 : Mpfloat) return Boolean is (Greater (Op1, Op2));
+   function "<" (Op1, Op2 : Mpfloat) return Boolean is (Less (Op1, Op2));
+   function ">=" (Op1, Op2 : Mpfloat) return Boolean is
+     (Greaterequal (Op1, Op2));
+   function "<=" (Op1, Op2 : Mpfloat) return Boolean is (Lessequal (Op1, Op2));
+
    function Prec_Min return Precision is (Precision'First);
    --  Return the minimum number of bits that can be used to represent the
    --  significand of a `Mpfloat`.
