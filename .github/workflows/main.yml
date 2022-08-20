@@ -31,7 +31,7 @@ jobs:
           export LIBRARY_PATH=/usr/local/lib
           export C_INCLUDE_PATH=/usr/local/include
           alr build
-          alr exec -- ./testsuite/testsuite.py --failure-exit-code=1
+          alr exec -- ./testsuite/testsuite.py -E --failure-exit-code=1
 
   ubuntu:
     strategy:
@@ -54,7 +54,7 @@ jobs:
       - name: Build and test admpfr
         run: |
           alr build
-          alr exec -- ./testsuite/testsuite.py --failure-exit-code=1
+          alr exec -- ./testsuite/testsuite.py -E --failure-exit-code=1
 
   windows:
     strategy:
@@ -83,4 +83,4 @@ jobs:
       - name: Build and test admpfr
         run: |
           alr build
-          alr exec -- python.exe .\testsuite\testsuite.py --failure-exit-code=1
+          alr exec -- python.exe .\testsuite\testsuite.py -E --failure-exit-code=1
