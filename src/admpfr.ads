@@ -84,6 +84,10 @@ package Admpfr is
    for Sign use (Neg => -1, Pos => 0);
    --  Mpfloat sign
 
+   type Compare is (Less, Equal, Greater);
+   for Compare use (Less => -1, Equal => 0, Greater => 1);
+   --  Type for the return value of the `Cmp*` functions
+
    procedure Set (Rop : out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDN);
    --  Set the value of `Rop` from `Op`, rounded toward the given direction
    --  `Rnd`. The sign of a NaN is propagated in order to mimic the IEEE 754
@@ -513,6 +517,35 @@ package Admpfr is
    --  by min (Arr1'Length, Arr2`Length). This function is experimental, and
    --  does not yet handle intermediate overflows and underflows.
 
+   function Cmp (Op1, Op2 : Mpfloat) return Compare;
+   function Cmp (Op1 : Mpfloat; Op2 : Long_Integer) return Compare;
+   function Cmp (Op1 : Mpfloat; Op2 : Long_Float) return Compare;
+   function Cmp (Op1 : Mpfloat; Op2 : Long_Long_Float) return Compare;
+   --  Compare `Op1` and `Op2`. Return `Greater` if `Op1 > op2`, `Equal` if
+   --  `Op1 = Op2`, and `Less` value if `Op1 < Op2`. Both `Op1` and `Op2` are
+   --  considered to their full own precision, which may differ. If one of the
+   --  operands is NaN, set the erange flag and return `Equal`.
+
+   --  Note: These functions may be useful to distinguish the three possible
+   --  cases. If you need to distinguish two cases only, it is recommended to
+   --  use the operators (e.g., "=" for the equality) described below; they
+   --  behave like the IEEE 754 comparisons, in particular when one or both
+   --  arguments are NaN. But only floating-point numbers can be compared
+   --  (you may need to do a conversion first).
+
+   function Cmp
+     (Op1 : Mpfloat;
+      Op2 : Long_Integer;
+      E   : Exponent) return Compare;
+   --  Compare `Op1` and `Op2` multiplied by two to the power `E`. Similar as
+   --  above.
+
+   function Cmp_Abs (Op1, Op2 : Mpfloat) return Compare;
+   function Cmp_Abs (Op1 : Mpfloat; Op2 : Long_Integer) return Compare;
+   --  Compare `|Op1| and |Op2|`. Return `Greater` value if `|Op1| > |Op2|`,
+   --  `Equal` if `|Op1| = |Op2|`, and `Less` if `|Op1| < |Op2|`. If one of
+   --  the operands is NaN, set the erange flag and return `Equal`.
+
    function Prec_Min return Precision is (Precision'First);
    --  Return the minimum number of bits that can be used to represent the
    --  significand of a `Mpfloat`.
@@ -591,6 +624,7 @@ private
 
    procedure Reformat_Printf_Args (T : in out String; R : in out Rounding);
    function To_Ternary_Value (T : int) return Ternary_Value;
+   function To_Compare (C : int) return Compare;
 
    generic
       with function mpfr_fn (Rop : access constant mpfr_t;

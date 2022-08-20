@@ -1110,6 +1110,83 @@ package body Admpfr is
                                     Rounding'Pos (Rnd)));
    end Dot;
 
+   ----------------
+   -- To_Compare --
+   ----------------
+
+   function To_Compare (C : int) return Compare is
+   begin
+      if C > 0 then
+         return Greater;
+      elsif C < 0 then
+         return Less;
+      else
+         return Equal;
+      end if;
+   end To_Compare;
+
+   ---------
+   -- Cmp --
+   ---------
+
+   function Cmp (Op1, Op2 : Mpfloat) return Compare is
+     (To_Compare (mpfr_cmp (Op1.Value'Access, Op2.Value'Access)));
+
+   ---------
+   -- Cmp --
+   ---------
+
+   function Cmp (Op1 : Mpfloat; Op2 : Long_Integer) return Compare is
+   begin
+      return C : Compare do
+         if Op2 = 0 then
+            C := (To_Compare (mpfr_sgn (Op1.Value'Access)));
+         else
+            C := (To_Compare (mpfr_cmp_si (Op1.Value'Access, long (Op2))));
+         end if;
+      end return;
+   end Cmp;
+
+   ---------
+   -- Cmp --
+   ---------
+
+   function Cmp (Op1 : Mpfloat; Op2 : Long_Float) return Compare is
+     (To_Compare (mpfr_cmp_d (Op1.Value'Access, double (Op2))));
+
+   ---------
+   -- Cmp --
+   ---------
+
+   function Cmp (Op1 : Mpfloat; Op2 : Long_Long_Float) return Compare is
+     (To_Compare (mpfr_cmp_ld (Op1.Value'Access, long_double (Op2))));
+
+   ---------
+   -- Cmp --
+   ---------
+
+   function Cmp
+     (Op1 : Mpfloat;
+      Op2 : Long_Integer;
+      E   : Exponent) return Compare is
+     (To_Compare
+        (mpfr_cmp_si_2exp (Op1.Value'Access, long (Op2), mpfr_exp_t (E))));
+
+   -------------
+   -- Cmp_Abs --
+   -------------
+
+   function Cmp_Abs (Op1, Op2 : Mpfloat) return Compare is
+     (To_Compare (mpfr_cmpabs (Op1.Value'Access, Op2.Value'Access)));
+
+   -------------
+   -- Cmp_Abs --
+   -------------
+
+   function Cmp_Abs (Op1 : Mpfloat; Op2 : Long_Integer) return Compare is
+     (To_Compare
+        (mpfr_cmpabs_ui (Op1.Value'Access, (unsigned_long (abs Op2)))));
+
    --------------
    -- Get_Prec --
    --------------
