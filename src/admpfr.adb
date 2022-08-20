@@ -1187,6 +1187,41 @@ package body Admpfr is
      (To_Compare
         (mpfr_cmpabs_ui (Op1.Value'Access, (unsigned_long (abs Op2)))));
 
+   ------------
+   -- Is_Nan --
+   ------------
+
+   function Is_Nan (Op : Mpfloat) return Boolean is
+     (if mpfr_nan_p (Op.Value'Access) /= 0 then True else False);
+
+   ------------
+   -- Is_Inf --
+   ------------
+
+   function Is_Inf (Op : Mpfloat) return Boolean is
+     (if mpfr_inf_p (Op.Value'Access) /= 0 then True else False);
+
+   ---------------
+   -- Is_Number --
+   ---------------
+
+   function Is_Number (Op : Mpfloat) return Boolean is
+     (if mpfr_number_p (Op.Value'Access) /= 0 then True else False);
+
+   -------------
+   -- Is_Zero --
+   -------------
+
+   function Is_Zero (Op : Mpfloat) return Boolean is
+     (if mpfr_zero_p (Op.Value'Access) /= 0 then True else False);
+
+   ----------------
+   -- Is_Regular --
+   ----------------
+
+   function Is_Regular (Op : Mpfloat) return Boolean is
+     (if mpfr_regular_p (Op.Value'Access) /= 0 then True else False);
+
    --------------
    -- Get_Prec --
    --------------

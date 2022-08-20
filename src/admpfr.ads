@@ -546,6 +546,15 @@ package Admpfr is
    --  `Equal` if `|Op1| = |Op2|`, and `Less` if `|Op1| < |Op2|`. If one of
    --  the operands is NaN, set the erange flag and return `Equal`.
 
+   function Is_Nan (Op : Mpfloat) return Boolean;
+   function Is_Inf (Op : Mpfloat) return Boolean;
+   function Is_Number (Op : Mpfloat) return Boolean;
+   function Is_Zero (Op : Mpfloat) return Boolean;
+   function Is_Regular (Op : Mpfloat) return Boolean;
+   --  Return whether `Op` is respectively NaN, an infinity, an ordinary number
+   --  (i.e., neither NaN nor an infinity), zero, or a regular number
+   --  (i.e., neither NaN, nor an infinity nor zero).
+
    function Prec_Min return Precision is (Precision'First);
    --  Return the minimum number of bits that can be used to represent the
    --  significand of a `Mpfloat`.
