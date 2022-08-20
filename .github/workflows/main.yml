@@ -1,8 +1,13 @@
 name: admpfr CI
 
-on: 
+on:
   push:
+    branches:
+    - main
+    - main/**
   pull_request:
+    branches:
+    - main
   schedule:
     - cron: '0 0 * * 0' # weekly
 
