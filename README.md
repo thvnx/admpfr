@@ -7,15 +7,15 @@ objects in Ada code. `Mpfloat` is a `Limited_Controlled` type, therefore memory
 initialization and freeing is automatically handled by Admpfr, thanks to the
 `Initialize` and `Finalize` operations given by the controlled type.
 
-Only setting and printing operations have been implemented so far, but a
-complete binding to the C library will follow.
+The C developer can consult [this document](doc/for-the-C-dev.md) if familiar
+to the C library.
 
 ## Build
 
 First, note that usage of Admpfr is still experimental. The easiest way to try
 it is to modify the `src/main.adb` file.
 
-### Prerequisities
+### Prerequisites
 
 - An Ada 2022 compiler.
 - [MPFR 4.1.0](https://www.mpfr.org).
