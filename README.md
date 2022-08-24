@@ -8,7 +8,7 @@ initialization and freeing is automatically handled by Admpfr, thanks to the
 `Initialize` and `Finalize` operations given by the controlled type.
 
 The C developer can consult [this document](doc/for-the-C-dev.md) if familiar
-to the C library.
+with the C library.
 
 ## Build
 
