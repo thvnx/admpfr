@@ -579,6 +579,45 @@ package body Admpfr is
    procedure Mpfr_Cbrt is new Mpfr_Fn_1 (mpfr_cbrt);
    procedure Mpfr_Neg is new Mpfr_Fn_1 (mpfr_neg);
    procedure Mpfr_Abs is new Mpfr_Fn_1 (mpfr_abs);
+   procedure Mpfr_Log is new Mpfr_Fn_1 (mpfr_log);
+   procedure Mpfr_Log2 is new Mpfr_Fn_1 (mpfr_log2);
+   procedure Mpfr_Log10 is new Mpfr_Fn_1 (mpfr_log10);
+   procedure Mpfr_Log1p is new Mpfr_Fn_1 (mpfr_log1p);
+   procedure Mpfr_Exp is new Mpfr_Fn_1 (mpfr_exp);
+   procedure Mpfr_Exp2 is new Mpfr_Fn_1 (mpfr_exp2);
+   procedure Mpfr_Exp10 is new Mpfr_Fn_1 (mpfr_exp10);
+   procedure Mpfr_Expm1 is new Mpfr_Fn_1 (mpfr_expm1);
+   procedure Mpfr_Cos is new Mpfr_Fn_1 (mpfr_cos);
+   procedure Mpfr_Sin is new Mpfr_Fn_1 (mpfr_sin);
+   procedure Mpfr_Tan is new Mpfr_Fn_1 (mpfr_tan);
+   procedure Mpfr_Sec is new Mpfr_Fn_1 (mpfr_sec);
+   procedure Mpfr_Csc is new Mpfr_Fn_1 (mpfr_csc);
+   procedure Mpfr_Cot is new Mpfr_Fn_1 (mpfr_cot);
+   procedure Mpfr_Acos is new Mpfr_Fn_1 (mpfr_acos);
+   procedure Mpfr_Asin is new Mpfr_Fn_1 (mpfr_asin);
+   procedure Mpfr_Atan is new Mpfr_Fn_1 (mpfr_atan);
+   procedure Mpfr_Cosh is new Mpfr_Fn_1 (mpfr_cosh);
+   procedure Mpfr_Sinh is new Mpfr_Fn_1 (mpfr_sinh);
+   procedure Mpfr_Tanh is new Mpfr_Fn_1 (mpfr_tanh);
+   procedure Mpfr_Sech is new Mpfr_Fn_1 (mpfr_sech);
+   procedure Mpfr_Csch is new Mpfr_Fn_1 (mpfr_csch);
+   procedure Mpfr_Coth is new Mpfr_Fn_1 (mpfr_coth);
+   procedure Mpfr_Acosh is new Mpfr_Fn_1 (mpfr_acosh);
+   procedure Mpfr_Asinh is new Mpfr_Fn_1 (mpfr_asinh);
+   procedure Mpfr_Atanh is new Mpfr_Fn_1 (mpfr_atanh);
+   procedure Mpfr_Eint is new Mpfr_Fn_1 (mpfr_eint);
+   procedure Mpfr_Li2 is new Mpfr_Fn_1 (mpfr_li2);
+   procedure Mpfr_Gamma is new Mpfr_Fn_1 (mpfr_gamma);
+   procedure Mpfr_Lngamma is new Mpfr_Fn_1 (mpfr_lngamma);
+   procedure Mpfr_Digamma is new Mpfr_Fn_1 (mpfr_digamma);
+   procedure Mpfr_Zeta is new Mpfr_Fn_1 (mpfr_zeta);
+   procedure Mpfr_Erf is new Mpfr_Fn_1 (mpfr_erf);
+   procedure Mpfr_Erfc is new Mpfr_Fn_1 (mpfr_erfc);
+   procedure Mpfr_J0 is new Mpfr_Fn_1 (mpfr_j0);
+   procedure Mpfr_J1 is new Mpfr_Fn_1 (mpfr_j1);
+   procedure Mpfr_Y0 is new Mpfr_Fn_1 (mpfr_y0);
+   procedure Mpfr_Y1 is new Mpfr_Fn_1 (mpfr_y1);
+   procedure Mpfr_Ai is new Mpfr_Fn_1 (mpfr_ai);
 
    ---------------
    -- Mpfr_Fn_2 --
@@ -602,6 +641,11 @@ package body Admpfr is
    procedure Mpfr_Div is new Mpfr_Fn_2 (mpfr_div);
    procedure Mpfr_Dim is new Mpfr_Fn_2 (mpfr_dim);
    procedure Mpfr_Hypot is new Mpfr_Fn_2 (mpfr_hypot);
+   procedure Mpfr_Pow is new Mpfr_Fn_2 (mpfr_pow);
+   procedure Mpfr_Atan2 is new Mpfr_Fn_2 (mpfr_atan2);
+   procedure Mpfr_Gamma_Inc is new Mpfr_Fn_2 (mpfr_gamma_inc);
+   procedure Mpfr_Beta is new Mpfr_Fn_2 (mpfr_beta);
+   procedure Mpfr_Agm is new Mpfr_Fn_2 (mpfr_agm);
 
    -----------------
    -- Mpfr_Fn_2_I --
@@ -1285,6 +1329,664 @@ package body Admpfr is
    function Total_Order (Op1, Op2 : Mpfloat) return Boolean is
      (if mpfr_total_order_p (Op1.Value'Access, Op2.Value'Access) /= 0
       then True else False);
+
+   ---------
+   -- Log --
+   ---------
+
+   procedure Log
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Log;
+
+   ---------
+   -- Log --
+   ---------
+
+   procedure Log
+     (Rop : in out Mpfloat;
+      Op  : Long_Integer;
+      Rnd : Rounding := RNDN) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_log_ui (Rop.Value'Access,
+                                       unsigned_long (Op),
+                                       Rounding'Pos (Rnd)));
+   end Log;
+
+   ----------
+   -- Log2 --
+   ----------
+
+   procedure Log2
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Log2;
+
+   -----------
+   -- Log10 --
+   -----------
+
+   procedure Log10
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Log10;
+
+   -----------
+   -- Log1p --
+   -----------
+
+   procedure Log1p
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Log1p;
+
+   ---------
+   -- Exp --
+   ---------
+
+   procedure Exp
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Exp;
+
+   ----------
+   -- Exp2 --
+   ----------
+
+   procedure Exp2
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Exp2;
+
+   -----------
+   -- Exp10 --
+   -----------
+
+   procedure Exp10
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Exp10;
+
+   -----------
+   -- Expm1 --
+   -----------
+
+   procedure Expm1
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Expm1;
+
+   ---------
+   -- Pow --
+   ---------
+
+   procedure Pow
+     (Rop      : in out Mpfloat;
+      Op1, Op2 : Mpfloat;
+      Rnd      : Rounding := RNDN) renames Mpfr_Pow;
+
+   ---------
+   -- Pow --
+   ---------
+
+   procedure Pow
+     (Rop : in out Mpfloat;
+      Op1 : Mpfloat;
+      Op2 : Long_Integer;
+      Rnd : Rounding := RNDN) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_pow_ui (Rop.Value'Access,
+                                       Op1.Value'Access,
+                                       unsigned_long (Op2),
+                                       Rounding'Pos (Rnd)));
+   end Pow;
+
+   ---------
+   -- Pow --
+   ---------
+
+   procedure Pow
+     (Rop      : in out Mpfloat;
+      Op1, Op2 : Long_Integer;
+      Rnd      : Rounding := RNDN) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_ui_pow_ui (Rop.Value'Access,
+                                          unsigned_long (Op1),
+                                          unsigned_long (Op2),
+                                          Rounding'Pos (Rnd)));
+   end Pow;
+
+   ---------
+   -- Pow --
+   ---------
+
+   procedure Pow
+     (Rop : in out Mpfloat;
+      Op1 : Long_Integer;
+      Op2 : Mpfloat;
+      Rnd : Rounding := RNDN) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_ui_pow (Rop.Value'Access,
+                                       unsigned_long (Op1),
+                                       Op2.Value'Access,
+                                       Rounding'Pos (Rnd)));
+   end Pow;
+
+   ---------
+   -- Cos --
+   ---------
+
+   procedure Cos
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Cos;
+
+   ---------
+   -- Sin --
+   ---------
+
+   procedure Sin
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Sin;
+
+   ---------
+   -- Tan --
+   ---------
+
+   procedure Tan
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Tan;
+
+   -------------
+   -- Sin_Cos --
+   -------------
+
+   procedure Sin_Cos
+     (Sop, Cop : in out Mpfloat;
+      Op       : Mpfloat;
+      Rnd      : Rounding := RNDN)
+   is
+      Ret, Sop_T, Cop_T : int;
+      type mpfr_t_a is access all mpfr_t;
+   begin
+      if mpfr_t_a'(Sop.Value'Access) = Cop.Value'Access then
+         raise Failure with "Sop and Cop must be different variables";
+      end if;
+
+      Ret := mpfr_sin_cos (Sop.Value'Access,
+                           Cop.Value'Access,
+                           Op.Value'Access,
+                           Rounding'Pos (Rnd));
+
+      Sop_T := Ret mod 4;
+      Cop_T := Ret / 4;
+
+      if Sop_T = 2 then
+         Sop_T := -Sop_T;
+      end if;
+
+      if Cop_T = 2 then
+         Cop_T := -Cop_T;
+      end if;
+
+      Sop.Ternary := To_Ternary_Value (Sop_T);
+      Cop.Ternary := To_Ternary_Value (Cop_T);
+   end Sin_Cos;
+
+   ---------
+   -- Sec --
+   ---------
+
+   procedure Sec
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Sec;
+
+   ---------
+   -- Csc --
+   ---------
+
+   procedure Csc
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Csc;
+
+   ---------
+   -- Cot --
+   ---------
+
+   procedure Cot
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Cot;
+
+   ----------
+   -- Acos --
+   ----------
+
+   procedure Acos
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Acos;
+
+   ----------
+   -- Asin --
+   ----------
+
+   procedure Asin
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Asin;
+
+   ----------
+   -- Atan --
+   ----------
+
+   procedure Atan
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Atan;
+
+   -----------
+   -- Atan2 --
+   -----------
+
+   procedure Atan2
+     (Rop   : in out Mpfloat;
+      X, Y  : Mpfloat;
+      Rnd   : Rounding := RNDN) renames Mpfr_Atan2;
+
+   ----------
+   -- Cosh --
+   ----------
+
+   procedure Cosh
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Cosh;
+
+   ----------
+   -- Sinh --
+   ----------
+
+   procedure Sinh
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Sinh;
+
+   ----------
+   -- Tanh --
+   ----------
+
+   procedure Tanh
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Tanh;
+
+   ---------------
+   -- Sinh_Cosh --
+   ---------------
+
+   procedure Sinh_Cosh
+     (Sop, Cop : in out Mpfloat;
+      Op       : Mpfloat;
+      Rnd      : Rounding := RNDN)
+   is
+      Ret, Sop_T, Cop_T : int;
+      type mpfr_t_a is access all mpfr_t;
+   begin
+      if mpfr_t_a'(Sop.Value'Access) = Cop.Value'Access then
+         raise Failure with "Sop and Cop must be different variables";
+      end if;
+
+      Ret := mpfr_sinh_cosh (Sop.Value'Access,
+                             Cop.Value'Access,
+                             Op.Value'Access,
+                             Rounding'Pos (Rnd));
+
+      Sop_T := Ret mod 4;
+      Cop_T := Ret / 4;
+
+      if Sop_T = 2 then
+         Sop_T := -Sop_T;
+      end if;
+
+      if Cop_T = 2 then
+         Cop_T := -Cop_T;
+      end if;
+
+      Sop.Ternary := To_Ternary_Value (Sop_T);
+      Cop.Ternary := To_Ternary_Value (Cop_T);
+   end Sinh_Cosh;
+
+   ----------
+   -- Sech --
+   ----------
+
+   procedure Sech
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Sech;
+
+   ----------
+   -- Csch --
+   ----------
+
+   procedure Csch
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Csch;
+
+   ----------
+   -- Coth --
+   ----------
+
+   procedure Coth
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Coth;
+
+   -----------
+   -- Acosh --
+   -----------
+
+   procedure Acosh
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Acosh;
+
+   -----------
+   -- Asinh --
+   -----------
+
+   procedure Asinh
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Asinh;
+
+   -----------
+   -- Atanh --
+   -----------
+
+   procedure Atanh
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Atanh;
+
+   ----------
+   -- Eint --
+   ----------
+
+   procedure Eint
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Eint;
+
+   ---------
+   -- Li2 --
+   ---------
+
+   procedure Li2
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Li2;
+
+   -----------
+   -- Gamma --
+   -----------
+
+   procedure Gamma
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Gamma;
+
+   ---------------
+   -- Gamma_Inc --
+   ---------------
+
+   procedure Gamma_Inc
+     (Rop     : in out Mpfloat;
+      Op, Op2 : Mpfloat;
+      Rnd     : Rounding := RNDN) renames Mpfr_Gamma_Inc;
+
+   -------------
+   -- Lngamma --
+   -------------
+
+   procedure Lngamma
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Lngamma;
+
+   ------------
+   -- Lgamma --
+   ------------
+
+   procedure Lgamma
+     (Rop   : in out Mpfloat;
+      Signp : in out Sign;
+      Op    : Mpfloat;
+      Rnd   : Rounding := RNDN)
+   is
+      S : aliased int;
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_lgamma (Rop.Value'Access,
+                                       S'Access,
+                                       Op.Value'Access,
+                                       Rounding'Pos (Rnd)));
+      if S > 0 then
+         Signp := Pos;
+      else
+         Signp := Neg;
+      end if;
+   end Lgamma;
+
+   -------------
+   -- Digamma --
+   -------------
+
+   procedure Digamma
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Digamma;
+
+   ----------
+   -- Beta --
+   ----------
+
+   procedure Beta
+     (Rop      : in out Mpfloat;
+      Op1, Op2 : Mpfloat;
+      Rnd      : Rounding := RNDN) renames Mpfr_Beta;
+
+   ----------
+   -- Zeta --
+   ----------
+
+   procedure Zeta
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Zeta;
+
+   ----------
+   -- Zeta --
+   ----------
+
+   procedure Zeta
+     (Rop : in out Mpfloat;
+      Op  : Long_Integer;
+      Rnd : Rounding := RNDN) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_zeta_ui (Rop.Value'Access,
+                                        unsigned_long (Op),
+                                        Rounding'Pos (Rnd)));
+   end Zeta;
+
+   ---------
+   -- Erf --
+   ---------
+
+   procedure Erf
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Erf;
+
+   ----------
+   -- Erfc --
+   ----------
+
+   procedure Erfc
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Erfc;
+
+   --------
+   -- J0 --
+   --------
+
+   procedure J0
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_J0;
+
+   --------
+   -- J1 --
+   --------
+
+   procedure J1
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_J1;
+
+   --------
+   -- Jn --
+   --------
+
+   procedure Jn
+     (Rop : in out Mpfloat;
+      N   : Long_Integer;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_jn (Rop.Value'Access,
+                                   long (N),
+                                   Op.Value'Access,
+                                   Rounding'Pos (Rnd)));
+   end Jn;
+
+   --------
+   -- Y0 --
+   --------
+
+   procedure Y0
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Y0;
+
+   --------
+   -- Y1 --
+   --------
+
+   procedure Y1
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Y1;
+
+   --------
+   -- Yn --
+   --------
+
+   procedure Yn
+     (Rop : in out Mpfloat;
+      N   : Long_Integer;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_yn (Rop.Value'Access,
+                                   long (N),
+                                   Op.Value'Access,
+                                   Rounding'Pos (Rnd)));
+   end Yn;
+
+   ---------
+   -- Agm --
+   ---------
+
+   procedure Agm
+     (Rop      : in out Mpfloat;
+      Op1, Op2 : Mpfloat;
+      Rnd      : Rounding := RNDN) renames Mpfr_Agm;
+
+   --------
+   -- Ai --
+   --------
+
+   procedure Ai
+     (Rop : in out Mpfloat;
+      X   : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Ai;
+
+   ----------------
+   -- Const_LogZ --
+   ----------------
+
+   procedure Const_Log2
+     (Rop : in out Mpfloat;
+      Rnd : Rounding := RNDN) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_const_log2 (Rop.Value'Access,
+                                           Rounding'Pos (Rnd)));
+   end Const_Log2;
+
+   --------------
+   -- Const_Pi --
+   --------------
+
+   procedure Const_Pi
+     (Rop : in out Mpfloat;
+      Rnd : Rounding := RNDN) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_const_pi (Rop.Value'Access,
+                                         Rounding'Pos (Rnd)));
+   end Const_Pi;
+
+   -----------------
+   -- Const_Euler --
+   -----------------
+
+   procedure Const_Euler
+     (Rop : in out Mpfloat;
+      Rnd : Rounding := RNDN) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_const_euler (Rop.Value'Access,
+                                            Rounding'Pos (Rnd)));
+   end Const_Euler;
+
+   -------------------
+   -- Const_Catalan --
+   -------------------
+
+   procedure Const_Catalan
+     (Rop : in out Mpfloat;
+      Rnd : Rounding := RNDN) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_const_catalan (Rop.Value'Access,
+                                              Rounding'Pos (Rnd)));
+   end Const_Catalan;
 
    --------------
    -- Get_Prec --

@@ -587,6 +587,356 @@ package Admpfr is
      (Greaterequal (Op1, Op2));
    function "<=" (Op1, Op2 : Mpfloat) return Boolean is (Lessequal (Op1, Op2));
 
+   procedure Log
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   procedure Log
+     (Rop : in out Mpfloat;
+      Op  : Long_Integer;
+      Rnd : Rounding := RNDN)
+   with
+     Pre => Op >= 0;
+   procedure Log2
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   procedure Log10
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   --  Set `Rop` to the natural logarithm of `Op`, log2(`Op`) or log10(`Op`),
+   --  respectively, rounded in the direction `Rnd`. Set `Rop` to +0 if `Op`
+   --  is 1 (in all rounding modes), for consistency with the ISO C99 and
+   --  IEEE 754-2008 standards. Set `Rop` to -Inf if `Op` is +/-0 (i.e., the
+   --  sign of the zero has no influence on the result).
+
+   procedure Log1p
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   --  Set `Rop` to the logarithm of one plus `Op`, rounded in the direction
+   --  `Rnd`. Set `Rop` to -Inf if `Op` is -1.
+
+   procedure Exp
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   procedure Exp2
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   procedure Exp10
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   --  Set `Rop` to the exponential of `Op`, to 2 power of `Op` or to 10 power
+   --  of `Op`, respectively, rounded in the direction `Rnd`.
+
+   procedure Expm1
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   --  Set `Rop` to the exponential of `Op` followed by a subtraction by one,
+   --  rounded in the direction `Rnd`.
+
+   procedure Pow
+     (Rop      : in out Mpfloat;
+      Op1, Op2 : Mpfloat;
+      Rnd      : Rounding := RNDN);
+   procedure Pow
+     (Rop : in out Mpfloat;
+      Op1 : Mpfloat;
+      Op2 : Long_Integer;
+      Rnd : Rounding := RNDN);
+   procedure Pow
+     (Rop      : in out Mpfloat;
+      Op1, Op2 : Long_Integer;
+      Rnd      : Rounding := RNDN);
+   procedure Pow
+     (Rop : in out Mpfloat;
+      Op1 : Long_Integer;
+      Op2 : Mpfloat;
+      Rnd : Rounding := RNDN);
+   --  Set `Rop` to `Op1` raised to `Op2`, rounded in the direction `Rnd`. See
+   --  official MPFR documentation for special values handling details.
+
+   procedure Cos
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   procedure Sin
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   procedure Tan
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   --  Set `Rop` to the cosine of `Op`, sine of `Op`, tangent of `Op`, rounded
+   --  in the direction `Rnd`.
+
+   procedure Sin_Cos
+     (Sop, Cop : in out Mpfloat;
+      Op       : Mpfloat;
+      Rnd      : Rounding := RNDN);
+   --  Set simultaneously `Sop` to the sine of `Op` and `Cop` to the cosine of
+   --  `Op`, rounded in the direction `Rnd` with the corresponding precisions
+   --  of `Sop` and `Cop`, which must be different variables.
+
+   procedure Sec
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   procedure Csc
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   procedure Cot
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   --  Set `Ro`p to the secant of `Op`, cosecant of `Op`, cotangent of `Op`,
+   --  rounded in the direction `Rnd`.
+
+   procedure Acos
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   procedure Asin
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   procedure Atan
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   --  Set `Rop` to the arc-cosine, arc-sine or arc-tangent of `Op`,
+   --  rounded in the direction `Rnd`.
+
+   procedure Atan2
+     (Rop   : in out Mpfloat;
+      X, Y  : Mpfloat;
+      Rnd   : Rounding := RNDN);
+   --  Set `Rop` to the arc-tangent2 of `Y` and `X`, rounded in the direction
+   --  `Rnd`. Atan2 (Y, 0) does not raise any floating-point exception, see the
+   --  official MPFR documentation.
+
+   procedure Cosh
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   procedure Sinh
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   procedure Tanh
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   --  Set `Rop` to the hyperbolic cosine, sine or tangent of `Op`, rounded in
+   --  the direction `Rnd`.
+
+   procedure Sinh_Cosh
+     (Sop, Cop : in out Mpfloat;
+      Op       : Mpfloat;
+      Rnd      : Rounding := RNDN);
+   --  Set simultaneously `Sop` to the hyperbolic sine of `Op` and `Cop` to the
+   --  hyperbolic cosine of `Op`, rounded in the direction `Rnd` with the
+   --  corresponding precision of `Sop` and `Cop`, which must be different
+   --  variables.
+
+   procedure Sech
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   procedure Csch
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   procedure Coth
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   --  Set `Rop` to the hyperbolic secant of `Op`, cosecant of `Op`, cotangent
+   --  of `Op`, rounded in the direction `Rnd`.
+
+   procedure Acosh
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   procedure Asinh
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   procedure Atanh
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   --  Set `Rop` to the inverse hyperbolic cosine, sine or tangent of `Op`,
+   --  rounded in the direction `Rnd`.
+
+   procedure Eint
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   --  Set `Rop` to the exponential integral of `Op`, rounded in the
+   --  direction `Rnd`.
+
+   procedure Li2
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   --  Set `Rop` to real part of the dilogarithm of `Op`, rounded in the
+   --  direction `Rnd`.
+
+   procedure Gamma
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   procedure Gamma_Inc
+     (Rop     : in out Mpfloat;
+      Op, Op2 : Mpfloat;
+      Rnd     : Rounding := RNDN);
+   --  Set `Rop` to the value of the Gamma function on `Op`, resp. the
+   --  incomplete Gamma function on `Op` and `Op2`, rounded in the direction
+   --  `Rnd`. (In the literature, Gamma_Inc is called upper incomplete Gamma
+   --  function, or sometimes complementary incomplete Gamma function). For
+   --  Gamma (and Gamma_Inc when `Op2` is zero), when `Op` is a negative
+   --  integer, `Rop` is set to NaN.
+
+   procedure Lngamma
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   --  Set `Rop` to the value of the logarithm of the Gamma function on `Op`,
+   --  rounded in the direction `Rnd`. When `Op` is 1 or 2, set `Rop` to +0
+   --  (in all rounding modes). When `Op` is an infinity or a nonpositive
+   --  integer, set `Rop` to +Inf, following the general rules on special
+   --  values. When -2k-1 < `Op` < -2k, k being a nonnegative integer, set
+   --  `Rop` to NaN. See also Lgamma.
+
+   procedure Lgamma
+     (Rop   : in out Mpfloat;
+      Signp : in out Sign;
+      Op    : Mpfloat;
+      Rnd   : Rounding := RNDN);
+   --  Set `Rop` to the value of the logarithm of the absolute value of the
+   --  Gamma function on `Op`, rounded in the direction `Rnd`. The sign (`Pos`
+   --  or `Neg`) of Gamma(`Op`) is returned in the object pointed to by
+   --  `Signp`. When `Op` is 1 or 2, set `Rop` to +0 (in all rounding modes).
+   --  When `Op` is an infinity or a nonpositive integer, set `Rop` to +Inf.
+   --  When `Op` is NaN, -Inf or a negative integer, `Signp` is undefined,
+   --  and when `Op` is +/-0, `Signp` is the sign of the zero.
+
+   procedure Digamma
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   --  Set `Rop` to the value of the Digamma (sometimes also called Psi)
+   --  function on `Op`, rounded in the direction `Rnd`. When `Op` is a
+   --  negative integer, set `Rop` to NaN.
+
+   procedure Beta
+     (Rop      : in out Mpfloat;
+      Op1, Op2 : Mpfloat;
+      Rnd      : Rounding := RNDN);
+   --  Set `Rop`to the value of the Beta function at arguments `Op1` and `Op2`.
+
+   procedure Zeta
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   procedure Zeta
+     (Rop : in out Mpfloat;
+      Op  : Long_Integer;
+      Rnd : Rounding := RNDN)
+   with
+     Pre => Op >= 0;
+   --  Set `Rop` to the value of the Riemann Zeta function on `Op`, rounded in
+   --  the direction `Rnd`.
+
+   procedure Erf
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   procedure Erfc
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   --  Set `Rop` to the value of the error function on `Op` (resp. the
+   --  complementary error function on `Op`) rounded in the direction `Rnd`.
+
+   procedure J0
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   procedure J1
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   procedure Jn
+     (Rop : in out Mpfloat;
+      N   : Long_Integer;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   --  Set `Rop` to the value of the first kind Bessel function of order 0,
+   --  (resp. 1 and n) on `Op`, rounded in the direction `Rnd`. When `Op` is
+   --  NaN, `Rop` is always set to NaN. When `Op` is plus or minus Infinity,
+   --  `Rop` is set to +0. When `Op` is zero, and `N` is not zero, `Rop` is
+   --  set to +0 or -0 depending on the parity and sign of `N`, and the sign
+   --  of `Op`.
+
+   procedure Y0
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   procedure Y1
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   procedure Yn
+     (Rop : in out Mpfloat;
+      N   : Long_Integer;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   --  Set `Rop` to the value of the second kind Bessel function of order 0
+   --  (resp. 1 and n) on `Op`, rounded in the direction `Rnd`. When `Op` is
+   --  NaN or negative, `Rop` is always set to NaN. When `Op` is +Inf, `Rop`
+   --  is set to +0. When `Op` is zero, `Rop` is set to +Inf or -Inf depending
+   --  on the parity and sign of `N`.
+
+   procedure Agm
+     (Rop      : in out Mpfloat;
+      Op1, Op2 : Mpfloat;
+      Rnd      : Rounding := RNDN);
+   --  Set `Rop` to the arithmetic-geometric mean of `Op1` and `Op2`, rounded
+   --  in the direction `Rnd`.
+
+   procedure Ai
+     (Rop : in out Mpfloat;
+      X   : Mpfloat;
+      Rnd : Rounding := RNDN);
+   --  Set `Rop` to the value of the Airy function Ai on `X`, rounded in the
+   --  direction `Rnd`. When `X` is NaN, `Rop` is always set to NaN. When `X`
+   --  is +Inf or -Inf, `Rop` is +0.
+
+   procedure Const_Log2
+     (Rop : in out Mpfloat;
+      Rnd : Rounding := RNDN);
+   procedure Const_Pi
+     (Rop : in out Mpfloat;
+      Rnd : Rounding := RNDN);
+   procedure Const_Euler
+     (Rop : in out Mpfloat;
+      Rnd : Rounding := RNDN);
+   procedure Const_Catalan
+     (Rop : in out Mpfloat;
+      Rnd : Rounding := RNDN);
+   --  Set `Rop` to the logarithm of 2, the value of Pi, of Euler’s constant
+   --  0.577..., of Catalan’s constant 0.915..., respectively, rounded in the
+   --  direction `Rnd`.
+
    function Prec_Min return Precision is (Precision'First);
    --  Return the minimum number of bits that can be used to represent the
    --  significand of a `Mpfloat`.
