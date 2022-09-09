@@ -14,6 +14,7 @@
 --  along with Foobar.  If not, see <https://www.gnu.org/licenses/>.
 
 with Ada.Finalization; use Ada.Finalization;
+with Ada.Text_IO;      use Ada.Text_IO;
 with Interfaces.C;     use Interfaces.C;
 
 with Ada.Strings.Text_Buffers;
@@ -936,6 +937,34 @@ package Admpfr is
    --  Set `Rop` to the logarithm of 2, the value of Pi, of Euler’s constant
    --  0.577..., of Catalan’s constant 0.915..., respectively, rounded in the
    --  direction `Rnd`.
+
+   procedure Out_Str
+     (Stream : File_Type;
+      Op     : Mpfloat;
+      Base   : Admpfr.Base := 10;
+      Rnd    : Rounding := RNDN);
+   --  Output `Op` on stream `Stream` as a text string in base `abs (Base)`,
+   --  rounded in the direction `Rnd`.
+
+   procedure Inp_Str
+     (Op     : in out Mpfloat;
+      Stream : File_Type;
+      Base   : Admpfr.Base := 10;
+      Rnd    : Rounding := RNDN);
+   --  Input a string in base `Base` from stream `Stream`, rounded in the
+   --  direction `Rnd`, and put the read float in `Rop`.
+
+   procedure Fpif_Export (Stream : File_Type; Op : Mpfloat);
+   --  Export the number `Op` to the stream `Stream` in a floating-point
+   --  interchange format.
+
+   procedure Fpif_Import (Op : in out Mpfloat; Stream : File_Type);
+   --  Import the number `Op` from the stream `Stream` in a floating-point
+   --  interchange format.
+
+   procedure Dump (Op : Mpfloat);
+   --  Output `Op` on stdout in some unspecified format, then a newline
+   --  character. This function is mainly for debugging purpose.
 
    function Prec_Min return Precision is (Precision'First);
    --  Return the minimum number of bits that can be used to represent the

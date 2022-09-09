@@ -17,6 +17,8 @@ with Ada.Strings;           use Ada.Strings;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C.Strings;  use Interfaces.C.Strings;
 
+with Ada.Text_IO.C_Streams;
+
 with Admpfr.Bindings;        use Admpfr.Bindings;
 with Admpfr.Custom_Bindings; use Admpfr.Custom_Bindings;
 
@@ -1987,6 +1989,86 @@ package body Admpfr is
         To_Ternary_Value (mpfr_const_catalan (Rop.Value'Access,
                                               Rounding'Pos (Rnd)));
    end Const_Catalan;
+
+   -------------
+   -- Out_Str --
+   -------------
+
+   procedure Out_Str
+     (Stream : File_Type;
+      Op     : Mpfloat;
+      Base   : Admpfr.Base := 10;
+      Rnd    : Rounding := RNDN)
+   is
+      N : constant size_t :=  mpfr_out_str (C_Streams.C_Stream (Stream),
+                                            int (Base),
+                                            0,
+                                            Op.Value'Access,
+                                            Rounding'Pos (Rnd));
+   begin
+      if N = 0 then
+         raise Failure with "error with mpfr_out_str";
+      end if;
+   end Out_Str;
+
+   -------------
+   -- Inp_Str --
+   -------------
+
+   procedure Inp_Str
+     (Op     : in out Mpfloat;
+      Stream : File_Type;
+      Base   : Admpfr.Base := 10;
+      Rnd    : Rounding := RNDN)
+   is
+      N : constant size_t := mpfr_inp_str (Op.Value'Access,
+                                           C_Streams.C_Stream (Stream),
+                                           int (abs (Base)),
+                                           Rounding'Pos (Rnd));
+   begin
+      Op.Ternary := NOT_SET;
+      if N = 0 then
+         raise Failure with "error with mpfr_inp_str";
+      end if;
+   end Inp_Str;
+
+   -----------------
+   -- Fpif_Export --
+   -----------------
+
+   procedure Fpif_Export (Stream : File_Type; Op : Mpfloat)
+   is
+      N : constant int := mpfr_fpif_export (C_Streams.C_Stream (Stream),
+                                            Op.Value'Access);
+   begin
+      if N /= 0 then
+         raise Failure with "error with mpfr_fpif_export";
+      end if;
+   end Fpif_Export;
+
+   -----------------
+   -- Fpif_Import --
+   -----------------
+
+   procedure Fpif_Import (Op : in out Mpfloat; Stream : File_Type)
+   is
+      N : constant int := mpfr_fpif_import (Op.Value'Access,
+                                            C_Streams.C_Stream (Stream));
+   begin
+      Op.Ternary := NOT_SET;
+      if N /= 0 then
+         raise Failure with "error with mpfr_fpif_import";
+      end if;
+   end Fpif_Import;
+
+   ----------
+   -- Dump --
+   ----------
+
+   procedure Dump (Op : Mpfloat) is
+   begin
+      mpfr_dump (Op.Value'Access);
+   end Dump;
 
    --------------
    -- Get_Prec --
