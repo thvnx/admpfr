@@ -96,7 +96,7 @@ supported.
 
 ## Integer and Remainder Related Functions
 
-TBD
+- Nothing to report.
 
 ## Rounding-Related Functions
 

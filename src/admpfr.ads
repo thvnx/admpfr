@@ -1012,6 +1012,113 @@ package Admpfr is
    --  `Printf` (it is based on `mpfr_sprintf`). It returns the formated
    --  `Template` as a string.
 
+   procedure Rint
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   procedure Ceil (Rop : in out Mpfloat; Op : Mpfloat);
+   procedure Floor (Rop : in out Mpfloat; Op : Mpfloat);
+   procedure Round (Rop : in out Mpfloat; Op : Mpfloat);
+   procedure Roundeven (Rop : in out Mpfloat; Op : Mpfloat);
+   procedure Trunc (Rop : in out Mpfloat; Op : Mpfloat);
+   --  Set `Rop` to `Op` rounded to an integer. `Rint` rounds to the nearest
+   --  representable integer in the given direction `Rnd`, and the other five
+   --  functions behave in a similar way with some fixed rounding mode:
+   --  * `Ceil`: to the next higher or equal representable integer
+   --    (like `Rint` with `RNDU`);
+   --  * `Floor` to the next lower or equal representable integer
+   --    (like `Rint` with `RNDD`);
+   --  * `Round` to the nearest representable integer, rounding halfway cases
+   --    away from zero (as in the roundTiesToAway mode of IEEE 754-2008);
+   --  * `Roundeven` to the nearest representable integer, rounding halfway
+   --    cases with the even-rounding rule (like `Rint` with `RNDN`);
+   --  * `Trunc` to the next representable integer toward zero
+   --    (like `Rint` with `RNDZ`.
+
+   procedure Rint_Ceil
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   procedure Rint_Floor
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   procedure Rint_Round
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   procedure Rint_Roundeven
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   procedure Rint_Trunc
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   --  Set `Rop` to `Op` rounded to an integer:
+   --  * `Rint_Ceil`: to the next higher or equal integer;
+   --  * `Rint_Floor`: to the next lower or equal integer;
+   --  * `Rint_Round`: to the nearest integer, rounding halfway cases away from
+   --    zero;
+   --  * `Rint_Roundeven`: to the nearest integer, rounding halfway cases to
+   --    the nearest even integer;
+   --  * `Rint_Trunc`: to the next integer toward zero.
+   --  Contrary to `Rint`, those functions do perform a double rounding: first
+   --  `Op` is rounded to the nearest integer in the direction given by the
+   --  function name, then this nearest integer (if not representable) is
+   --  rounded in the given direction `Rnd`.
+
+   procedure Frac
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN);
+   --  Set `Rop` to the fractional part of `Op`, having the same sign as `Op`,
+   --  rounded in the direction `Rnd`. When `Op` is an integer or an infinity,
+   --  set `Rop` to zero with the same sign as `Op`.
+
+   procedure Modf
+     (Iop, Fop : in out Mpfloat;
+      Op       : Mpfloat;
+      Rnd      : Rounding := RNDN);
+   --  Set simultaneously `Iop` to the integral part of `Op` and `Fop` to the
+   --  fractional part of `Op`, rounded in the direction `Rnd` with the
+   --  corresponding precision of `Iop` and `Fop` (equivalent to
+   --  `Trunc (Iop, Op, Rnd)` and `Frac (Fop, Op, Rnd)`).
+
+   procedure Fmod
+     (R    : in out Mpfloat;
+      X, Y : Mpfloat;
+      Rnd  : Rounding := RNDN);
+   procedure Fmodquo
+     (R    : in out Mpfloat;
+      Q    : in out Long_Integer;
+      X, Y : Mpfloat;
+      Rnd  : Rounding := RNDN);
+   procedure Remainder
+     (R    : in out Mpfloat;
+      X, Y : Mpfloat;
+      Rnd  : Rounding := RNDN);
+   procedure Remquo
+     (R    : in out Mpfloat;
+      Q    : in out Long_Integer;
+      X, Y : Mpfloat;
+      Rnd  : Rounding := RNDN);
+   --  Set `R` to the value of `X - nY`, rounded according to the direction
+   --  `Rnd`, where n is the integer quotient of `X` divided by `Y`, defined as
+   --  follows: n is rounded toward zero for `Fmod` and `Fmodquo`, and to the
+   --  nearest integer (ties rounded to even) for `Remainder` and `Remquo`.
+   --
+   --  Additionally, `Fmodquo` and `Remquo` store the low significant bits from
+   --  the quotient n in `Q` (more precisely the number of bits in a
+   --  Long_Integer minus one), with the sign of `X` divided by `Y` (except if
+   --  those low bits are all zero, in which case zero is returned). Note that
+   --  `X` may be so large in magnitude relative to `Y` that an exact
+   --  representation of the quotient is not practical. The `Remainder` and
+   --  `Remquo` functions are useful for additive argument reduction.
+
+   function Is_Integer (Op : Mpfloat) return Boolean;
+   --  Return whether `Op`is an integer.
+
    Failure : exception;
 
 private

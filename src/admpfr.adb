@@ -620,6 +620,13 @@ package body Admpfr is
    procedure Mpfr_Y0 is new Mpfr_Fn_1 (mpfr_y0);
    procedure Mpfr_Y1 is new Mpfr_Fn_1 (mpfr_y1);
    procedure Mpfr_Ai is new Mpfr_Fn_1 (mpfr_ai);
+   procedure Mpfr_Rint is new Mpfr_Fn_1 (mpfr_rint);
+   procedure Mpfr_Rint_Ceil is new Mpfr_Fn_1 (mpfr_rint_ceil);
+   procedure Mpfr_Rint_Floor is new Mpfr_Fn_1 (mpfr_rint_floor);
+   procedure Mpfr_Rint_Round is new Mpfr_Fn_1 (mpfr_rint_round);
+   procedure Mpfr_Rint_Roundeven is new Mpfr_Fn_1 (mpfr_rint_roundeven);
+   procedure Mpfr_Rint_Trunc is new Mpfr_Fn_1 (mpfr_rint_trunc);
+   procedure Mpfr_Frac is new Mpfr_Fn_1 (mpfr_frac);
 
    ---------------
    -- Mpfr_Fn_2 --
@@ -2069,6 +2076,241 @@ package body Admpfr is
    begin
       mpfr_dump (Op.Value'Access);
    end Dump;
+
+   ----------
+   -- Rint --
+   ----------
+
+   procedure Rint
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Rint;
+
+   ----------
+   -- Ceil --
+   ----------
+
+   procedure Ceil (Rop : in out Mpfloat; Op : Mpfloat) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_ceil (Rop.Value'Access,
+                                     Op.Value'Access));
+   end Ceil;
+
+   -----------
+   -- Floor --
+   -----------
+
+   procedure Floor (Rop : in out Mpfloat; Op : Mpfloat) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_floor (Rop.Value'Access,
+                                      Op.Value'Access));
+   end Floor;
+
+   -----------
+   -- Round --
+   -----------
+
+   procedure Round (Rop : in out Mpfloat; Op : Mpfloat) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_round (Rop.Value'Access,
+                                      Op.Value'Access));
+   end Round;
+
+   ---------------
+   -- Roundeven --
+   ---------------
+
+   procedure Roundeven (Rop : in out Mpfloat; Op : Mpfloat) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_roundeven (Rop.Value'Access,
+                                          Op.Value'Access));
+   end Roundeven;
+
+   -----------
+   -- Trunc --
+   -----------
+
+   procedure Trunc (Rop : in out Mpfloat; Op : Mpfloat) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_trunc (Rop.Value'Access,
+                                      Op.Value'Access));
+   end Trunc;
+
+   ----------------
+   -- Rint_Floor --
+   ----------------
+
+   procedure Rint_Ceil
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Rint_Ceil;
+
+   ----------------
+   -- Rint_Floor --
+   ----------------
+
+   procedure Rint_Floor
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Rint_Floor;
+
+   ----------------
+   -- Rint_Round --
+   ----------------
+
+   procedure Rint_Round
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Rint_Round;
+
+   --------------------
+   -- Rint_Roundeven --
+   --------------------
+
+   procedure Rint_Roundeven
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Rint_Roundeven;
+
+   ----------------
+   -- Rint_Trunc --
+   ----------------
+
+   procedure Rint_Trunc
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Rint_Trunc;
+
+   ----------
+   -- Frac --
+   ----------
+
+   procedure Frac
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDN) renames Mpfr_Frac;
+
+   ----------
+   -- Modf --
+   ----------
+
+   procedure Modf
+     (Iop, Fop : in out Mpfloat;
+      Op       : Mpfloat;
+      Rnd      : Rounding := RNDN)
+   is
+      Ret, Iop_T, Fop_T : int;
+      type mpfr_t_a is access all mpfr_t;
+   begin
+      if mpfr_t_a'(Iop.Value'Access) = Fop.Value'Access then
+         raise Failure with "Iop and Fop must be different variables";
+      end if;
+
+      Ret := mpfr_modf (Iop.Value'Access,
+                        Fop.Value'Access,
+                        Op.Value'Access,
+                        Rounding'Pos (Rnd));
+
+      Iop_T := Ret mod 4;
+      Fop_T := Ret / 4;
+
+      if Iop_T = 2 then
+         Iop_T := -Iop_T;
+      end if;
+
+      if Fop_T = 2 then
+         Fop_T := -Fop_T;
+      end if;
+
+      Iop.Ternary := To_Ternary_Value (Iop_T);
+      Fop.Ternary := To_Ternary_Value (Fop_T);
+   end Modf;
+
+   ----------
+   -- Fmod --
+   ----------
+
+   procedure Fmod
+     (R    : in out Mpfloat;
+      X, Y : Mpfloat;
+      Rnd  : Rounding := RNDN) is
+   begin
+      R.Ternary :=
+        To_Ternary_Value (mpfr_fmod (R.Value'Access,
+                                     X.Value'Access,
+                                     Y.Value'Access,
+                                     Rounding'Pos (Rnd)));
+   end Fmod;
+
+   -------------
+   -- Fmodquo --
+   -------------
+
+   procedure Fmodquo
+     (R    : in out Mpfloat;
+      Q    : in out Long_Integer;
+      X, Y : Mpfloat;
+      Rnd  : Rounding := RNDN)
+   is
+      lq : aliased long;
+   begin
+      R.Ternary :=
+        To_Ternary_Value (mpfr_fmodquo (R.Value'Access,
+                                        lq'Access,
+                                        X.Value'Access,
+                                        Y.Value'Access,
+                                        Rounding'Pos (Rnd)));
+      Q := Long_Integer (lq);
+   end Fmodquo;
+
+   ---------------
+   -- Remainder --
+   ---------------
+
+   procedure Remainder
+     (R    : in out Mpfloat;
+      X, Y : Mpfloat;
+      Rnd  : Rounding := RNDN) is
+   begin
+      R.Ternary :=
+        To_Ternary_Value (mpfr_remainder (R.Value'Access,
+                                          X.Value'Access,
+                                          Y.Value'Access,
+                                          Rounding'Pos (Rnd)));
+   end Remainder;
+
+   ------------
+   -- Remquo --
+   ------------
+
+   procedure Remquo
+     (R    : in out Mpfloat;
+      Q    : in out Long_Integer;
+      X, Y : Mpfloat;
+      Rnd  : Rounding := RNDN)
+   is
+      lq : aliased long;
+   begin
+      R.Ternary :=
+        To_Ternary_Value (mpfr_remquo (R.Value'Access,
+                                       lq'Access,
+                                       X.Value'Access,
+                                       Y.Value'Access,
+                                       Rounding'Pos (Rnd)));
+      Q := Long_Integer (lq);
+   end Remquo;
+
+   ----------------
+   -- Is_Integer --
+   ----------------
+
+   function Is_Integer (Op : Mpfloat) return Boolean is
+     (if mpfr_integer_p (Op.Value'Access) /= 0 then True else False);
 
    --------------
    -- Get_Prec --
