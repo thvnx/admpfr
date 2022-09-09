@@ -83,15 +83,16 @@ NaN (in Ada `"/="` is just the negation of `"="`).
 
 ## Transcendental Functions
 
-TBD
+- Nothing to report.
 
 ## Input and Output Functions
 
-On going.
+- Nothing to report.
 
 ## Formatted Output Functions
 
-On going.
+- Only `mpfr_printf` and `mpfr_sprintf` are (partially, no variadic support)
+supported.
 
 ## Integer and Remainder Related Functions
 
