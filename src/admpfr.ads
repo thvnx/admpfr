@@ -992,24 +992,24 @@ package Admpfr is
    --  be any value between `Prec_Min` and `Prec_Max`. In case you want to keep
    --  the previous value stored in x, use `Prec_Round` (TODO) instead.
 
-   procedure Mpfr_Printf (Template : String;
-                          X        : Mpfloat;
-                          R        : Rounding := RNDN);
+   procedure Printf (Template : String;
+                     X        : Mpfloat;
+                     R        : Rounding := RNDN);
    --  Format string `Template`. The format specification accepted by
-   --  `Mpfr_Printf` is an extension of the printf one. See the mpfr
+   --  `Printf` is an extension of the printf one. See the mpfr
    --  documentation for a detailed description of the `Template` formats.
    --
-   --  WARNING: `Mpfr_Printf` is not a direct binding to `mpfr_printf`. It can
+   --  WARNING: `Printf` is not a direct binding to `mpfr_printf`. It can
    --  only prints one Mpfloat value and the value/rounding parameters are
    --  inverted. So, if one wants to print `X` in scientific notation, using
    --  the default precision, rounded toward +Inf, use:
-   --    `Mpfr_Printf ("%.R*e" & ASCII.LF, X, R)`.
+   --    `Printf ("%.R*e" & ASCII.LF, X, R)`.
 
-   function Mpfr_Sprintf (Template : String;
-                          X        : Mpfloat;
-                          R        : Rounding := RNDN) return String;
-   --  Format string `Template`. `Mpfr_Sprintf` has the same behavior than
-   --  `Mpfr_Printf` (it is based on `mpfr_sprintf`). It returns the formated
+   function Sprintf (Template : String;
+                     X        : Mpfloat;
+                     R        : Rounding := RNDN) return String;
+   --  Format string `Template`. `Sprintf` has the same behavior than
+   --  `Printf` (it is based on `mpfr_sprintf`). It returns the formated
    --  `Template` as a string.
 
    Failure : exception;

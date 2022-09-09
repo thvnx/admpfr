@@ -46,13 +46,13 @@ package body Admpfr is
       end loop;
    end Reformat_Printf_Args;
 
-   -----------------
-   -- Mpfr_Printf --
-   -----------------
+   ------------
+   -- Printf --
+   ------------
 
-   procedure Mpfr_Printf (Template : String;
-                          X        : Mpfloat;
-                          R        : Rounding := RNDN) is
+   procedure Printf (Template : String;
+                     X        : Mpfloat;
+                     R        : Rounding := RNDN) is
       Res   : int := -1;
       Input : chars_ptr := Null_Ptr;
       Tpl   : String := Template;
@@ -72,15 +72,15 @@ package body Admpfr is
          when Storage_Error =>
             raise Failure with "mpfr_printf malformation";
       end;
-   end Mpfr_Printf;
+   end Printf;
 
-   ------------------
-   -- Mpfr_Sprintf --
-   ------------------
+   -------------
+   -- Sprintf --
+   -------------
 
-   function Mpfr_Sprintf (Template : String;
-                          X        : Mpfloat;
-                          R        : Rounding := RNDN) return String is
+   function Sprintf (Template : String;
+                     X        : Mpfloat;
+                     R        : Rounding := RNDN) return String is
       Res : int := -1;
       Buf : String (1 .. 256);
       --  TODO: find a way to compute a safe upper bound for Buf. mpfr_sprintf
@@ -110,7 +110,7 @@ package body Admpfr is
          when Storage_Error =>
             raise Failure with "mpfr_sprintf malformation";
       end;
-   end Mpfr_Sprintf;
+   end Sprintf;
 
    ----------------
    -- Initialize --
