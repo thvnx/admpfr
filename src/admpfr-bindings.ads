@@ -1464,7 +1464,7 @@ private package Admpfr.Bindings is
    with
      Import        => True,
      Convention    => C,
-     External_Name => "mpfr_out_str";
+     External_Name => "__gmpfr_out_str";
 
    function mpfr_inp_str (Rop    : access constant mpfr_t;
                           Stream : Interfaces.C_Streams.FILEs;
@@ -1473,21 +1473,21 @@ private package Admpfr.Bindings is
    with
      Import        => True,
      Convention    => C,
-     External_Name => "mpfr_int_str";
+     External_Name => "__gmpfr_inp_str";
 
    function mpfr_fpif_export (Stream : Interfaces.C_Streams.FILEs;
                               Rop    : access constant mpfr_t) return int
    with
      Import        => True,
      Convention    => C,
-     External_Name => "mpfr_fpif_export";
+     External_Name => "__gmpfr_fpif_export";
 
    function mpfr_fpif_import (Op     : access constant mpfr_t;
                               Stream : Interfaces.C_Streams.FILEs) return int
    with
      Import        => True,
      Convention    => C,
-     External_Name => "mpfr_fpif_import";
+     External_Name => "__gmpfr_fpif_import";
 
    procedure mpfr_dump (Op : access constant mpfr_t) with
      Import        => True,
