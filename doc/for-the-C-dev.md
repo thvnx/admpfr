@@ -107,7 +107,9 @@ attribute of the `Rounding` mode enumeration.
 
 ## Miscellaneous Functions
 
-TBD
+- All the `mpfr_*random` functions are not implemented.
+- `MPFR_VERSION*` macros are not implemeted.
+- `mpfr_get_patches`, `mpfr_buildopt*` are not implemented.
 
 ## Exception Related Functions
 

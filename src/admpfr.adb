@@ -2380,6 +2380,137 @@ package body Admpfr is
       return Precision (P);
    end Min_Prec;
 
+   ----------------
+   -- Nexttoward --
+   ----------------
+
+   procedure Nexttoward (X : in out Mpfloat; Y : Mpfloat) is
+   begin
+      mpfr_nexttoward (X.Value'Access, Y.Value'Access);
+   end Nexttoward;
+
+   ---------------
+   -- Nextabove --
+   ---------------
+
+   procedure Nextabove (X : in out Mpfloat) is
+   begin
+      mpfr_nextabove (X.Value'Access);
+   end Nextabove;
+
+   ---------------
+   -- Nextbelow --
+   ---------------
+
+   procedure Nextbelow (X : in out Mpfloat) is
+   begin
+      mpfr_nextbelow (X.Value'Access);
+   end Nextbelow;
+
+   ---------
+   -- Min --
+   ---------
+
+   procedure Min
+     (Rop      : in out Mpfloat;
+      Op1, Op2 : Mpfloat;
+      Rnd      : Rounding := RNDEF) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_min (Rop.Value'Access,
+                                    Op1.Value'Access,
+                                    Op2.Value'Access,
+                                    Rounding'Pos (Rnd)));
+   end Min;
+
+   ---------
+   -- Max --
+   ---------
+
+   procedure Max
+     (Rop      : in out Mpfloat;
+      Op1, Op2 : Mpfloat;
+      Rnd      : Rounding := RNDEF) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_max (Rop.Value'Access,
+                                    Op1.Value'Access,
+                                    Op2.Value'Access,
+                                    Rounding'Pos (Rnd)));
+   end Max;
+
+   -------------
+   -- Get_Exp --
+   -------------
+
+   function Get_Exp (X : Mpfloat) return Exponent is
+     (Exponent (mpfr_get_exp (X.Value'Access)));
+
+   -------------
+   -- Set_Exp --
+   -------------
+
+   procedure Set_Exp (X : in out Mpfloat; E : Exponent) is
+      R : constant int := mpfr_set_exp (X.Value'Access, mpfr_exp_t (E));
+   begin
+      if R /= 0 then
+         raise Failure with "cannot Set_Exp of " & X.To_String;
+      end if;
+   end Set_Exp;
+
+   -------------
+   -- Signbit --
+   -------------
+
+   function Signbit (Op : Mpfloat) return Sign is
+      S : constant int := mpfr_signbit (Op.Value'Access);
+   begin
+      return (if S = 0 then Pos else Neg);
+   end Signbit;
+
+   -------------
+   -- Setsign --
+   -------------
+
+   procedure Setsign
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      S   : Sign;
+      Rnd : Rounding := RNDEF) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_setsign (Rop.Value'Access,
+                                        Op.Value'Access,
+                                        S'Enum_Rep,
+                                        Rounding'Pos (Rnd)));
+   end Setsign;
+
+   --------------
+   -- Copysign --
+   --------------
+
+   procedure Copysign
+     (Rop      : in out Mpfloat;
+      Op1, Op2 : Mpfloat;
+      Rnd      : Rounding := RNDEF) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_copysign (Rop.Value'Access,
+                                         Op1.Value'Access,
+                                         Op2.Value'Access,
+                                         Rounding'Pos (Rnd)));
+   end Copysign;
+
+   -----------------
+   -- Get_Version --
+   -----------------
+
+   function Get_Version return String is
+      V : constant chars_ptr := mpfr_get_version;
+   begin
+      return Value (V);
+   end Get_Version;
+
    --------------
    -- Get_Prec --
    --------------

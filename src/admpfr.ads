@@ -1151,6 +1151,62 @@ package Admpfr is
    --  Return the minimal number of bits required to store the significand of
    --  `X`, raise the Empty_Prec exception for special values, including 0.
 
+   procedure Nexttoward (X : in out Mpfloat; Y : Mpfloat);
+   --  If `X` or `Y` is NaN, set `X` to NaN; note that the NaN flag is set as
+   --  usual. If `X` and `Y` are equal, `X` is unchanged. Otherwise, if `X` is
+   --  different from `Y`, replace `X` by the next floating-point number (with
+   --  the precision of `X` and the current exponent range) in the direction of
+   --  `Y` (the infinite values are seen as the smallest and largest
+   --  floating-point numbers). If the result is zero, it keeps the same sign.
+
+   procedure Nextabove (X : in out Mpfloat);
+   procedure Nextbelow (X : in out Mpfloat);
+   --  Equivalent to `Nexttoward` where `Y` is plus infinity (resp. minus
+   --  infinity).
+
+   procedure Min
+     (Rop      : in out Mpfloat;
+      Op1, Op2 : Mpfloat;
+      Rnd      : Rounding := RNDEF);
+   procedure Max
+     (Rop      : in out Mpfloat;
+      Op1, Op2 : Mpfloat;
+      Rnd      : Rounding := RNDEF);
+   --  Set `Rop`to the minimum (resp. maximum) of `Op1` and `Op2`. If `Op1` and
+   --  `Op2` are both NaN, then `Rop` is set to NaN. If `Op1` or `Op2` is NaN,
+   --  then `Rop` is set to the numeric value. If `Op1` and `Op2` are zeros of
+   --  different signs, then `Rop` is set to -0 (resp. +0).
+
+   function Get_Exp (X : Mpfloat) return Exponent;
+   --  Return the exponent of `X`, assuming that `X` is a non-zero ordinary
+   --  number and the significand is considered in [1/2,1).
+
+   procedure Set_Exp (X : in out Mpfloat; E : Exponent);
+   --  Set the exponent of `X` to `E` if `X` is a non-zero ordinary number and
+   --  `E` is in the current exponent range.
+
+   function Signbit (Op : Mpfloat) return Sign;
+   --  Return the value of the sign bit of `X`.
+
+   procedure Setsign
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      S   : Sign;
+      Rnd : Rounding := RNDEF);
+   --  Set the value of `Rop` from `Op`, rounded toward the given direction
+   --  `Rnd`, then set its sign bit to `S`.
+
+   procedure Copysign
+     (Rop      : in out Mpfloat;
+      Op1, Op2 : Mpfloat;
+      Rnd      : Rounding := RNDEF);
+   --  Set the value of `Rop` from `Op1`, rounded toward the given direction
+   --  `Rnd`, then set its sign bit to that of `Op2`. This function is
+   --  equivalent to `Setsign (Rop, Op1, Signbit (Op2), Rnd)`.
+
+   function Get_Version return String;
+   --  Return the MPFR version as a String.
+
    Failure : exception;
    Empty_Prec : exception;
 

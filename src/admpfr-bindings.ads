@@ -1780,7 +1780,7 @@ private package Admpfr.Bindings is
      Convention    => C,
      External_Name => "mpfr_copysign";
 
-   function mpfr_get_version return System.Address with
+   function mpfr_get_version return Interfaces.C.Strings.chars_ptr with
      Import        => True,
      Convention    => C,
      External_Name => "mpfr_get_version";
