@@ -1135,7 +1135,7 @@ package Admpfr is
 
    function Can_Round
      (B          : Mpfloat;
-      Err        : Exponent;
+      Err        : in out Exponent;
       Rnd1, Rnd2 : Rounding;
       Prec       : Precision) return Boolean;
    --  Assuming `B` is an approximation of an unknown number x in the
