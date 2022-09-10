@@ -2371,7 +2371,14 @@ package body Admpfr is
    --------------
 
    function Min_Prec (X : Mpfloat) return Precision is
-     (Precision (mpfr_min_prec (X.Value'Access)));
+      P : constant mpfr_prec_t := mpfr_min_prec (X.Value'Access);
+   begin
+      if P = 0 then
+         raise Empty_Prec with "Min_Prec is 0";
+      end if;
+
+      return Precision (P);
+   end Min_Prec;
 
    --------------
    -- Get_Prec --
