@@ -17,10 +17,10 @@ requires that all predefined types be symmetric around zero (excepting an extra
 negative value). `mpfr_*_ui` functions are supported anyway if no `mpfr_*_si`
 equivalent is available (but an exception is raised if a negative value is
 used).
-- All rounding modes are supported, `MPFR_RNDN` is called `MPFR` (the Ada
+- All rounding modes are supported, `MPFR_RNDN` is called `RNDN` (the Ada
 corresponding type is `Admpfr.Rouding`), and so on for the other modes.
 - Rounding mode parameter is optional when using the Admpfr functions and
-procedures (`RNDN` is the default value).
+procedures (the default value is set by `mpfr_get_default_rounding_mode`).
 - `A'Image` (with `A` a `Mpfloat` number) can be used to get the string
 representation of `A`. It can't be configured and simply mimics the behavior of
 `mpfr_printf("%.RNe", A)`.
@@ -42,13 +42,13 @@ All assignment functions are name set, here are the supported ones:
 
 | C                  | Ada procedure                                                                      |
 |--------------------|------------------------------------------------------------------------------------|
-| `mpfr_set`         | `Set (Rop : out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDN)`                    |
-| `mpfr_set_si`      | `Set (Rop : out Mpfloat; Op : Long_Integer; Rnd : Rounding := RNDN)`               |
-| `mpfr_set_f`       | `Set (Rop : out Mpfloat; Op : Float; Rnd : Rounding := RNDN)`                      |
-| `mpfr_set_d`       | `Set (Rop : out Mpfloat; Op : Long_Float; Rnd : Rounding := RNDN)`                 |
-| `mpfr_set_ld`      | `Set (Rop : out Mpfloat; Op : Long_Long_Float; Rnd : Rounding := RNDN)`            |
-| `mpfr_set_si_2exp` | `Set (Rop : out Mpfloat; Op : Long_Integer; E : Exponent; Rnd : Rounding := RNDN)` |
-| `mpfr_strtofr`     | `Set (Rop : out Mpfloat; Op : String; B : Base := 10; Rnd : Rounding := RNDN)`     |
+| `mpfr_set`         | `Set (Rop : out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)`                    |
+| `mpfr_set_si`      | `Set (Rop : out Mpfloat; Op : Long_Integer; Rnd : Rounding := RNDEF)`               |
+| `mpfr_set_f`       | `Set (Rop : out Mpfloat; Op : Float; Rnd : Rounding := RNDEF)`                      |
+| `mpfr_set_d`       | `Set (Rop : out Mpfloat; Op : Long_Float; Rnd : Rounding := RNDEF)`                 |
+| `mpfr_set_ld`      | `Set (Rop : out Mpfloat; Op : Long_Long_Float; Rnd : Rounding := RNDEF)`            |
+| `mpfr_set_si_2exp` | `Set (Rop : out Mpfloat; Op : Long_Integer; E : Exponent; Rnd : Rounding := RNDEF)` |
+| `mpfr_strtofr`     | `Set (Rop : out Mpfloat; Op : String; B : Base := 10; Rnd : Rounding := RNDEF)`     |
 | `mpfr_set_nan`     | `Set_Nan (Rop : out Mpfloat)`                                                      |
 | `mpfr_set_inf`     | `Set_Inf (Rop : out Mpfloat; S : Sign)`                                            |
 | `mpfr_set_zero`    | `Set_Zero (Rop : out Mpfloat; S : Sign)`                                           |
