@@ -2445,6 +2445,7 @@ package body Admpfr is
 
    function Get_Exp (X : Mpfloat) return Exponent is
      (Exponent (mpfr_get_exp (X.Value'Access)));
+   --  TODO: raise an exception if X is NaN, Inf, or Zero.
 
    -------------
    -- Set_Exp --
