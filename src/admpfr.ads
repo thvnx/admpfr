@@ -1119,7 +1119,39 @@ package Admpfr is
    function Is_Integer (Op : Mpfloat) return Boolean;
    --  Return whether `Op`is an integer.
 
+   procedure Set_Default_Rounding_Mode (Rnd : Rounding);
+   --  Set the default rounding mode to `Rnd`. The default rounding mode is
+   --  RNDN initially.
+
+   function Get_Default_Rounding_Mode return Rounding;
+   --  Get the default rounding mode.
+
+   procedure Prec_Round
+     (X    : in out Mpfloat;
+      Prec : Precision;
+      Rnd  : Rounding := RNDN);
+   --  Round `X` according to `Rnd` with precision `Prec`.
+
+   function Can_Round
+     (B          : Mpfloat;
+      Err        : Exponent;
+      Rnd1, Rnd2 : Rounding;
+      Prec       : Precision) return Boolean;
+   --  Assuming `B` is an approximation of an unknown number x in the
+   --  direction `Rnd1` with error at most two to the power E(`B`)-`Err``
+   --  where E(`B`) is the exponent of `B`, return a True if one is able to
+   --  round correctly x to precision `Prec` with the direction `Rnd2`
+   --  assuming an unbounded exponent range, and False otherwise (including
+   --  for NaN and Inf). In other words, if the error on `B` is bounded by two
+   --  to the power k ulps, and `B` has precision `Prec`, you should give
+   --  `Err`=`Prec`-k.
+
+   function Min_Prec (X : Mpfloat) return Precision;
+   --  Return the minimal number of bits required to store the significand of
+   --  `X`, raise the Empty_Prec exception for special values, including 0.
+
    Failure : exception;
+   Empty_Prec : exception;
 
 private
 

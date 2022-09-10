@@ -2312,6 +2312,67 @@ package body Admpfr is
    function Is_Integer (Op : Mpfloat) return Boolean is
      (if mpfr_integer_p (Op.Value'Access) /= 0 then True else False);
 
+   -------------------------------
+   -- Set_Default_Rounding_Mode --
+   -------------------------------
+
+   procedure Set_Default_Rounding_Mode (Rnd : Rounding) is
+   begin
+      mpfr_set_default_rounding_mode (Rounding'Pos (Rnd));
+   end Set_Default_Rounding_Mode;
+
+   -------------------------------
+   -- Get_Default_Rounding_Mode --
+   -------------------------------
+
+   function Get_Default_Rounding_Mode return Rounding is
+     (Rounding'Enum_Val (mpfr_get_default_rounding_mode));
+
+   ----------------
+   -- Prec_Round --
+   ----------------
+
+   procedure Prec_Round
+     (X    : in out Mpfloat;
+      Prec : Precision;
+      Rnd  : Rounding := RNDN) is
+   begin
+      X.Ternary :=
+        To_Ternary_Value (mpfr_prec_round (X.Value'Access,
+                                           mpfr_prec_t (Prec),
+                                           Rounding'Pos (Rnd)));
+   end Prec_Round;
+
+   ---------------
+   -- Can_Round --
+   ---------------
+
+   function Can_Round
+     (B          : Mpfloat;
+      Err        : Exponent;
+      Rnd1, Rnd2 : Rounding;
+      Prec       : Precision) return Boolean
+   is
+      R : constant int := mpfr_can_round (B.Value'Access,
+                                          mpfr_exp_t (Err),
+                                          Rounding'Pos (Rnd1),
+                                          Rounding'Pos (Rnd2),
+                                          mpfr_prec_t (Prec));
+   begin
+      if R /= 0 then
+         return True;
+      else
+         return False;
+      end if;
+   end Can_Round;
+
+   --------------
+   -- Min_Prec --
+   --------------
+
+   function Min_Prec (X : Mpfloat) return Precision is
+     (Precision (mpfr_min_prec (X.Value'Access)));
+
    --------------
    -- Get_Prec --
    --------------

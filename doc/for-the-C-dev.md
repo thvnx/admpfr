@@ -100,7 +100,10 @@ supported.
 
 ## Rounding-Related Functions
 
-TBD
+- `mpfr_min_prec` can't return 0, it raises an exception instead.
+- `mpfr_print_rnd_mode` is not implented. One just simply use the `'Image`
+attribute of the `Rounding` mode enumeration.
+- The `mpfr_round_nearest_away` is not implemented.
 
 ## Miscellaneous Functions
 
