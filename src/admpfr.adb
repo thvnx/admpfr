@@ -2513,6 +2513,337 @@ package body Admpfr is
    end Get_Version;
 
    --------------
+   -- Get_Emin --
+   --------------
+
+   function Get_Emin return Exponent is
+     (Exponent (mpfr_get_emin));
+
+   --------------
+   -- Get_Emax --
+   --------------
+
+   function Get_Emax return Exponent is
+     (Exponent (mpfr_get_emax));
+
+   --------------
+   -- Set_Emin --
+   --------------
+
+   procedure Set_Emin (Exp : Exponent) is
+      R : constant int := mpfr_set_emin (mpfr_exp_t (Exp));
+   begin
+      if R = 0 then
+         raise Failure with "error with mpfr_set_emin, exponent not in range";
+      elsif Exp > Get_Emax then
+         raise Failure with "Set_Emin: emin > emax";
+      end if;
+   end Set_Emin;
+
+   --------------
+   -- Set_Emax --
+   --------------
+
+   procedure Set_Emax (Exp : Exponent) is
+      R : constant int := mpfr_set_emax (mpfr_exp_t (Exp));
+   begin
+      if R = 0 then
+         raise Failure with "error with mpfr_set_emax, exponent not in range";
+      elsif Get_Emin > Exp then
+         raise Failure with "Set_Emax: emin > emax";
+      end if;
+   end Set_Emax;
+
+   ------------------
+   -- Get_Emin_Min --
+   ------------------
+
+   function Get_Emin_Min return Exponent is
+     (Exponent (mpfr_get_emin_min));
+
+   ------------------
+   -- Get_Emin_Max --
+   ------------------
+
+   function Get_Emin_Max return Exponent is
+     (Exponent (mpfr_get_emin_max));
+
+   ------------------
+   -- Get_Emax_Min --
+   ------------------
+
+   function Get_Emax_Min return Exponent is
+     (Exponent (mpfr_get_emax_min));
+
+   ------------------
+   -- Get_Emax_Max --
+   ------------------
+
+   function Get_Emax_Max return Exponent is
+     (Exponent (mpfr_get_emax_max));
+
+   -----------------
+   -- Check_Range --
+   -----------------
+
+   procedure Check_Range (X : in out Mpfloat; Rnd : Rounding := RNDEF) is
+   begin
+      X.Ternary :=
+        To_Ternary_Value (mpfr_check_range (X.Value'Access,
+                                            X.Ternary'Enum_Rep,
+                                            Rounding'Pos (Rnd)));
+   end Check_Range;
+
+   ------------------
+   -- Subnormalize --
+   ------------------
+
+   procedure Subnormalize (X : in out Mpfloat; Rnd : Rounding := RNDEF) is
+   begin
+      X.Ternary :=
+        To_Ternary_Value (mpfr_subnormalize (X.Value'Access,
+                                             X.Ternary'Enum_Rep,
+                                             Rounding'Pos (Rnd)));
+   end Subnormalize;
+
+   ---------------------
+   -- Clear_Underflow --
+   ---------------------
+
+   procedure Clear_Underflow is
+   begin
+      mpfr_clear_underflow;
+   end Clear_Underflow;
+
+   --------------------
+   -- Clear_Overflow --
+   --------------------
+
+   procedure Clear_Overflow is
+   begin
+      mpfr_clear_overflow;
+   end Clear_Overflow;
+
+   ------------------
+   -- Clear_Divby0 --
+   ------------------
+
+   procedure Clear_Divby0 is
+   begin
+      mpfr_clear_divby0;
+   end Clear_Divby0;
+
+   -------------------
+   -- Clear_Nanflag --
+   -------------------
+
+   procedure Clear_Nanflag is
+   begin
+      mpfr_clear_nanflag;
+   end Clear_Nanflag;
+
+   --------------------
+   -- Clear_Inexflag --
+   --------------------
+
+   procedure Clear_Inexflag is
+   begin
+      mpfr_clear_inexflag;
+   end Clear_Inexflag;
+
+   ----------------------
+   -- Clear_Erangeflag --
+   ----------------------
+
+   procedure Clear_Erangeflag is
+   begin
+      mpfr_clear_erangeflag;
+   end Clear_Erangeflag;
+
+   -----------------
+   -- Clear_Flags --
+   -----------------
+
+   procedure Clear_flags is
+   begin
+      mpfr_clear_flags;
+   end Clear_flags;
+
+   -------------------
+   -- Set_Underflow --
+   -------------------
+
+   procedure Set_Underflow is
+   begin
+      mpfr_set_underflow;
+   end Set_Underflow;
+
+   ------------------
+   -- Set_Overflow --
+   ------------------
+
+   procedure Set_Overflow is
+   begin
+      mpfr_set_overflow;
+   end Set_Overflow;
+
+   ----------------
+   -- Set_Divby0 --
+   ----------------
+
+   procedure Set_Divby0 is
+   begin
+      mpfr_set_divby0;
+   end Set_Divby0;
+
+   -----------------
+   -- Set_Nanflag --
+   -----------------
+
+   procedure Set_Nanflag is
+   begin
+      mpfr_set_nanflag;
+   end Set_Nanflag;
+
+   ------------------
+   -- Set_Inexflag --
+   ------------------
+
+   procedure Set_Inexflag is
+   begin
+      mpfr_set_inexflag;
+   end Set_Inexflag;
+
+   --------------------
+   -- Set_Erangeflag --
+   --------------------
+
+   procedure Set_Erangeflag is
+   begin
+      mpfr_set_erangeflag;
+   end Set_Erangeflag;
+
+   ---------------
+   -- Underflow --
+   ---------------
+
+   function Underflow return Boolean is
+     (if mpfr_underflow_p /= 0 then True else False);
+
+   --------------
+   -- Overflow --
+   --------------
+
+   function Overflow return Boolean is
+     (if mpfr_overflow_p /= 0 then True else False);
+
+   ------------
+   -- Divby0 --
+   ------------
+
+   function Divby0 return Boolean is
+     (if mpfr_divby0_p /= 0 then True else False);
+
+   -------------
+   -- Nanflag --
+   -------------
+
+   function Nanflag return Boolean is
+     (if mpfr_nanflag_p /= 0 then True else False);
+
+   --------------
+   -- Inexflag --
+   --------------
+
+   function Inexflag return Boolean is
+     (if mpfr_inexflag_p /= 0 then True else False);
+
+   ----------------
+   -- Erangeflag --
+   ----------------
+
+   function Erangeflag return Boolean is
+     (if mpfr_erangeflag_p /= 0 then True else False);
+
+   ---------------------
+   -- To_Mpfr_Flags_T --
+   ---------------------
+
+   function To_Mpfr_Flags_T (M : Flags_Mask) return mpfr_flags_t is
+      Flags : mpfr_flags_t := 0;
+   begin
+      for F of M loop
+         Flags := @ + F'Enum_Rep;
+      end loop;
+      return Flags;
+   end To_Mpfr_Flags_T;
+
+   -------------------
+   -- To_Flags_Mask --
+   -------------------
+
+   function To_Flags_Mask (M : mpfr_flags_t) return Flags_Mask is
+      Flags : Flags_Mask (1 .. 6);
+      I : Integer := 0;
+      procedure Check (F : Flag);
+
+      procedure Check (F : Flag) is
+      begin
+         if M >= Flag'Enum_Rep (F) then
+            I := @ + 1;
+            Flags (I) := F;
+         end if;
+      end Check;
+   begin
+      for F of Flags_All loop
+         Check (F);
+      end loop;
+
+      return Flags (1 .. I);
+   end To_Flags_Mask;
+
+   -----------------
+   -- Flags_Clear --
+   -----------------
+
+   procedure Flags_Clear (Mask : Flags_Mask) is
+   begin
+      mpfr_flags_clear (To_Mpfr_Flags_T (Mask));
+   end Flags_Clear;
+
+   ---------------
+   -- Flags_Set --
+   ---------------
+
+   procedure Flags_Set (Mask : Flags_Mask) is
+   begin
+      mpfr_flags_set (To_Mpfr_Flags_T (Mask));
+   end Flags_Set;
+
+   ----------------
+   -- Flags_Test --
+   ----------------
+
+   function Flags_Test (Mask : Flags_Mask) return Flags_Mask is
+     (To_Flags_Mask (mpfr_flags_test (To_Mpfr_Flags_T (Mask))));
+
+   ----------------
+   -- Flags_Save --
+   ----------------
+
+   function Flags_Save return Flags_Mask is
+     (To_Flags_Mask (mpfr_flags_save));
+
+   -------------------
+   -- Flags_Restore --
+   -------------------
+
+   procedure Flags_Restore (Flags, Mask : Flags_Mask) is
+   begin
+      mpfr_flags_restore (To_Mpfr_Flags_T (Flags), To_Mpfr_Flags_T (Mask));
+   end Flags_Restore;
+
+   --------------
    -- Get_Prec --
    --------------
 

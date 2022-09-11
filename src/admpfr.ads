@@ -89,6 +89,19 @@ package Admpfr is
    for Compare use (Less => -1, Equal => 0, Greater => 1);
    --  Type for the return value of the `Cmp*` functions
 
+   type Flag is (Underflow, Overflow, Divby0, Nanflag, Inexflag, Erangeflag);
+   for Flag use (Underflow => 1,
+                 Overflow => 2,
+                 Divby0 => 4,
+                 Nanflag => 8,
+                 Inexflag => 16,
+                 Erangeflag => 32);
+
+   type Flags_Mask is array (Integer range <>) of Flag;
+
+   Flags_All : Flags_Mask :=
+     [Underflow, Overflow, Divby0, Nanflag, Inexflag, Erangeflag];
+
    function Get_Default_Rounding_Mode return Rounding;
    function RNDEF return Rounding renames Get_Default_Rounding_Mode;
    --  Get the default rounding mode.
@@ -1207,6 +1220,130 @@ package Admpfr is
    function Get_Version return String;
    --  Return the MPFR version as a String.
 
+   function Get_Emin return Exponent;
+   function Get_Emax return Exponent;
+   --  Return the (current) smallest and largest exponents allowed for a
+   --  floating-point variable.
+
+   procedure Set_Emin (Exp : Exponent);
+   procedure Set_Emax (Exp : Exponent);
+   --  Set the smallest and largest exponents allowed for a floating-point
+   --  variable.
+
+   function Get_Emin_Min return Exponent;
+   function Get_Emin_Max return Exponent;
+   function Get_Emax_Min return Exponent;
+   function Get_Emax_Max return Exponent;
+   --  Return the minimum and maximum of the exponents allowed for `Set_Emin`
+   --  and `Set_Emax` respectively.
+
+   procedure Check_Range (X : in out Mpfloat; Rnd : Rounding := RNDEF);
+   --  This function assumes that `X` is the correctly rounded value of some
+   --  real value `Y` in the direction `Rnd` and some extended exponent range.
+   --  This procedure modifies `X` if needed to be in the current range of
+   --  acceptable values: It generates an underflow or an overflow if the
+   --  exponent of `X` is outside the current allowed range.
+
+   procedure Subnormalize (X : in out Mpfloat; Rnd : Rounding := RNDEF);
+   --  Rounds `X`emulating subnormal number arithmetic according to rounding
+   --  mode `Rnd`.
+
+   --  This is an example of how to emulate binary double IEEE 754 arithmetic
+   --  (binary64 in IEEE 754-2008) using MPFR:
+   --
+   --  Set_Default_Prec (53);
+   --  Set_Emin (-1073);
+   --  Set_Emax (1024);
+   --
+   --  declare
+   --     Xa, Xb : Mpfloat;
+   --     A : Long_Float := 1.1235e-1021;
+   --     B : constant Long_Float := 34.3;
+   --  begin
+   --     Xa.Set (A);
+   --     Xb.Set (B);
+   --     A := A / B;
+   --     Xa.Div (Xa, Xb);
+   --     Xa.Subnormalize; -- new ternary value
+   --  end;
+   --
+   --  Below is another example showing how to emulate fixed-point arithmetic
+   --  in a specific case. Here we compute the sine of the integers 1 to 17
+   --  with a result in a fixed-point arithmetic rounded at 2 power -42 (using
+   --  the fact that the result is at most 1 in absolute value):
+   --
+   --  Set_Emin (-41);
+   --  declare
+   --     X : Mpfloat (42);
+   --  begin
+   --     for I in 1 .. 17 loop
+   --        X.Set (Long_Integer (I));
+   --        X.Sin (X, RNDZ);
+   --        X.Subnormalize (RNDZ);
+   --        X.Dump;
+   --     end loop;
+   --  end;
+
+   procedure Clear_Underflow;
+   procedure Clear_Overflow;
+   procedure Clear_Divby0;
+   procedure Clear_Nanflag;
+   procedure Clear_Inexflag;
+   procedure Clear_Erangeflag;
+   --  Clear (lower) the underflow, overflow, divide-by-zero, invalid, inexact
+   --  and erange flags.
+
+   procedure Clear_flags;
+   --  Clear (lower) all global flags.
+
+   procedure Set_Underflow;
+   procedure Set_Overflow;
+   procedure Set_Divby0;
+   procedure Set_Nanflag;
+   procedure Set_Inexflag;
+   procedure Set_Erangeflag;
+   --  Set (raise) the underflow, overflow, divide-by-zero, invalid, inexact
+   --  and erange flags.
+
+   function Underflow return Boolean;
+   function Overflow return Boolean;
+   function Divby0 return Boolean;
+   function Nanflag return Boolean;
+   function Inexflag return Boolean;
+   function Erangeflag return Boolean;
+   --  Return weither the corresponding flag (underflow, overflow,
+   --  divide-by-zero, invalid, inexact, erange) is set.
+
+   procedure Flags_Clear (Mask : Flags_Mask);
+   --  Clear (lower) the group of flags specified by mask.
+
+   procedure Flags_Set (Mask : Flags_Mask);
+   --  Set (raise) the group of flags specified by mask.
+
+   function Flags_Test (Mask : Flags_Mask) return Flags_Mask;
+   --  Return the flags specified by mask. To test whether any flag from mask
+   --  is set, check is the returned flags is empty. You can then test
+   --  individual flags with a case statement. Example:
+   --
+   --  T : Flags_Mask := Flags_Test (Flags_Mask'[Underflow, Overflow]);
+   --  ...
+   --  for F of T loop
+   --     case F is
+   --        when Underflow =>
+   --           ...
+   --        when Overflow =>
+   --           ...
+   --        when others => null;
+   --     end case;
+   --  end loop;
+
+   function Flags_Save return Flags_Mask;
+   --  Return all the flags. It is equivalent to `Flags_Test (Flags_All).
+
+   procedure Flags_Restore (Flags, Mask : Flags_Mask);
+   --  Restore the flags specified by `Mask` to their state represented in
+   --  `Flags`.
+
    Failure : exception;
    Empty_Prec : exception;
 
@@ -1304,5 +1441,8 @@ private
       Op1 : Long_Float;
       Op2 : Mpfloat;
       Rnd : Rounding := RNDEF);
+
+   function To_Mpfr_Flags_T (M : Flags_Mask) return mpfr_flags_t;
+   function To_Flags_Mask (M : mpfr_flags_t) return Flags_Mask;
 
 end Admpfr;

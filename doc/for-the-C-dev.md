@@ -113,4 +113,5 @@ attribute of the `Rounding` mode enumeration.
 
 ## Exception Related Functions
 
-TBD
+- `Set_Emin`/`Set_Emax` raise an exception if emin > emax.
+- Flags mask are Ada arrays.
