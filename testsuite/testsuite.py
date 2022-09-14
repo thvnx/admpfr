@@ -16,35 +16,21 @@ class AdmpfrDriver(DiffTestDriver):
 
         with open(self.working_dir('test.gpr'), 'w') as f:
             f.write('''
+            with "{0}/admpfr.gpr";
+
             project Test is
 
-            for Languages use ("ada", "c");
-
-            for Source_Dirs use ("{0}", "{1}");
+            for Source_Dirs use ("{1}");
             for Main use ("test.adb");
             for Object_Dir use "obj";
 
-            type Target_type is ("Windows_NT", "UNIX");
-            Target : Target_type := external ("OS", "UNIX");
-
             package Compiler is
-               for Switches ("Ada") use
-                 ("-g", "-O0", "-gnata", "-gnatVa", "-gnatQ", "-gnatyg", "-gnateE",
-                  "-gnatwaCJe", "-fstack-check", "-gnatwae", "-gnat2022");
+               for Switches ("Ada") use ("-gnat2022");
             end Compiler;
-
-            package Linker is
-               case Target is
-                  when "Windows_NT" =>
-                     for Default_Switches ("ada") use ("-lmpfr", "-lgmp");
-                  when "UNIX"       =>
-                     for Default_Switches ("ada") use ("-lmpfr");
-               end case;
-            end Linker;
 
             end Test;
             '''.format(
-                self.test_dir('..', '..', '..', 'src'),
+                self.test_dir('..', '..', '..'),
                 self.test_dir())
             )
 

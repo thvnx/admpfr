@@ -56,7 +56,7 @@ begin
             Rz, Rn : Long_Integer;
          begin
             Z.Sub (X, Y, RNDZ);
-            
+
             if Z.Get_Ternary_Value = EXACT then
                Rz := Eval (X, Y, Z, T, RNDZ);
                Rn := Eval (X, Y, Z, T, RNDN);

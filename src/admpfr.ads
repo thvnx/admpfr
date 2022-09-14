@@ -13,6 +13,8 @@
 --  You should have received a copy of the GNU General Public License
 --  along with Admpfr.  If not, see <https://www.gnu.org/licenses/>.
 
+pragma Ada_2022;
+
 with Ada.Finalization; use Ada.Finalization;
 with Ada.Text_IO;      use Ada.Text_IO;
 with Interfaces.C;     use Interfaces.C;
