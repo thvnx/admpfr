@@ -1,7 +1,13 @@
 name = "admpfr"
 description = "Ada bindings for MPFR"
 version = "4.1.0-dev"
-
+licenses = "GPL-3.0-only"
+website = "https://github.com/thvnx/admpfr"
+tags = ["mpfr", "floating-point", "bindings"]
 authors = ["Laurent Thévenoux"]
 maintainers = ["Laurent Thévenoux <laurent@thevenoux.net>"]
 maintainers-logins = ["thvnx"]
+
+# [origin]
+# url = "https://github.com/thvnx/admpfr/archive/refs/tags/v4.1.0-0.tar.gz"
+# hashes = ["sha512:1f176f618b441959d0e33793a1232b7d7bbc1b6b3e1fba46a14bbc5cbe18b45a2ef6294024ec87b900929cd727f9e1f0d9d947ba032fa33b99f87b4cce30de8f"]
