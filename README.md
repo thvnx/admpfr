@@ -13,7 +13,7 @@ with the C library.
 ## Build
 
 First, note that usage of Admpfr is still experimental. The easiest way to try
-it is to modify the `src/main.adb` file.
+it is to modify the `examples/main.adb` file.
 
 ### Prerequisites
 
@@ -31,8 +31,6 @@ $ cd admpfr
 $ export LIBRARY_PATH=/usr/local/lib
 $ export C_INCLUDE_PATH=/usr/local/include
 $ alr build
-$ ./obj/main
-1.0000000000000001e-01
 ```
 
 You can also run the testsuite to ensure everything is properly supported on
@@ -40,6 +38,15 @@ your system:
 
 ```bash
 $ alr exec -- testsuite/testsuite.py
+```
+
+or just play around with the examples:
+
+```bash
+$ cd examples
+$ alr exec -- gprbuild -Pexamples
+$ ./obj/main
+1.0000000000000001e-01
 ```
 
 ## Example
