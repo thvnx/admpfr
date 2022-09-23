@@ -1,4 +1,5 @@
 ![main](https://github.com/thvnx/admpfr/actions/workflows/main.yml/badge.svg)
+[![Alire](https://img.shields.io/endpoint?url=https://alire.ada.dev/badges/admpfr.json)](https://alire.ada.dev/crates/admpfr.html)
 
 # Ada bindings for MPFR
 
@@ -12,8 +13,10 @@ with the C library.
 
 ## Build
 
-First, note that usage of Admpfr is still experimental. The easiest way to try
-it is to modify the `examples/main.adb` file.
+This section describes how to build Admpfr from the sources. Note that you can
+use [Alire](https://alire.ada.dev/) to get the
+[Admpfr](https://alire.ada.dev/crates/admpfr.html) crate by running `alr get
+admpfr`.
 
 ### Prerequisites
 
