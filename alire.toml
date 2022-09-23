@@ -1,5 +1,5 @@
 name = "admpfr"
-version = "4.1.0-dev"
+version = "4.1.0+20220920"
 
 description = "Ada bindings for MPFR"
 website = "https://github.com/thvnx/admpfr"
@@ -17,6 +17,10 @@ macos   = true
 windows = true
 '...'   = false
 
+[[depends-on]]
+gnat    = ">=12 & <2000"
+libmpfr = "^4.1.0"
+
 # [origin]
-# url = "https://github.com/thvnx/admpfr/archive/refs/tags/v4.1.0-0.tar.gz"
-# hashes = ["sha512:1f176f618b441959d0e33793a1232b7d7bbc1b6b3e1fba46a14bbc5cbe18b45a2ef6294024ec87b900929cd727f9e1f0d9d947ba032fa33b99f87b4cce30de8f"]
+# url = "https://github.com/thvnx/admpfr/archive/refs/tags/4.1.0+20220920.tar.gz"
+# hashes = ["sha512:4c55f40a4180094255b278dc3aec1c62c897918207985a467198a297ca62ba1d1b41a6a8897e859f7b9b4c40d2092c97413ddbf356bb47adc561229ef2326502"]
