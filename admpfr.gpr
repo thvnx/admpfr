@@ -8,14 +8,26 @@ library project Admpfr is
    type Target_type is ("Windows_NT", "UNIX");
    Target : Target_type := external ("OS", "UNIX");
 
+   type Build_Type is ("Debug", "Release");
+   Build : Build_Type := external ("PRJ_BUILD", "Debug");
+
    for Library_Name use "admpfr";
    for Library_Dir use "lib";
 
    package Compiler is
-      for Switches ("Ada") use
-        ("-g", "-O0", "-gnata", "-gnatVa", "-gnatQ", "-gnatyg", "-gnateE",
+
+      GNAT_Options := ("-gnata", "-gnatVa", "-gnatQ", "-gnatyg", "-gnateE",
          "-gnatwaCJe", "-fstack-check", "-gnatwae", "-gnat2022");
-      for Switches ("C") use ("-g", "-Wall" ,"-Werror");
+
+      case Build is
+         when "Debug" =>
+            for Switches ("Ada") use ("-g", "-O0") & GNAT_Options;
+            for Switches ("C") use ("-g", "-Wall" ,"-Werror");
+         when "Release" =>
+            for Switches ("Ada") use ("-O2") & GNAT_Options;
+            for Switches ("C") use ("-O2");
+      end case;
+
    end Compiler;
 
    package Linker is
