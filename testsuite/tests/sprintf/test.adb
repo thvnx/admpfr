@@ -8,7 +8,7 @@ begin
       for B in 0 .. 62 loop
          begin
             Set (A, "-0.1", Base => Base (B), Rnd => R);
-            Put_Line (Sprintf ("%.R*e", A, R));
+            Put_Line (Sprintf ("%R*e", A, R));
          exception
             when
               others => Put_Line ("Base not in range?: " & B'Image);
