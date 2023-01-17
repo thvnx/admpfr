@@ -577,6 +577,16 @@ private package Admpfr.Bindings is
      Convention    => C,
      External_Name => "mpfr_rootn_ui";
 
+   function mpfr_rootn_si
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      N   : long;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_rootn_si";
+
    function mpfr_root
      (Rop : access constant mpfr_t;
       Op  : access constant mpfr_t;
@@ -958,6 +968,24 @@ private package Admpfr.Bindings is
      Convention    => C,
      External_Name => "mpfr_log1p";
 
+   function mpfr_log2p
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_log2p";
+
+   function mpfr_log10p
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_log10p";
+
    function mpfr_exp
      (Rop : access constant mpfr_t;
       Op  : access constant mpfr_t;
@@ -994,6 +1022,24 @@ private package Admpfr.Bindings is
      Convention    => C,
      External_Name => "mpfr_expm1";
 
+   function mpfr_exp2m1
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_exp2m1";
+
+   function mpfr_exp10m1
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_exp10m1";
+
    function mpfr_pow
      (Rop : access constant mpfr_t;
       Op1 : access constant mpfr_t;
@@ -1003,6 +1049,16 @@ private package Admpfr.Bindings is
      Import        => True,
      Convention    => C,
      External_Name => "mpfr_pow";
+
+   function mpfr_powr
+     (Rop : access constant mpfr_t;
+      Op1 : access constant mpfr_t;
+      Op2 : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_powr";
 
    function mpfr_pow_ui
      (Rop : access constant mpfr_t;
@@ -1044,6 +1100,16 @@ private package Admpfr.Bindings is
      Convention    => C,
      External_Name => "mpfr_ui_pow";
 
+   function mpfr_compound_si
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      N   : long;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_compound_si";
+
    function mpfr_cos
      (Rop : access constant mpfr_t;
       Op  : access constant mpfr_t;
@@ -1070,6 +1136,63 @@ private package Admpfr.Bindings is
      Import        => True,
      Convention    => C,
      External_Name => "mpfr_tan";
+
+   function mpfr_cosu
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      U   : unsigned_long;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_cosu";
+
+   function mpfr_sinu
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      U   : unsigned_long;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_sinu";
+
+   function mpfr_tanu
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      U   : unsigned_long;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_tanu";
+
+   function mpfr_cospi
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_cospi";
+
+   function mpfr_sinpi
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_sinpi";
+
+   function mpfr_tanpi
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_tanpi";
 
    function mpfr_sin_cos
      (Sop : access constant mpfr_t;
@@ -1135,6 +1258,63 @@ private package Admpfr.Bindings is
      Convention    => C,
      External_Name => "mpfr_atan";
 
+   function mpfr_acosu
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      U   : unsigned_long;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_acosu";
+
+   function mpfr_asinu
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      U   : unsigned_long;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_asinu";
+
+   function mpfr_atanu
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      U   : unsigned_long;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_atanu";
+
+   function mpfr_acospi
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_acospi";
+
+   function mpfr_asinpi
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_asinpi";
+
+   function mpfr_atanpi
+     (Rop : access constant mpfr_t;
+      Op  : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_atanpi";
+
    function mpfr_atan2
      (Rop : access constant mpfr_t;
       X   : access constant mpfr_t;
@@ -1144,6 +1324,27 @@ private package Admpfr.Bindings is
      Import        => True,
      Convention    => C,
      External_Name => "mpfr_atan2";
+
+   function mpfr_atan2u
+     (Rop : access constant mpfr_t;
+      X   : access constant mpfr_t;
+      Y   : access constant mpfr_t;
+      U   : unsigned_long;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_atan2u";
+
+   function mpfr_atan2pi
+     (Rop : access constant mpfr_t;
+      X   : access constant mpfr_t;
+      Y   : access constant mpfr_t;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_atan2pi";
 
    function mpfr_cosh
      (Rop : access constant mpfr_t;
@@ -1618,6 +1819,16 @@ private package Admpfr.Bindings is
      Import        => True,
      Convention    => C,
      External_Name => "mpfr_fmod";
+
+   function mpfr_fmod_ui
+     (R   : access constant mpfr_t;
+      X   : access constant mpfr_t;
+      Y   : unsigned_long;
+      Rnd : mpfr_rnd_t) return int
+   with
+     Import        => True,
+     Convention    => C,
+     External_Name => "mpfr_fmod_ui";
 
    function mpfr_fmodquo
      (R   : access constant mpfr_t;
