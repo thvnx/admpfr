@@ -601,6 +601,9 @@ package body Admpfr is
    procedure Mpfr_Acos is new Mpfr_Fn_1 (mpfr_acos);
    procedure Mpfr_Asin is new Mpfr_Fn_1 (mpfr_asin);
    procedure Mpfr_Atan is new Mpfr_Fn_1 (mpfr_atan);
+   procedure Mpfr_Acospi is new Mpfr_Fn_1 (mpfr_acospi);
+   procedure Mpfr_Asinpi is new Mpfr_Fn_1 (mpfr_asinpi);
+   procedure Mpfr_Atanpi is new Mpfr_Fn_1 (mpfr_atanpi);
    procedure Mpfr_Cosh is new Mpfr_Fn_1 (mpfr_cosh);
    procedure Mpfr_Sinh is new Mpfr_Fn_1 (mpfr_sinh);
    procedure Mpfr_Tanh is new Mpfr_Fn_1 (mpfr_tanh);
@@ -655,6 +658,7 @@ package body Admpfr is
    procedure Mpfr_Hypot is new Mpfr_Fn_2 (mpfr_hypot);
    procedure Mpfr_Pow is new Mpfr_Fn_2 (mpfr_pow);
    procedure Mpfr_Atan2 is new Mpfr_Fn_2 (mpfr_atan2);
+   procedure Mpfr_Atan2pi is new Mpfr_Fn_2 (mpfr_atan2pi);
    procedure Mpfr_Gamma_Inc is new Mpfr_Fn_2 (mpfr_gamma_inc);
    procedure Mpfr_Beta is new Mpfr_Fn_2 (mpfr_beta);
    procedure Mpfr_Agm is new Mpfr_Fn_2 (mpfr_agm);
@@ -1734,6 +1738,33 @@ package body Admpfr is
                                       Rounding'Pos (Rnd)));
    end Atanu;
 
+   ------------
+   -- Acospi --
+   ------------
+
+   procedure Acospi
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF) renames Mpfr_Acospi;
+
+   ------------
+   -- Asinpi --
+   ------------
+
+   procedure Asinpi
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF) renames Mpfr_Asinpi;
+
+   ------------
+   -- Atanpi --
+   ------------
+
+   procedure Atanpi
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF) renames Mpfr_Atanpi;
+
    -----------
    -- Atan2 --
    -----------
@@ -1742,6 +1773,33 @@ package body Admpfr is
      (Rop   : in out Mpfloat;
       X, Y  : Mpfloat;
       Rnd   : Rounding := RNDEF) renames Mpfr_Atan2;
+
+   ------------
+   -- Atan2u --
+   ------------
+
+   procedure Atan2u
+     (Rop   : in out Mpfloat;
+      X, Y  : Mpfloat;
+      U     : Long_Integer;
+      Rnd   : Rounding := RNDEF) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_atan2u (Rop.Value'Access,
+                                       X.Value'Access,
+                                       Y.Value'Access,
+                                       unsigned_long (U),
+                                       Rounding'Pos (Rnd)));
+   end Atan2u;
+
+   -------------
+   -- Atan2pi --
+   -------------
+
+   procedure Atan2pi
+     (Rop   : in out Mpfloat;
+      X, Y  : Mpfloat;
+      Rnd   : Rounding := RNDEF) renames Mpfr_Atan2pi;
 
    ----------
    -- Cosh --
