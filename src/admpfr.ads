@@ -793,13 +793,39 @@ package Admpfr is
    --  arc-cosine (resp. arc-sine and arc-tangent) of `Op`. For example, if
    --  `U` equals 360, `Acosu` yields the arc-cosine in degrees.
 
+   procedure Acospi
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF);
+   procedure Asinpi
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF);
+   procedure Atanpi
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF);
+   --  Set `Rop` to acos(`Op`) (resp. asin(`Op`) and atan(`Op`)) divided by Pi.
+
    procedure Atan2
+     (Rop   : in out Mpfloat;
+      X, Y  : Mpfloat;
+      Rnd   : Rounding := RNDEF);
+   procedure Atan2u
+     (Rop   : in out Mpfloat;
+      X, Y  : Mpfloat;
+      U     : Long_Integer;
+      Rnd   : Rounding := RNDEF);
+   procedure Atan2pi
      (Rop   : in out Mpfloat;
       X, Y  : Mpfloat;
       Rnd   : Rounding := RNDEF);
    --  Set `Rop` to the arc-tangent2 of `Y` and `X`, rounded in the direction
    --  `Rnd`. Atan2 (Y, 0) does not raise any floating-point exception, see the
    --  official MPFR documentation.
+   --  The function `Atan2u` behaves similarly, except the result is multiplied
+   --  by `U` and divided by 2 Pi; and `Atan2pi` is the same as `Aatan2u`
+   --  with U = 2.
 
    procedure Cosh
      (Rop : in out Mpfloat;
