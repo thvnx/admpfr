@@ -696,6 +696,31 @@ package Admpfr is
    --  Set `Rop` to the cosine of `Op`, sine of `Op`, tangent of `Op`, rounded
    --  in the direction `Rnd`.
 
+   procedure Cosu
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      U   : Long_Integer;
+      Rnd : Rounding := RNDEF);
+   procedure Sinu
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      U   : Long_Integer;
+      Rnd : Rounding := RNDEF);
+   procedure Tanu
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      U   : Long_Integer;
+      Rnd : Rounding := RNDEF);
+   --  Set `Rop` to the cosine (resp. sine and tangent) of `Op` multiplied by
+   --  2 Pi and divided by `U`. For example, if `U` equals 360, one gets the
+   --  cosine (resp. sine and tangent) for `Op` in degrees. For `Cosu`, when
+   --  `Op` multiplied by 2 and divided by `U` is a half-integer, the result
+   --  is +0, following IEEE 754 (cosPi), so that the function is even. For
+   --  `Sinu`, when `Op` multiplied by 2 and divided by `U` is an integer,
+   --  the result is zero with the same sign as `Op`, following IEEE 754
+   --  (sinPi), so that the function is odd. Similarly, the function `Tanu`
+   --  follows IEEE 754 (tanPi).
+
    procedure Sin_Cos
      (Sop, Cop : in out Mpfloat;
       Op       : Mpfloat;
