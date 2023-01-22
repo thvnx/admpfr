@@ -592,6 +592,9 @@ package body Admpfr is
    procedure Mpfr_Cos is new Mpfr_Fn_1 (mpfr_cos);
    procedure Mpfr_Sin is new Mpfr_Fn_1 (mpfr_sin);
    procedure Mpfr_Tan is new Mpfr_Fn_1 (mpfr_tan);
+   procedure Mpfr_Cospi is new Mpfr_Fn_1 (mpfr_cospi);
+   procedure Mpfr_Sinpi is new Mpfr_Fn_1 (mpfr_sinpi);
+   procedure Mpfr_Tanpi is new Mpfr_Fn_1 (mpfr_tanpi);
    procedure Mpfr_Sec is new Mpfr_Fn_1 (mpfr_sec);
    procedure Mpfr_Csc is new Mpfr_Fn_1 (mpfr_csc);
    procedure Mpfr_Cot is new Mpfr_Fn_1 (mpfr_cot);
@@ -1562,6 +1565,33 @@ package body Admpfr is
                                      unsigned_long (U),
                                      Rounding'Pos (Rnd)));
    end Tanu;
+
+   -----------
+   -- Cospi --
+   -----------
+
+   procedure Cospi
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF) renames Mpfr_Cospi;
+
+   -----------
+   -- Sinpi --
+   -----------
+
+   procedure Sinpi
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF) renames Mpfr_Sinpi;
+
+   -----------
+   -- Tanpi --
+   -----------
+
+   procedure Tanpi
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF) renames Mpfr_Tanpi;
 
    -------------
    -- Sin_Cos --

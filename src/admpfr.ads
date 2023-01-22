@@ -721,6 +721,21 @@ package Admpfr is
    --  (sinPi), so that the function is odd. Similarly, the function `Tanu`
    --  follows IEEE 754 (tanPi).
 
+   procedure Cospi
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF);
+   procedure Sinpi
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF);
+   procedure Tanpi
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF);
+   --  Set `Rop` to the cosine (resp. sine and tangent) of `Op` multiplied by
+   --  Pi. See the description of `Sinu`, `Cosu` and `Tanu` for special values.
+
    procedure Sin_Cos
      (Sop, Cop : in out Mpfloat;
       Op       : Mpfloat;
