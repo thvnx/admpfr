@@ -1654,6 +1654,57 @@ package body Admpfr is
       Rnd : Rounding := RNDEF) renames Mpfr_Atan;
 
    -----------
+   -- Acosu --
+   -----------
+
+   procedure Acosu
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      U   : Long_Integer;
+      Rnd : Rounding := RNDEF) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_acosu (Rop.Value'Access,
+                                      Op.Value'Access,
+                                      unsigned_long (U),
+                                      Rounding'Pos (Rnd)));
+   end Acosu;
+
+   -----------
+   -- Asinu --
+   -----------
+
+   procedure Asinu
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      U   : Long_Integer;
+      Rnd : Rounding := RNDEF) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_asinu (Rop.Value'Access,
+                                      Op.Value'Access,
+                                      unsigned_long (U),
+                                      Rounding'Pos (Rnd)));
+   end Asinu;
+
+   -----------
+   -- Atanu --
+   -----------
+
+   procedure Atanu
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      U   : Long_Integer;
+      Rnd : Rounding := RNDEF) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_atanu (Rop.Value'Access,
+                                      Op.Value'Access,
+                                      unsigned_long (U),
+                                      Rounding'Pos (Rnd)));
+   end Atanu;
+
+   -----------
    -- Atan2 --
    -----------
 
