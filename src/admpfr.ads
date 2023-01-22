@@ -759,6 +759,25 @@ package Admpfr is
    --  Set `Rop` to the arc-cosine, arc-sine or arc-tangent of `Op`,
    --  rounded in the direction `Rnd`.
 
+   procedure Acosu
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      U   : Long_Integer;
+      Rnd : Rounding := RNDEF);
+   procedure Asinu
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      U   : Long_Integer;
+      Rnd : Rounding := RNDEF);
+   procedure Atanu
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      U   : Long_Integer;
+      Rnd : Rounding := RNDEF);
+   --  Set `Rop` to a multiplied by `U` and divided by 2 Pi, where a is the
+   --  arc-cosine (resp. arc-sine and arc-tangent) of `Op`. For example, if
+   --  `U` equals 360, `Acosu` yields the arc-cosine in degrees.
+
    procedure Atan2
      (Rop   : in out Mpfloat;
       X, Y  : Mpfloat;
