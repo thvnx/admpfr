@@ -1512,6 +1512,57 @@ package body Admpfr is
       Op  : Mpfloat;
       Rnd : Rounding := RNDEF) renames Mpfr_Tan;
 
+   ----------
+   -- Cosu --
+   ----------
+
+   procedure Cosu
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      U   : Long_Integer;
+      Rnd : Rounding := RNDEF) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_cosu (Rop.Value'Access,
+                                     Op.Value'Access,
+                                     unsigned_long (U),
+                                     Rounding'Pos (Rnd)));
+   end Cosu;
+
+   ----------
+   -- Sinu --
+   ----------
+
+   procedure Sinu
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      U   : Long_Integer;
+      Rnd : Rounding := RNDEF) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_sinu (Rop.Value'Access,
+                                     Op.Value'Access,
+                                     unsigned_long (U),
+                                     Rounding'Pos (Rnd)));
+   end Sinu;
+
+   ----------
+   -- Tanu --
+   ----------
+
+   procedure Tanu
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      U   : Long_Integer;
+      Rnd : Rounding := RNDEF) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_tanu (Rop.Value'Access,
+                                     Op.Value'Access,
+                                     unsigned_long (U),
+                                     Rounding'Pos (Rnd)));
+   end Tanu;
+
    -------------
    -- Sin_Cos --
    -------------
