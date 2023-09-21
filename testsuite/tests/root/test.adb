@@ -11,4 +11,7 @@ begin
 
    M.Rootn (N, 3);
    Put_Line (M'Image);
+
+   M.Rootn (N, -3);
+   Put_Line (M'Image);
 end Test;

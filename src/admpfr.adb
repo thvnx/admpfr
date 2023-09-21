@@ -967,9 +967,9 @@ package body Admpfr is
       Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_rootn_ui (Rop.Value'Access,
+        To_Ternary_Value (mpfr_rootn_si (Rop.Value'Access,
                                          Op.Value'Access,
-                                         unsigned_long (N),
+                                         long (N),
                                          Rounding'Pos (Rnd)));
    end Rootn;
 
