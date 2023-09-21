@@ -411,9 +411,7 @@ package Admpfr is
      (Rop : in out Mpfloat;
       Op  : Mpfloat;
       N   : Long_Integer;
-      Rnd : Rounding := RNDEF)
-   with
-     Pre => N >= 0;
+      Rnd : Rounding := RNDEF);
    --  Set `Rop` to the nth root (with n = 3, the cubic root, for `Cbrt`) of
    --  `Op` rounded in the direction `Rnd`. For n = 0, set `Rop` to NaN. For n
    --  odd (resp. even) and `Op` negative (including -Inf), set `Rop` to a
