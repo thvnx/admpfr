@@ -695,8 +695,15 @@ package Admpfr is
       Op1 : Long_Integer;
       Op2 : Mpfloat;
       Rnd : Rounding := RNDEF);
+   procedure Powr
+     (Rop      : in out Mpfloat;
+      Op1, Op2 : Mpfloat;
+      Rnd      : Rounding := RNDEF);
    --  Set `Rop` to `Op1` raised to `Op2`, rounded in the direction `Rnd`. See
-   --  official MPFR documentation for special values handling details.
+   --  official MPFR documentation for special values handling details. The
+   --  `Powr` function corresponds to the powr function from IEEE 754, i.e.,
+   --  it computes the exponential of `Op2` multiplied by the logarithm of
+   --  `Op1`.
 
    procedure Cos
      (Rop : in out Mpfloat;
