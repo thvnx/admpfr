@@ -232,7 +232,7 @@ package Admpfr is
    function Get_Long_Integer
      (Op  : Mpfloat;
       Rnd : Rounding := RNDEF) return Long_Integer;
-   --  Convert `op` to a Long_Integer after rounding it to an integer with
+   --  Convert `Op` to a Long_Integer after rounding it to an integer with
    --  respect to `Rnd`. If `Op` is NaN, 0 is returned and the erange flag
    --  is set. If `Op` is too big for the return type, the function returns
    --  the maximum or the minimum of the corresponding C type, depending on
