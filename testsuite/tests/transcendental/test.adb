@@ -55,6 +55,8 @@ begin
    Test_Fn_1 (Exp2'Access, N);
    Test_Fn_1 (Exp10'Access, N);
    Test_Fn_1 (Expm1'Access, N);
+   Test_Fn_1 (Exp2m1'Access, N);
+   Test_Fn_1 (Exp10m1'Access, N);
    Test_Fn_1 (Cos'Access, N);
    Test_Fn_1 (Sin'Access, N);
    Test_Fn_1 (Tan'Access, N);

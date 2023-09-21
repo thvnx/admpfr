@@ -591,6 +591,8 @@ package body Admpfr is
    procedure Mpfr_Exp2 is new Mpfr_Fn_1 (mpfr_exp2);
    procedure Mpfr_Exp10 is new Mpfr_Fn_1 (mpfr_exp10);
    procedure Mpfr_Expm1 is new Mpfr_Fn_1 (mpfr_expm1);
+   procedure Mpfr_Exp2m1 is new Mpfr_Fn_1 (mpfr_exp2m1);
+   procedure Mpfr_Exp10m1 is new Mpfr_Fn_1 (mpfr_exp10m1);
    procedure Mpfr_Cos is new Mpfr_Fn_1 (mpfr_cos);
    procedure Mpfr_Sin is new Mpfr_Fn_1 (mpfr_sin);
    procedure Mpfr_Tan is new Mpfr_Fn_1 (mpfr_tan);
@@ -1452,6 +1454,24 @@ package body Admpfr is
      (Rop : in out Mpfloat;
       Op  : Mpfloat;
       Rnd : Rounding := RNDEF) renames Mpfr_Expm1;
+
+   ------------
+   -- Exp2m1 --
+   ------------
+
+   procedure Exp2m1
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF) renames Mpfr_Exp2m1;
+
+   -------------
+   -- Exp10m1 --
+   -------------
+
+   procedure Exp10m1
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF) renames Mpfr_Exp10m1;
 
    ---------
    -- Pow --
