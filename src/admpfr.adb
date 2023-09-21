@@ -661,6 +661,7 @@ package body Admpfr is
    procedure Mpfr_Dim is new Mpfr_Fn_2 (mpfr_dim);
    procedure Mpfr_Hypot is new Mpfr_Fn_2 (mpfr_hypot);
    procedure Mpfr_Pow is new Mpfr_Fn_2 (mpfr_pow);
+   procedure Mpfr_Powr is new Mpfr_Fn_2 (mpfr_powr);
    procedure Mpfr_Atan2 is new Mpfr_Fn_2 (mpfr_atan2);
    procedure Mpfr_Atan2pi is new Mpfr_Fn_2 (mpfr_atan2pi);
    procedure Mpfr_Gamma_Inc is new Mpfr_Fn_2 (mpfr_gamma_inc);
@@ -1481,6 +1482,15 @@ package body Admpfr is
      (Rop      : in out Mpfloat;
       Op1, Op2 : Mpfloat;
       Rnd      : Rounding := RNDEF) renames Mpfr_Pow;
+
+   ----------
+   -- Powr --
+   ----------
+
+   procedure Powr
+     (Rop      : in out Mpfloat;
+      Op1, Op2 : Mpfloat;
+      Rnd      : Rounding := RNDEF) renames Mpfr_Powr;
 
    ---------
    -- Pow --
