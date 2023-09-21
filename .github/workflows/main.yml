@@ -15,7 +15,7 @@ jobs:
   macos:
     strategy:
       matrix:
-        platform: [macos-11] # TODO: fix bug on macos-latest (12)
+        platform: [macos-latest]
     runs-on: ${{ matrix.platform }}
 
     steps:
