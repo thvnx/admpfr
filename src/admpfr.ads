@@ -664,8 +664,18 @@ package Admpfr is
      (Rop : in out Mpfloat;
       Op  : Mpfloat;
       Rnd : Rounding := RNDEF);
+   procedure Exp2m1
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF);
+   procedure Exp10m1
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF);
    --  Set `Rop` to the exponential of `Op` followed by a subtraction by one,
-   --  rounded in the direction `Rnd`.
+   --  (resp. 2 power of `Op` followed by a subtraction by one, and 10 power
+   --  of `Op` followed by a subtraction by one) rounded in the direction
+   --  `Rnd`.
 
    procedure Pow
      (Rop      : in out Mpfloat;
