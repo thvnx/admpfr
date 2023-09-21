@@ -968,23 +968,23 @@ private package Admpfr.Bindings is
      Convention    => C,
      External_Name => "mpfr_log1p";
 
-   function mpfr_log2p
+   function mpfr_log2p1
      (Rop : access constant mpfr_t;
       Op  : access constant mpfr_t;
       Rnd : mpfr_rnd_t) return int
    with
      Import        => True,
      Convention    => C,
-     External_Name => "mpfr_log2p";
+     External_Name => "mpfr_log2p1";
 
-   function mpfr_log10p
+   function mpfr_log10p1
      (Rop : access constant mpfr_t;
       Op  : access constant mpfr_t;
       Rnd : mpfr_rnd_t) return int
    with
      Import        => True,
      Convention    => C,
-     External_Name => "mpfr_log10p";
+     External_Name => "mpfr_log10p1";
 
    function mpfr_exp
      (Rop : access constant mpfr_t;
