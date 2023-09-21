@@ -633,8 +633,17 @@ package Admpfr is
      (Rop : in out Mpfloat;
       Op  : Mpfloat;
       Rnd : Rounding := RNDEF);
-   --  Set `Rop` to the logarithm of one plus `Op`, rounded in the direction
-   --  `Rnd`. Set `Rop` to -Inf if `Op` is -1.
+   procedure Log2p1
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF);
+   procedure Log10p1
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF);
+   --  Set `Rop` to the logarithm of one plus `Op` (in radix two for `Log2p1`,
+   --  and in radix ten for `Log10p1`), rounded in the direction `Rnd`. Set
+   --  `Rop` to -Inf if `Op` is -1.
 
    procedure Exp
      (Rop : in out Mpfloat;
