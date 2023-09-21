@@ -49,6 +49,8 @@ begin
    Test_Fn_1 (Log2'Access, N);
    Test_Fn_1 (Log10'Access, N);
    Test_Fn_1 (Log1p'Access, N);
+   Test_Fn_1 (Log2p1'Access, N);
+   Test_Fn_1 (Log10p1'Access, N);
    Test_Fn_1 (Exp'Access, N);
    Test_Fn_1 (Exp2'Access, N);
    Test_Fn_1 (Exp10'Access, N);

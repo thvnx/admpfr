@@ -585,6 +585,8 @@ package body Admpfr is
    procedure Mpfr_Log2 is new Mpfr_Fn_1 (mpfr_log2);
    procedure Mpfr_Log10 is new Mpfr_Fn_1 (mpfr_log10);
    procedure Mpfr_Log1p is new Mpfr_Fn_1 (mpfr_log1p);
+   procedure Mpfr_Log2p1 is new Mpfr_Fn_1 (mpfr_log2p1);
+   procedure Mpfr_Log10p1 is new Mpfr_Fn_1 (mpfr_log10p1);
    procedure Mpfr_Exp is new Mpfr_Fn_1 (mpfr_exp);
    procedure Mpfr_Exp2 is new Mpfr_Fn_1 (mpfr_exp2);
    procedure Mpfr_Exp10 is new Mpfr_Fn_1 (mpfr_exp10);
@@ -1396,6 +1398,24 @@ package body Admpfr is
      (Rop : in out Mpfloat;
       Op  : Mpfloat;
       Rnd : Rounding := RNDEF) renames Mpfr_Log1p;
+
+   ------------
+   -- Log2p1 --
+   ------------
+
+   procedure Log2p1
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF) renames Mpfr_Log2p1;
+
+   -------------
+   -- Log10p1 --
+   -------------
+
+   procedure Log10p1
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF) renames Mpfr_Log10p1;
 
    ---------
    -- Exp --
