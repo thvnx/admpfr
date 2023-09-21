@@ -1,5 +1,5 @@
 name = "admpfr"
-version = "4.1.0+20220920"
+version = "4.2.0"
 
 description = "Ada bindings for MPFR"
 website = "https://github.com/thvnx/admpfr"
@@ -19,7 +19,7 @@ windows = true
 
 [[depends-on]]
 gnat    = ">=12 & <2000"
-libmpfr = "^4.1.0"
+libmpfr = "^4.2.0"
 
 # [origin]
 # url = "https://github.com/thvnx/admpfr/archive/refs/tags/4.1.0+20220920.tar.gz"
