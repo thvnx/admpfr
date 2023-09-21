@@ -91,6 +91,7 @@ begin
 
    M.Set (2);
    Test_Fn_2 (Pow'Access, N, M);
+   Test_Fn_2 (Powr'Access, N, M);
    Test_Fn_2 (Atan2'Access, N, M);
    Test_Fn_2 (Gamma_Inc'Access, N, M);
    Test_Fn_2 (Beta'Access, N, M);
