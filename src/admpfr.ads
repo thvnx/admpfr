@@ -705,6 +705,15 @@ package Admpfr is
    --  it computes the exponential of `Op2` multiplied by the logarithm of
    --  `Op1`.
 
+   procedure Compound
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      N   : Long_Integer;
+      Rnd : Rounding := RNDEF);
+   --  Set `Rop` to the power `N` of one plus `Op`, following IEEE 754 for the
+   --  special cases and exceptions. When `N` is zero and `Op` is NaN or
+   --  greater or equal to -1, `Rop` is set to 1.
+
    procedure Cos
      (Rop : in out Mpfloat;
       Op  : Mpfloat;

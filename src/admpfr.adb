@@ -1542,6 +1542,23 @@ package body Admpfr is
                                        Rounding'Pos (Rnd)));
    end Pow;
 
+   --------------
+   -- Compound --
+   --------------
+
+   procedure Compound
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      N   : Long_Integer;
+      Rnd : Rounding := RNDEF) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_compound_si (Rop.Value'Access,
+                                            Op.Value'Access,
+                                            long (N),
+                                            Rounding'Pos (Rnd)));
+   end Compound;
+
    ---------
    -- Cos --
    ---------
