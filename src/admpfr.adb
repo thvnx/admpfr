@@ -2504,6 +2504,23 @@ package body Admpfr is
                                      Rounding'Pos (Rnd)));
    end Fmod;
 
+   ----------
+   -- Fmod --
+   ----------
+
+   procedure Fmod
+     (R   : in out Mpfloat;
+      X   : Mpfloat;
+      Y   : Long_Integer;
+      Rnd : Rounding := RNDEF) is
+   begin
+      R.Ternary :=
+        To_Ternary_Value (mpfr_fmod_ui (R.Value'Access,
+                                        X.Value'Access,
+                                        unsigned_long (Y),
+                                        Rounding'Pos (Rnd)));
+   end Fmod;
+
    -------------
    -- Fmodquo --
    -------------
