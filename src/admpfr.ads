@@ -1226,6 +1226,11 @@ package Admpfr is
      (R    : in out Mpfloat;
       X, Y : Mpfloat;
       Rnd  : Rounding := RNDEF);
+   procedure Fmod
+     (R   : in out Mpfloat;
+      X   : Mpfloat;
+      Y   : Long_Integer;
+      Rnd : Rounding := RNDEF);
    procedure Fmodquo
      (R    : in out Mpfloat;
       Q    : in out Long_Integer;
