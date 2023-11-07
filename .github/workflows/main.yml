@@ -32,6 +32,7 @@ jobs:
           pip3 install e3-testsuite
 
       - name: Build and test admpfr
+        continue-on-error: true # remove when https://github.com/actions/runner-images/issues/8642 is fixed
         run: |
           export LIBRARY_PATH=/usr/local/lib
           export C_INCLUDE_PATH=/usr/local/include
