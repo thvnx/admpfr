@@ -49,10 +49,14 @@ begin
    Test_Fn_1 (Log2'Access, N);
    Test_Fn_1 (Log10'Access, N);
    Test_Fn_1 (Log1p'Access, N);
+   Test_Fn_1 (Log2p1'Access, N);
+   Test_Fn_1 (Log10p1'Access, N);
    Test_Fn_1 (Exp'Access, N);
    Test_Fn_1 (Exp2'Access, N);
    Test_Fn_1 (Exp10'Access, N);
    Test_Fn_1 (Expm1'Access, N);
+   Test_Fn_1 (Exp2m1'Access, N);
+   Test_Fn_1 (Exp10m1'Access, N);
    Test_Fn_1 (Cos'Access, N);
    Test_Fn_1 (Sin'Access, N);
    Test_Fn_1 (Tan'Access, N);
@@ -87,6 +91,7 @@ begin
 
    M.Set (2);
    Test_Fn_2 (Pow'Access, N, M);
+   Test_Fn_2 (Powr'Access, N, M);
    Test_Fn_2 (Atan2'Access, N, M);
    Test_Fn_2 (Gamma_Inc'Access, N, M);
    Test_Fn_2 (Beta'Access, N, M);

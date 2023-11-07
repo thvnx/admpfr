@@ -411,9 +411,7 @@ package Admpfr is
      (Rop : in out Mpfloat;
       Op  : Mpfloat;
       N   : Long_Integer;
-      Rnd : Rounding := RNDEF)
-   with
-     Pre => N >= 0;
+      Rnd : Rounding := RNDEF);
    --  Set `Rop` to the nth root (with n = 3, the cubic root, for `Cbrt`) of
    --  `Op` rounded in the direction `Rnd`. For n = 0, set `Rop` to NaN. For n
    --  odd (resp. even) and `Op` negative (including -Inf), set `Rop` to a
@@ -635,8 +633,17 @@ package Admpfr is
      (Rop : in out Mpfloat;
       Op  : Mpfloat;
       Rnd : Rounding := RNDEF);
-   --  Set `Rop` to the logarithm of one plus `Op`, rounded in the direction
-   --  `Rnd`. Set `Rop` to -Inf if `Op` is -1.
+   procedure Log2p1
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF);
+   procedure Log10p1
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF);
+   --  Set `Rop` to the logarithm of one plus `Op` (in radix two for `Log2p1`,
+   --  and in radix ten for `Log10p1`), rounded in the direction `Rnd`. Set
+   --  `Rop` to -Inf if `Op` is -1.
 
    procedure Exp
      (Rop : in out Mpfloat;
@@ -657,8 +664,18 @@ package Admpfr is
      (Rop : in out Mpfloat;
       Op  : Mpfloat;
       Rnd : Rounding := RNDEF);
+   procedure Exp2m1
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF);
+   procedure Exp10m1
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF);
    --  Set `Rop` to the exponential of `Op` followed by a subtraction by one,
-   --  rounded in the direction `Rnd`.
+   --  (resp. 2 power of `Op` followed by a subtraction by one, and 10 power
+   --  of `Op` followed by a subtraction by one) rounded in the direction
+   --  `Rnd`.
 
    procedure Pow
      (Rop      : in out Mpfloat;
@@ -678,8 +695,24 @@ package Admpfr is
       Op1 : Long_Integer;
       Op2 : Mpfloat;
       Rnd : Rounding := RNDEF);
+   procedure Powr
+     (Rop      : in out Mpfloat;
+      Op1, Op2 : Mpfloat;
+      Rnd      : Rounding := RNDEF);
    --  Set `Rop` to `Op1` raised to `Op2`, rounded in the direction `Rnd`. See
-   --  official MPFR documentation for special values handling details.
+   --  official MPFR documentation for special values handling details. The
+   --  `Powr` function corresponds to the powr function from IEEE 754, i.e.,
+   --  it computes the exponential of `Op2` multiplied by the logarithm of
+   --  `Op1`.
+
+   procedure Compound
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      N   : Long_Integer;
+      Rnd : Rounding := RNDEF);
+   --  Set `Rop` to the power `N` of one plus `Op`, following IEEE 754 for the
+   --  special cases and exceptions. When `N` is zero and `Op` is NaN or
+   --  greater or equal to -1, `Rop` is set to 1.
 
    procedure Cos
      (Rop : in out Mpfloat;
@@ -695,6 +728,46 @@ package Admpfr is
       Rnd : Rounding := RNDEF);
    --  Set `Rop` to the cosine of `Op`, sine of `Op`, tangent of `Op`, rounded
    --  in the direction `Rnd`.
+
+   procedure Cosu
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      U   : Long_Integer;
+      Rnd : Rounding := RNDEF);
+   procedure Sinu
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      U   : Long_Integer;
+      Rnd : Rounding := RNDEF);
+   procedure Tanu
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      U   : Long_Integer;
+      Rnd : Rounding := RNDEF);
+   --  Set `Rop` to the cosine (resp. sine and tangent) of `Op` multiplied by
+   --  2 Pi and divided by `U`. For example, if `U` equals 360, one gets the
+   --  cosine (resp. sine and tangent) for `Op` in degrees. For `Cosu`, when
+   --  `Op` multiplied by 2 and divided by `U` is a half-integer, the result
+   --  is +0, following IEEE 754 (cosPi), so that the function is even. For
+   --  `Sinu`, when `Op` multiplied by 2 and divided by `U` is an integer,
+   --  the result is zero with the same sign as `Op`, following IEEE 754
+   --  (sinPi), so that the function is odd. Similarly, the function `Tanu`
+   --  follows IEEE 754 (tanPi).
+
+   procedure Cospi
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF);
+   procedure Sinpi
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF);
+   procedure Tanpi
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF);
+   --  Set `Rop` to the cosine (resp. sine and tangent) of `Op` multiplied by
+   --  Pi. See the description of `Sinu`, `Cosu` and `Tanu` for special values.
 
    procedure Sin_Cos
      (Sop, Cop : in out Mpfloat;
@@ -734,13 +807,58 @@ package Admpfr is
    --  Set `Rop` to the arc-cosine, arc-sine or arc-tangent of `Op`,
    --  rounded in the direction `Rnd`.
 
+   procedure Acosu
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      U   : Long_Integer;
+      Rnd : Rounding := RNDEF);
+   procedure Asinu
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      U   : Long_Integer;
+      Rnd : Rounding := RNDEF);
+   procedure Atanu
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      U   : Long_Integer;
+      Rnd : Rounding := RNDEF);
+   --  Set `Rop` to a multiplied by `U` and divided by 2 Pi, where a is the
+   --  arc-cosine (resp. arc-sine and arc-tangent) of `Op`. For example, if
+   --  `U` equals 360, `Acosu` yields the arc-cosine in degrees.
+
+   procedure Acospi
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF);
+   procedure Asinpi
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF);
+   procedure Atanpi
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF);
+   --  Set `Rop` to acos(`Op`) (resp. asin(`Op`) and atan(`Op`)) divided by Pi.
+
    procedure Atan2
+     (Rop   : in out Mpfloat;
+      X, Y  : Mpfloat;
+      Rnd   : Rounding := RNDEF);
+   procedure Atan2u
+     (Rop   : in out Mpfloat;
+      X, Y  : Mpfloat;
+      U     : Long_Integer;
+      Rnd   : Rounding := RNDEF);
+   procedure Atan2pi
      (Rop   : in out Mpfloat;
       X, Y  : Mpfloat;
       Rnd   : Rounding := RNDEF);
    --  Set `Rop` to the arc-tangent2 of `Y` and `X`, rounded in the direction
    --  `Rnd`. Atan2 (Y, 0) does not raise any floating-point exception, see the
    --  official MPFR documentation.
+   --  The function `Atan2u` behaves similarly, except the result is multiplied
+   --  by `U` and divided by 2 Pi; and `Atan2pi` is the same as `Aatan2u`
+   --  with U = 2.
 
    procedure Cosh
      (Rop : in out Mpfloat;
@@ -1108,6 +1226,11 @@ package Admpfr is
      (R    : in out Mpfloat;
       X, Y : Mpfloat;
       Rnd  : Rounding := RNDEF);
+   procedure Fmod
+     (R   : in out Mpfloat;
+      X   : Mpfloat;
+      Y   : Long_Integer;
+      Rnd : Rounding := RNDEF);
    procedure Fmodquo
      (R    : in out Mpfloat;
       Q    : in out Long_Integer;

@@ -585,19 +585,29 @@ package body Admpfr is
    procedure Mpfr_Log2 is new Mpfr_Fn_1 (mpfr_log2);
    procedure Mpfr_Log10 is new Mpfr_Fn_1 (mpfr_log10);
    procedure Mpfr_Log1p is new Mpfr_Fn_1 (mpfr_log1p);
+   procedure Mpfr_Log2p1 is new Mpfr_Fn_1 (mpfr_log2p1);
+   procedure Mpfr_Log10p1 is new Mpfr_Fn_1 (mpfr_log10p1);
    procedure Mpfr_Exp is new Mpfr_Fn_1 (mpfr_exp);
    procedure Mpfr_Exp2 is new Mpfr_Fn_1 (mpfr_exp2);
    procedure Mpfr_Exp10 is new Mpfr_Fn_1 (mpfr_exp10);
    procedure Mpfr_Expm1 is new Mpfr_Fn_1 (mpfr_expm1);
+   procedure Mpfr_Exp2m1 is new Mpfr_Fn_1 (mpfr_exp2m1);
+   procedure Mpfr_Exp10m1 is new Mpfr_Fn_1 (mpfr_exp10m1);
    procedure Mpfr_Cos is new Mpfr_Fn_1 (mpfr_cos);
    procedure Mpfr_Sin is new Mpfr_Fn_1 (mpfr_sin);
    procedure Mpfr_Tan is new Mpfr_Fn_1 (mpfr_tan);
+   procedure Mpfr_Cospi is new Mpfr_Fn_1 (mpfr_cospi);
+   procedure Mpfr_Sinpi is new Mpfr_Fn_1 (mpfr_sinpi);
+   procedure Mpfr_Tanpi is new Mpfr_Fn_1 (mpfr_tanpi);
    procedure Mpfr_Sec is new Mpfr_Fn_1 (mpfr_sec);
    procedure Mpfr_Csc is new Mpfr_Fn_1 (mpfr_csc);
    procedure Mpfr_Cot is new Mpfr_Fn_1 (mpfr_cot);
    procedure Mpfr_Acos is new Mpfr_Fn_1 (mpfr_acos);
    procedure Mpfr_Asin is new Mpfr_Fn_1 (mpfr_asin);
    procedure Mpfr_Atan is new Mpfr_Fn_1 (mpfr_atan);
+   procedure Mpfr_Acospi is new Mpfr_Fn_1 (mpfr_acospi);
+   procedure Mpfr_Asinpi is new Mpfr_Fn_1 (mpfr_asinpi);
+   procedure Mpfr_Atanpi is new Mpfr_Fn_1 (mpfr_atanpi);
    procedure Mpfr_Cosh is new Mpfr_Fn_1 (mpfr_cosh);
    procedure Mpfr_Sinh is new Mpfr_Fn_1 (mpfr_sinh);
    procedure Mpfr_Tanh is new Mpfr_Fn_1 (mpfr_tanh);
@@ -651,7 +661,9 @@ package body Admpfr is
    procedure Mpfr_Dim is new Mpfr_Fn_2 (mpfr_dim);
    procedure Mpfr_Hypot is new Mpfr_Fn_2 (mpfr_hypot);
    procedure Mpfr_Pow is new Mpfr_Fn_2 (mpfr_pow);
+   procedure Mpfr_Powr is new Mpfr_Fn_2 (mpfr_powr);
    procedure Mpfr_Atan2 is new Mpfr_Fn_2 (mpfr_atan2);
+   procedure Mpfr_Atan2pi is new Mpfr_Fn_2 (mpfr_atan2pi);
    procedure Mpfr_Gamma_Inc is new Mpfr_Fn_2 (mpfr_gamma_inc);
    procedure Mpfr_Beta is new Mpfr_Fn_2 (mpfr_beta);
    procedure Mpfr_Agm is new Mpfr_Fn_2 (mpfr_agm);
@@ -960,9 +972,9 @@ package body Admpfr is
       Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_rootn_ui (Rop.Value'Access,
+        To_Ternary_Value (mpfr_rootn_si (Rop.Value'Access,
                                          Op.Value'Access,
-                                         unsigned_long (N),
+                                         long (N),
                                          Rounding'Pos (Rnd)));
    end Rootn;
 
@@ -1390,6 +1402,24 @@ package body Admpfr is
       Op  : Mpfloat;
       Rnd : Rounding := RNDEF) renames Mpfr_Log1p;
 
+   ------------
+   -- Log2p1 --
+   ------------
+
+   procedure Log2p1
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF) renames Mpfr_Log2p1;
+
+   -------------
+   -- Log10p1 --
+   -------------
+
+   procedure Log10p1
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF) renames Mpfr_Log10p1;
+
    ---------
    -- Exp --
    ---------
@@ -1426,6 +1456,24 @@ package body Admpfr is
       Op  : Mpfloat;
       Rnd : Rounding := RNDEF) renames Mpfr_Expm1;
 
+   ------------
+   -- Exp2m1 --
+   ------------
+
+   procedure Exp2m1
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF) renames Mpfr_Exp2m1;
+
+   -------------
+   -- Exp10m1 --
+   -------------
+
+   procedure Exp10m1
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF) renames Mpfr_Exp10m1;
+
    ---------
    -- Pow --
    ---------
@@ -1434,6 +1482,15 @@ package body Admpfr is
      (Rop      : in out Mpfloat;
       Op1, Op2 : Mpfloat;
       Rnd      : Rounding := RNDEF) renames Mpfr_Pow;
+
+   ----------
+   -- Powr --
+   ----------
+
+   procedure Powr
+     (Rop      : in out Mpfloat;
+      Op1, Op2 : Mpfloat;
+      Rnd      : Rounding := RNDEF) renames Mpfr_Powr;
 
    ---------
    -- Pow --
@@ -1485,6 +1542,23 @@ package body Admpfr is
                                        Rounding'Pos (Rnd)));
    end Pow;
 
+   --------------
+   -- Compound --
+   --------------
+
+   procedure Compound
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      N   : Long_Integer;
+      Rnd : Rounding := RNDEF) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_compound_si (Rop.Value'Access,
+                                            Op.Value'Access,
+                                            long (N),
+                                            Rounding'Pos (Rnd)));
+   end Compound;
+
    ---------
    -- Cos --
    ---------
@@ -1511,6 +1585,84 @@ package body Admpfr is
      (Rop : in out Mpfloat;
       Op  : Mpfloat;
       Rnd : Rounding := RNDEF) renames Mpfr_Tan;
+
+   ----------
+   -- Cosu --
+   ----------
+
+   procedure Cosu
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      U   : Long_Integer;
+      Rnd : Rounding := RNDEF) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_cosu (Rop.Value'Access,
+                                     Op.Value'Access,
+                                     unsigned_long (U),
+                                     Rounding'Pos (Rnd)));
+   end Cosu;
+
+   ----------
+   -- Sinu --
+   ----------
+
+   procedure Sinu
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      U   : Long_Integer;
+      Rnd : Rounding := RNDEF) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_sinu (Rop.Value'Access,
+                                     Op.Value'Access,
+                                     unsigned_long (U),
+                                     Rounding'Pos (Rnd)));
+   end Sinu;
+
+   ----------
+   -- Tanu --
+   ----------
+
+   procedure Tanu
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      U   : Long_Integer;
+      Rnd : Rounding := RNDEF) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_tanu (Rop.Value'Access,
+                                     Op.Value'Access,
+                                     unsigned_long (U),
+                                     Rounding'Pos (Rnd)));
+   end Tanu;
+
+   -----------
+   -- Cospi --
+   -----------
+
+   procedure Cospi
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF) renames Mpfr_Cospi;
+
+   -----------
+   -- Sinpi --
+   -----------
+
+   procedure Sinpi
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF) renames Mpfr_Sinpi;
+
+   -----------
+   -- Tanpi --
+   -----------
+
+   procedure Tanpi
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF) renames Mpfr_Tanpi;
 
    -------------
    -- Sin_Cos --
@@ -1603,6 +1755,84 @@ package body Admpfr is
       Rnd : Rounding := RNDEF) renames Mpfr_Atan;
 
    -----------
+   -- Acosu --
+   -----------
+
+   procedure Acosu
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      U   : Long_Integer;
+      Rnd : Rounding := RNDEF) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_acosu (Rop.Value'Access,
+                                      Op.Value'Access,
+                                      unsigned_long (U),
+                                      Rounding'Pos (Rnd)));
+   end Acosu;
+
+   -----------
+   -- Asinu --
+   -----------
+
+   procedure Asinu
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      U   : Long_Integer;
+      Rnd : Rounding := RNDEF) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_asinu (Rop.Value'Access,
+                                      Op.Value'Access,
+                                      unsigned_long (U),
+                                      Rounding'Pos (Rnd)));
+   end Asinu;
+
+   -----------
+   -- Atanu --
+   -----------
+
+   procedure Atanu
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      U   : Long_Integer;
+      Rnd : Rounding := RNDEF) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_atanu (Rop.Value'Access,
+                                      Op.Value'Access,
+                                      unsigned_long (U),
+                                      Rounding'Pos (Rnd)));
+   end Atanu;
+
+   ------------
+   -- Acospi --
+   ------------
+
+   procedure Acospi
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF) renames Mpfr_Acospi;
+
+   ------------
+   -- Asinpi --
+   ------------
+
+   procedure Asinpi
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF) renames Mpfr_Asinpi;
+
+   ------------
+   -- Atanpi --
+   ------------
+
+   procedure Atanpi
+     (Rop : in out Mpfloat;
+      Op  : Mpfloat;
+      Rnd : Rounding := RNDEF) renames Mpfr_Atanpi;
+
+   -----------
    -- Atan2 --
    -----------
 
@@ -1610,6 +1840,33 @@ package body Admpfr is
      (Rop   : in out Mpfloat;
       X, Y  : Mpfloat;
       Rnd   : Rounding := RNDEF) renames Mpfr_Atan2;
+
+   ------------
+   -- Atan2u --
+   ------------
+
+   procedure Atan2u
+     (Rop   : in out Mpfloat;
+      X, Y  : Mpfloat;
+      U     : Long_Integer;
+      Rnd   : Rounding := RNDEF) is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value (mpfr_atan2u (Rop.Value'Access,
+                                       X.Value'Access,
+                                       Y.Value'Access,
+                                       unsigned_long (U),
+                                       Rounding'Pos (Rnd)));
+   end Atan2u;
+
+   -------------
+   -- Atan2pi --
+   -------------
+
+   procedure Atan2pi
+     (Rop   : in out Mpfloat;
+      X, Y  : Mpfloat;
+      Rnd   : Rounding := RNDEF) renames Mpfr_Atan2pi;
 
    ----------
    -- Cosh --
@@ -2245,6 +2502,23 @@ package body Admpfr is
                                      X.Value'Access,
                                      Y.Value'Access,
                                      Rounding'Pos (Rnd)));
+   end Fmod;
+
+   ----------
+   -- Fmod --
+   ----------
+
+   procedure Fmod
+     (R   : in out Mpfloat;
+      X   : Mpfloat;
+      Y   : Long_Integer;
+      Rnd : Rounding := RNDEF) is
+   begin
+      R.Ternary :=
+        To_Ternary_Value (mpfr_fmod_ui (R.Value'Access,
+                                        X.Value'Access,
+                                        unsigned_long (Y),
+                                        Rounding'Pos (Rnd)));
    end Fmod;
 
    -------------
