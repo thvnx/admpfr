@@ -43,7 +43,7 @@ jobs:
   ubuntu:
     strategy:
       matrix:
-        platform: [ubuntu-22.04]
+        platform: [ubuntu-latest]
     runs-on: ${{ matrix.platform }}
 
     steps:
