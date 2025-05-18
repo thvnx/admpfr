@@ -84,7 +84,9 @@ jobs:
         run: |
           C:\Users\runneradmin\.cache\alire\msys64\usr\bin\pacman --noconfirm -S mingw-w64-x86_64-mpfr
           # Install e3-core and e3-testsuite from source to benefit from the rlimit bugfix
-          pip install git+https://github.com/AdaCore/e3-core.git@master
+          # but stick to 6f597b3 until Python 3.10+ is available, see https://github.com/AdaCore/e3-core/commit/c021846c7c62248771b26ef4061836d3352ce0f7,
+          # `strict` argument in call to `realpath` is available only after Python 3.10.
+          pip install git+https://github.com/AdaCore/e3-core.git@6f597b3 
           pip install git+https://github.com/AdaCore/e3-testsuite.git@master
 
       - name: Build and test admpfr
