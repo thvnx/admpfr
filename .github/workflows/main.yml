@@ -66,7 +66,7 @@ jobs:
   windows:
     strategy:
       matrix:
-        platform: [windows-latest]
+        platform: [windows-2022]
     runs-on: ${{ matrix.platform }}
 
     steps:
