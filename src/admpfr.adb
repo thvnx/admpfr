@@ -2287,7 +2287,7 @@ package body Admpfr is
    is
       N : constant size_t := mpfr_inp_str (Op.Value'Access,
                                            C_Streams.C_Stream (Stream),
-                                           int (abs (Base)),
+                                           int (abs Base),
                                            Rounding'Pos (Rnd));
    begin
       Op.Ternary := NOT_SET;
