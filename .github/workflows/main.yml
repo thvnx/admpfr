@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Set up Alire
-        uses: alire-project/setup-alire@v1
+        uses: alire-project/setup-alire@v5
 
       - name: Set up env
         run: |
@@ -51,7 +51,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Set up Alire
-        uses: alire-project/setup-alire@v1
+        uses: alire-project/setup-alire@v5
 
       - name: Set up env
         run: |
@@ -78,7 +78,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Set up Alire
-        uses: alire-project/setup-alire@v1
+        uses: alire-project/setup-alire@v5
 
       - name: Set up env
         run: |
