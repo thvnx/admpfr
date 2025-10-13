@@ -82,7 +82,6 @@ jobs:
 
       - name: Set up env
         run: |
-          C:\Users\runneradmin\.cache\alire\msys64\usr\bin\pacman --noconfirm -S mingw-w64-x86_64-mpfr
           # Install e3-core and e3-testsuite from source to benefit from the rlimit bugfix
           pip install git+https://github.com/AdaCore/e3-core.git@master
           pip install git+https://github.com/AdaCore/e3-testsuite.git@master
