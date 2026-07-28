@@ -13,7 +13,6 @@
 --  You should have received a copy of the GNU General Public License
 --  along with Admpfr.  If not, see <https://www.gnu.org/licenses/>.
 
-with Ada.Strings;           use Ada.Strings;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C.Strings;  use Interfaces.C.Strings;
 
