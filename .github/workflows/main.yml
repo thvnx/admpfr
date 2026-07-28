@@ -25,13 +25,15 @@ jobs:
       - name: Set up Alire
         uses: alire-project/setup-alire@v6
 
-      - name: Set up env
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.14'
+
+      - name: Set up deps
         run: |
-          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
           brew install mpfr
-          brew install pipx
-          pipx install e3-core
-          pipx install e3-testsuite
+          python -m pip install e3-core e3-testsuite
 
       - name: Build and test admpfr
         continue-on-error: true # remove when https://github.com/actions/runner-images/issues/8642 is fixed
