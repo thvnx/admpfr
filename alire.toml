@@ -21,6 +21,6 @@ windows = true
 gnat    = ">=12 & <2000"
 libmpfr = "^4.2.0"
 
-# [origin]
-# url = "https://github.com/thvnx/admpfr/archive/refs/tags/4.1.0+20220920.tar.gz"
-# hashes = ["sha512:4c55f40a4180094255b278dc3aec1c62c897918207985a467198a297ca62ba1d1b41a6a8897e859f7b9b4c40d2092c97413ddbf356bb47adc561229ef2326502"]
+#[origin]
+#commit = "dba8ae0a3ea1c44115b0b0038fc7ebea80266c1d"
+#url = "git+https://gitlab.com/thvnx/admpfr.git"
