@@ -35,11 +35,8 @@ jobs:
           brew install mpfr
           python -m pip install e3-core e3-testsuite
 
-      - name: Build and test admpfr
-        continue-on-error: true # remove when https://github.com/actions/runner-images/issues/8642 is fixed
+      - name: Build and test
         run: |
-          export LIBRARY_PATH=/usr/local/lib
-          export C_INCLUDE_PATH=/usr/local/include
           alr build
           alr exec -- ./testsuite/testsuite.py -E --failure-exit-code=1
 
