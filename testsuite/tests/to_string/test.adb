@@ -23,8 +23,8 @@ begin
          begin
             Put_Line (To_String (A, Base => Base (B), Rnd => R));
          exception
-            when
-              others => Put_Line ("Base not in range?: " & B'Image);
+            when others =>
+               Put_Line ("Base not in range?: " & B'Image);
          end;
       end loop;
    end loop;
@@ -33,13 +33,12 @@ begin
       begin
          Set (A, "0.1", Base => Base (B));
          if Sprintf ("%R*e", A, RNDN) /= A.To_String then
-            Put_Line ("diff: " &
-                        Sprintf ("%R*e", A, RNDN) &
-                        " /= " & A.To_String);
+            Put_Line
+              ("diff: " & Sprintf ("%R*e", A, RNDN) & " /= " & A.To_String);
          end if;
       exception
-         when
-           others => Put_Line ("Base not in range?: " & B'Image);
+         when others =>
+            Put_Line ("Base not in range?: " & B'Image);
       end;
    end loop;
 end Test;

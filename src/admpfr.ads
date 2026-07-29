@@ -27,8 +27,7 @@ package Admpfr is
    --  NOTE: documentation here is heavily copy/pasted from
    --  https://www.mpfr.org/mpfr-current/mpfr.html.
 
-   type Base is range -36 .. 62 with
-     Dynamic_Predicate => abs Base /= 1;
+   type Base is range -36 .. 62 with Dynamic_Predicate => abs Base /= 1;
    --  Base is in range [-36 .. -2; 0; 2 .. 62]. Admpfr uses Dynamic_Predicate
    --  and preconditions (depending on the procedure or function using it) to
    --  ensure the base is actually in the range of supported values.
@@ -92,12 +91,13 @@ package Admpfr is
    --  Type for the return value of the `Cmp*` functions
 
    type Flag is (Underflow, Overflow, Divby0, Nanflag, Inexflag, Erangeflag);
-   for Flag use (Underflow => 1,
-                 Overflow => 2,
-                 Divby0 => 4,
-                 Nanflag => 8,
-                 Inexflag => 16,
-                 Erangeflag => 32);
+   for Flag use
+     (Underflow  => 1,
+      Overflow   => 2,
+      Divby0     => 4,
+      Nanflag    => 8,
+      Inexflag   => 16,
+      Erangeflag => 32);
 
    type Flags_Mask is array (Integer range <>) of Flag;
 
@@ -114,9 +114,7 @@ package Admpfr is
    --  copy operation. But contrary to IEEE 754, the NaN flag is set as usual.
 
    procedure Set
-     (Rop : out Mpfloat;
-      Op  : Long_Integer;
-      Rnd : Rounding := RNDEF);
+     (Rop : out Mpfloat; Op : Long_Integer; Rnd : Rounding := RNDEF);
    --  Set the value of `Rop` from `Op`, rounded toward the given direction
    --  `Rnd`. The sign of a NaN is propagated in order to mimic the IEEE 754
    --  copy operation. But contrary to IEEE 754, the NaN flag is set as usual.
@@ -125,9 +123,7 @@ package Admpfr is
    procedure Set (Rop : out Mpfloat; Op : Float; Rnd : Rounding := RNDEF);
    procedure Set (Rop : out Mpfloat; Op : Long_Float; Rnd : Rounding := RNDEF);
    procedure Set
-     (Rop : out Mpfloat;
-      Op  : Long_Long_Float;
-      Rnd : Rounding := RNDEF);
+     (Rop : out Mpfloat; Op : Long_Long_Float; Rnd : Rounding := RNDEF);
    --  Set the value of `Rop` from `Op`, rounded toward the given direction
    --  `Rnd`. The sign of a NaN is propagated in order to mimic the IEEE 754
    --  copy operation. But contrary to IEEE 754, the NaN flag is set as usual.
@@ -145,9 +141,8 @@ package Admpfr is
      (Rop  : out Mpfloat;
       S    : String;
       Base : Admpfr.Base := 10;
-      Rnd  : Rounding    := RNDEF)
-   with
-     Pre => Base = 0 or Base > 1;
+      Rnd  : Rounding := RNDEF)
+   with Pre => Base = 0 or Base > 1;
    --  Set `Rop` to the value of the string `S` in base `Base`, rounded in the
    --  direction `Rnd`. `Base` and `Rnd` are optionals, their default values
    --  are 10 and RNDN, respectively.
@@ -219,19 +214,16 @@ package Admpfr is
 
    function Get_Float (Op : Mpfloat; Rnd : Rounding := RNDEF) return Float;
    function Get_Long_Float
-     (Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) return Long_Float;
+     (Op : Mpfloat; Rnd : Rounding := RNDEF) return Long_Float;
    function Get_Long_Long_Float
-     (Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) return Long_Long_Float;
+     (Op : Mpfloat; Rnd : Rounding := RNDEF) return Long_Long_Float;
    --  Convert `Op` to a Float (respectively Long_Float, Long_Long_Float) using
    --  the rounding mode `Rnd`. If `Op` is NaN or an Inf, a Failure exception
    --  is raised. If `Op` is zero, these functions return a zero, trying to
    --  preserve its sign, if possible.
 
    function Get_Long_Integer
-     (Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) return Long_Integer;
+     (Op : Mpfloat; Rnd : Rounding := RNDEF) return Long_Integer;
    --  Convert `Op` to a Long_Integer after rounding it to an integer with
    --  respect to `Rnd`. If `Op` is NaN, 0 is returned and the erange flag
    --  is set. If `Op` is too big for the return type, the function returns
@@ -242,13 +234,11 @@ package Admpfr is
    --  `Fits_Long_Integer`.
 
    function Get_Long_Float
-     (Op  : Mpfloat;
-      Exp : out Long_Integer;
-      Rnd : Rounding := RNDEF) return Long_Float;
+     (Op : Mpfloat; Exp : out Long_Integer; Rnd : Rounding := RNDEF)
+      return Long_Float;
    function Get_Long_Long_Float
-     (Op  : Mpfloat;
-      Exp : out Long_Integer;
-      Rnd : Rounding := RNDEF) return Long_Long_Float;
+     (Op : Mpfloat; Exp : out Long_Integer; Rnd : Rounding := RNDEF)
+      return Long_Long_Float;
    --  Return d and set `Exp` such that 0.5<=abs(d)<1 and d times 2 raised to
    --  `Exp` equals `Op` rounded to Long_Float (resp. Long_Long_Float)
    --  precision, using the given rounding mode. If `Op` is zero, then a zero
@@ -267,11 +257,9 @@ package Admpfr is
    --  set to the same value and `Exp` is undefined.
 
    function To_String
-     (X    : Mpfloat;
-      Base : Admpfr.Base := 10;
-      Rnd  : Rounding    := RNDEF) return String
-   with
-     Pre => Base /= 0;
+     (X : Mpfloat; Base : Admpfr.Base := 10; Rnd : Rounding := RNDEF)
+      return String
+   with Pre => Base /= 0;
    --  Convert `X` to a String in base `Base` rounded in the direction `Rnd`.
    --  This function is based on mpfr_get_str and has no real equivalent in the
    --  original C library.
@@ -279,19 +267,15 @@ package Admpfr is
    --  Default behavior mimics mpfr_printf("%.RNe", X), (at least for base 10)!
 
    function Fits_Long_Integer
-     (Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) return Boolean;
+     (Op : Mpfloat; Rnd : Rounding := RNDEF) return Boolean;
    function Fits_Integer
-     (Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) return Boolean;
+     (Op : Mpfloat; Rnd : Rounding := RNDEF) return Boolean;
    --  Return whether `Op` would fit in the respective Ada data type,
    --  respectively Long_Integer and Integer, when rounded to an integer in
    --  the direction `Rnd`.
 
    procedure Add
-     (Rop      : in out Mpfloat;
-      Op1, Op2 : Mpfloat;
-      Rnd      : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op1, Op2 : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Add
      (Rop : in out Mpfloat;
       Op1 : Mpfloat;
@@ -306,9 +290,7 @@ package Admpfr is
    --  rules are used, in particular for signed zeros.
 
    procedure Sub
-     (Rop      : in out Mpfloat;
-      Op1, Op2 : Mpfloat;
-      Rnd      : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op1, Op2 : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Sub
      (Rop : in out Mpfloat;
       Op1 : Mpfloat;
@@ -333,9 +315,7 @@ package Admpfr is
    --  rules are used, in particular for signed zeros.
 
    procedure Mul
-     (Rop      : in out Mpfloat;
-      Op1, Op2 : Mpfloat;
-      Rnd      : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op1, Op2 : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Mul
      (Rop : in out Mpfloat;
       Op1 : Mpfloat;
@@ -353,9 +333,7 @@ package Admpfr is
    --  Set `Rop` to the square of `Op` rounded in the direction `Rnd`.
 
    procedure Div
-     (Rop      : in out Mpfloat;
-      Op1, Op2 : Mpfloat;
-      Rnd      : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op1, Op2 : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Div
      (Rop : in out Mpfloat;
       Op1 : Mpfloat;
@@ -380,23 +358,16 @@ package Admpfr is
    --  rules are used, in particular for signed zeros.
 
    procedure Sqrt
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Sqrt
-     (Rop : in out Mpfloat;
-      Op  : Long_Integer;
-      Rnd : Rounding := RNDEF)
-   with
-     Pre => Op >= 0;
+     (Rop : in out Mpfloat; Op : Long_Integer; Rnd : Rounding := RNDEF)
+   with Pre => Op >= 0;
    --  Set `Rop` to the square root of `Op` rounded in the direction `Rnd`. Set
    --  `Rop` to -0 if `Op` is -0, to be consistent with the IEEE 754 standard.
    --  Set `Rop` to NaN if `Op` is negative.
 
    procedure Rec_Sqrt
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    --  Set `Rop` to the reciprocal square root of `Op` rounded in the direction
    --  `Rnd`. Set `Rop` to +Inf if `Op` is +/-0, +0 if `Op` is +Inf, and NaN if
    --  `Op` is negative. Warning! Therefore the result on -0 is different from
@@ -404,9 +375,7 @@ package Admpfr is
    --  (Section 9.2.1), which is -Inf instead of +Inf.
 
    procedure Cbrt
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Rootn
      (Rop : in out Mpfloat;
       Op  : Mpfloat;
@@ -421,28 +390,21 @@ package Admpfr is
 
    --  mpfr_root is not implemented since deprecated, use `Rootn` instead.
 
-   procedure Neg
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+   procedure Neg (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    --  Set `Rop` to `-Op`, rounded in the direction `Rnd`. Just changes or
    --  adjusts the sign if `Rop` and `Op` are the same variable, otherwise a
    --  rounding might occur if the precision of `Rop` is less than that of
    --  `Op`.
 
    procedure Absolute
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    --  Set `Rop` to the absolute value of `Op`, rounded in the direction `Rnd`.
    --  Just changes or adjusts the sign if `Rop` and `Op` are the same
    --  variable, otherwise a rounding might occur if the precision of `Rop`
    --  is less than that of `Op`.
 
    procedure Dim
-     (Rop      : in out Mpfloat;
-      Op1, Op2 : Mpfloat;
-      Rnd      : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op1, Op2 : Mpfloat; Rnd : Rounding := RNDEF);
    --  Set `Rop` to the positive difference of `Op1` and `Op2`, i.e.,
    --  `Op1 - Op2` rounded in the direction `Rnd` if `Op1 > op2`, +0 if
    --  `Op1 <= Op2`, and NaN if `Op1` or `Op2` is NaN.
@@ -466,21 +428,14 @@ package Admpfr is
    --  identical.
 
    procedure Fac
-     (Rop : in out Mpfloat;
-      Op  : Long_Integer;
-      Rnd : Rounding := RNDEF)
-   with
-     Pre => Op >= 0;
+     (Rop : in out Mpfloat; Op : Long_Integer; Rnd : Rounding := RNDEF)
+   with Pre => Op >= 0;
    --  Set `Rop` to the factorial of `Op`, rounded in the direction `Rnd`.
 
    procedure Fma
-     (Rop           : in out Mpfloat;
-      Op1, Op2, Op3 : Mpfloat;
-      Rnd           : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op1, Op2, Op3 : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Fms
-     (Rop           : in out Mpfloat;
-      Op1, Op2, Op3 : Mpfloat;
-      Rnd           : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op1, Op2, Op3 : Mpfloat; Rnd : Rounding := RNDEF);
    --  Set `Rop` to `(Op1 times Op2) + Op3` (resp. `(Op1 times Op2) - Op3)`
    --  rounded in the direction `Rnd`. Concerning special values (signed
    --  zeros, infinities, NaN), these functions behave like a multiplication
@@ -502,17 +457,13 @@ package Admpfr is
    --  two intermediate products were computed with rounding toward zero.
 
    procedure Hypot
-     (Rop  : in out Mpfloat;
-      X, Y : Mpfloat;
-      Rnd  : Rounding := RNDEF);
+     (Rop : in out Mpfloat; X, Y : Mpfloat; Rnd : Rounding := RNDEF);
    --  Set `Rop` to the Euclidean norm of `X` and `Y`, i.e., the square root
    --  of the sum of the squares of `X` and `Y`, rounded in the direction
    --  `Rnd`.
 
    procedure Sum
-     (Rop : in out Mpfloat;
-      Arr : Mpfloat_Array;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Arr : Mpfloat_Array; Rnd : Rounding := RNDEF);
    --  Set `Rop` to the sum of all elements of `Arr`, correctly rounded in the
    --  direction `Rnd`. If the array is empty, then the result is +0, and if
    --  `Arr'Length = 1`, then the function is equivalent to `Set`. For the
@@ -552,9 +503,7 @@ package Admpfr is
    --  (you may need to do a conversion first).
 
    function Cmp
-     (Op1 : Mpfloat;
-      Op2 : Long_Integer;
-      E   : Exponent) return Compare;
+     (Op1 : Mpfloat; Op2 : Long_Integer; E : Exponent) return Compare;
    --  Compare `Op1` and `Op2` multiplied by two to the power `E`. Similar as
    --  above.
 
@@ -595,34 +544,28 @@ package Admpfr is
    --  where -NaN < -Inf < negative finite numbers < -0 < +0 < positive finite
    --  numbers < +Inf < +NaN.
 
-   function "=" (Op1, Op2 : Mpfloat) return Boolean is (Equal (Op1, Op2));
+   function "=" (Op1, Op2 : Mpfloat) return Boolean
+   is (Equal (Op1, Op2));
    --  Note: due to how Ada set the "/=" operator being the negation of "=",
    --  its use is discouraged since it returns the wrong result if `Op1` or
    --  `Op2` is NaN.
-   function ">" (Op1, Op2 : Mpfloat) return Boolean is (Greater (Op1, Op2));
-   function "<" (Op1, Op2 : Mpfloat) return Boolean is (Less (Op1, Op2));
-   function ">=" (Op1, Op2 : Mpfloat) return Boolean is
-     (Greaterequal (Op1, Op2));
-   function "<=" (Op1, Op2 : Mpfloat) return Boolean is (Lessequal (Op1, Op2));
+   function ">" (Op1, Op2 : Mpfloat) return Boolean
+   is (Greater (Op1, Op2));
+   function "<" (Op1, Op2 : Mpfloat) return Boolean
+   is (Less (Op1, Op2));
+   function ">=" (Op1, Op2 : Mpfloat) return Boolean
+   is (Greaterequal (Op1, Op2));
+   function "<=" (Op1, Op2 : Mpfloat) return Boolean
+   is (Lessequal (Op1, Op2));
 
+   procedure Log (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Log
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
-   procedure Log
-     (Rop : in out Mpfloat;
-      Op  : Long_Integer;
-      Rnd : Rounding := RNDEF)
-   with
-     Pre => Op >= 0;
+     (Rop : in out Mpfloat; Op : Long_Integer; Rnd : Rounding := RNDEF)
+   with Pre => Op >= 0;
    procedure Log2
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Log10
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    --  Set `Rop` to the natural logarithm of `Op`, log2(`Op`) or log10(`Op`),
    --  respectively, rounded in the direction `Rnd`. Set `Rop` to +0 if `Op`
    --  is 1 (in all rounding modes), for consistency with the ISO C99 and
@@ -630,75 +573,50 @@ package Admpfr is
    --  sign of the zero has no influence on the result).
 
    procedure Log1p
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Log2p1
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Log10p1
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    --  Set `Rop` to the logarithm of one plus `Op` (in radix two for `Log2p1`,
    --  and in radix ten for `Log10p1`), rounded in the direction `Rnd`. Set
    --  `Rop` to -Inf if `Op` is -1.
 
-   procedure Exp
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+   procedure Exp (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Exp2
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Exp10
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    --  Set `Rop` to the exponential of `Op`, to 2 power of `Op` or to 10 power
    --  of `Op`, respectively, rounded in the direction `Rnd`.
 
    procedure Expm1
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Exp2m1
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Exp10m1
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    --  Set `Rop` to the exponential of `Op` followed by a subtraction by one,
    --  (resp. 2 power of `Op` followed by a subtraction by one, and 10 power
    --  of `Op` followed by a subtraction by one) rounded in the direction
    --  `Rnd`.
 
    procedure Pow
-     (Rop      : in out Mpfloat;
-      Op1, Op2 : Mpfloat;
-      Rnd      : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op1, Op2 : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Pow
      (Rop : in out Mpfloat;
       Op1 : Mpfloat;
       Op2 : Long_Integer;
       Rnd : Rounding := RNDEF);
    procedure Pow
-     (Rop      : in out Mpfloat;
-      Op1, Op2 : Long_Integer;
-      Rnd      : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op1, Op2 : Long_Integer; Rnd : Rounding := RNDEF);
    procedure Pow
      (Rop : in out Mpfloat;
       Op1 : Long_Integer;
       Op2 : Mpfloat;
       Rnd : Rounding := RNDEF);
    procedure Powr
-     (Rop      : in out Mpfloat;
-      Op1, Op2 : Mpfloat;
-      Rnd      : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op1, Op2 : Mpfloat; Rnd : Rounding := RNDEF);
    --  Set `Rop` to `Op1` raised to `Op2`, rounded in the direction `Rnd`. See
    --  official MPFR documentation for special values handling details. The
    --  `Powr` function corresponds to the powr function from IEEE 754, i.e.,
@@ -714,18 +632,9 @@ package Admpfr is
    --  special cases and exceptions. When `N` is zero and `Op` is NaN or
    --  greater or equal to -1, `Rop` is set to 1.
 
-   procedure Cos
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
-   procedure Sin
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
-   procedure Tan
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+   procedure Cos (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
+   procedure Sin (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
+   procedure Tan (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    --  Set `Rop` to the cosine of `Op`, sine of `Op`, tangent of `Op`, rounded
    --  in the direction `Rnd`.
 
@@ -755,55 +664,32 @@ package Admpfr is
    --  follows IEEE 754 (tanPi).
 
    procedure Cospi
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Sinpi
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Tanpi
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    --  Set `Rop` to the cosine (resp. sine and tangent) of `Op` multiplied by
    --  Pi. See the description of `Sinu`, `Cosu` and `Tanu` for special values.
 
    procedure Sin_Cos
-     (Sop, Cop : in out Mpfloat;
-      Op       : Mpfloat;
-      Rnd      : Rounding := RNDEF);
+     (Sop, Cop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    --  Set simultaneously `Sop` to the sine of `Op` and `Cop` to the cosine of
    --  `Op`, rounded in the direction `Rnd` with the corresponding precisions
    --  of `Sop` and `Cop`, which must be different variables.
 
-   procedure Sec
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
-   procedure Csc
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
-   procedure Cot
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+   procedure Sec (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
+   procedure Csc (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
+   procedure Cot (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    --  Set `Ro`p to the secant of `Op`, cosecant of `Op`, cotangent of `Op`,
    --  rounded in the direction `Rnd`.
 
    procedure Acos
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Asin
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Atan
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    --  Set `Rop` to the arc-cosine, arc-sine or arc-tangent of `Op`,
    --  rounded in the direction `Rnd`.
 
@@ -827,32 +713,22 @@ package Admpfr is
    --  `U` equals 360, `Acosu` yields the arc-cosine in degrees.
 
    procedure Acospi
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Asinpi
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Atanpi
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    --  Set `Rop` to acos(`Op`) (resp. asin(`Op`) and atan(`Op`)) divided by Pi.
 
    procedure Atan2
-     (Rop   : in out Mpfloat;
-      X, Y  : Mpfloat;
-      Rnd   : Rounding := RNDEF);
+     (Rop : in out Mpfloat; X, Y : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Atan2u
-     (Rop   : in out Mpfloat;
-      X, Y  : Mpfloat;
-      U     : Long_Integer;
-      Rnd   : Rounding := RNDEF);
+     (Rop  : in out Mpfloat;
+      X, Y : Mpfloat;
+      U    : Long_Integer;
+      Rnd  : Rounding := RNDEF);
    procedure Atan2pi
-     (Rop   : in out Mpfloat;
-      X, Y  : Mpfloat;
-      Rnd   : Rounding := RNDEF);
+     (Rop : in out Mpfloat; X, Y : Mpfloat; Rnd : Rounding := RNDEF);
    --  Set `Rop` to the arc-tangent2 of `Y` and `X`, rounded in the direction
    --  `Rnd`. Atan2 (Y, 0) does not raise any floating-point exception, see the
    --  official MPFR documentation.
@@ -861,81 +737,52 @@ package Admpfr is
    --  with U = 2.
 
    procedure Cosh
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Sinh
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Tanh
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    --  Set `Rop` to the hyperbolic cosine, sine or tangent of `Op`, rounded in
    --  the direction `Rnd`.
 
    procedure Sinh_Cosh
-     (Sop, Cop : in out Mpfloat;
-      Op       : Mpfloat;
-      Rnd      : Rounding := RNDEF);
+     (Sop, Cop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    --  Set simultaneously `Sop` to the hyperbolic sine of `Op` and `Cop` to the
    --  hyperbolic cosine of `Op`, rounded in the direction `Rnd` with the
    --  corresponding precision of `Sop` and `Cop`, which must be different
    --  variables.
 
    procedure Sech
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Csch
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Coth
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    --  Set `Rop` to the hyperbolic secant of `Op`, cosecant of `Op`, cotangent
    --  of `Op`, rounded in the direction `Rnd`.
 
    procedure Acosh
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Asinh
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Atanh
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    --  Set `Rop` to the inverse hyperbolic cosine, sine or tangent of `Op`,
    --  rounded in the direction `Rnd`.
 
    procedure Eint
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    --  Set `Rop` to the exponential integral of `Op`, rounded in the
    --  direction `Rnd`.
 
-   procedure Li2
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+   procedure Li2 (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    --  Set `Rop` to real part of the dilogarithm of `Op`, rounded in the
    --  direction `Rnd`.
 
    procedure Gamma
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Gamma_Inc
-     (Rop     : in out Mpfloat;
-      Op, Op2 : Mpfloat;
-      Rnd     : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op, Op2 : Mpfloat; Rnd : Rounding := RNDEF);
    --  Set `Rop` to the value of the Gamma function on `Op`, resp. the
    --  incomplete Gamma function on `Op` and `Op2`, rounded in the direction
    --  `Rnd`. (In the literature, Gamma_Inc is called upper incomplete Gamma
@@ -944,9 +791,7 @@ package Admpfr is
    --  integer, `Rop` is set to NaN.
 
    procedure Lngamma
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    --  Set `Rop` to the value of the logarithm of the Gamma function on `Op`,
    --  rounded in the direction `Rnd`. When `Op` is 1 or 2, set `Rop` to +0
    --  (in all rounding modes). When `Op` is an infinity or a nonpositive
@@ -968,51 +813,31 @@ package Admpfr is
    --  and when `Op` is +/-0, `Signp` is the sign of the zero.
 
    procedure Digamma
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    --  Set `Rop` to the value of the Digamma (sometimes also called Psi)
    --  function on `Op`, rounded in the direction `Rnd`. When `Op` is a
    --  negative integer, set `Rop` to NaN.
 
    procedure Beta
-     (Rop      : in out Mpfloat;
-      Op1, Op2 : Mpfloat;
-      Rnd      : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op1, Op2 : Mpfloat; Rnd : Rounding := RNDEF);
    --  Set `Rop`to the value of the Beta function at arguments `Op1` and `Op2`.
 
    procedure Zeta
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Zeta
-     (Rop : in out Mpfloat;
-      Op  : Long_Integer;
-      Rnd : Rounding := RNDEF)
-   with
-     Pre => Op >= 0;
+     (Rop : in out Mpfloat; Op : Long_Integer; Rnd : Rounding := RNDEF)
+   with Pre => Op >= 0;
    --  Set `Rop` to the value of the Riemann Zeta function on `Op`, rounded in
    --  the direction `Rnd`.
 
-   procedure Erf
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+   procedure Erf (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Erfc
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    --  Set `Rop` to the value of the error function on `Op` (resp. the
    --  complementary error function on `Op`) rounded in the direction `Rnd`.
 
-   procedure J0
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
-   procedure J1
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+   procedure J0 (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
+   procedure J1 (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Jn
      (Rop : in out Mpfloat;
       N   : Long_Integer;
@@ -1025,14 +850,8 @@ package Admpfr is
    --  set to +0 or -0 depending on the parity and sign of `N`, and the sign
    --  of `Op`.
 
-   procedure Y0
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
-   procedure Y1
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+   procedure Y0 (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
+   procedure Y1 (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Yn
      (Rop : in out Mpfloat;
       N   : Long_Integer;
@@ -1045,34 +864,21 @@ package Admpfr is
    --  on the parity and sign of `N`.
 
    procedure Agm
-     (Rop      : in out Mpfloat;
-      Op1, Op2 : Mpfloat;
-      Rnd      : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op1, Op2 : Mpfloat; Rnd : Rounding := RNDEF);
    --  Set `Rop` to the arithmetic-geometric mean of `Op1` and `Op2`, rounded
    --  in the direction `Rnd`.
 
-   procedure Ai
-     (Rop : in out Mpfloat;
-      X   : Mpfloat;
-      Rnd : Rounding := RNDEF);
+   procedure Ai (Rop : in out Mpfloat; X : Mpfloat; Rnd : Rounding := RNDEF);
    --  Set `Rop` to the value of the Airy function Ai on `X`, rounded in the
    --  direction `Rnd`. When `X` is NaN, `Rop` is always set to NaN. When `X`
    --  is +Inf or -Inf, `Rop` is +0.
 
-   procedure Const_Log2
-     (Rop : in out Mpfloat;
-      Rnd : Rounding := RNDEF);
-   procedure Const_Pi
-     (Rop : in out Mpfloat;
-      Rnd : Rounding := RNDEF);
-   procedure Const_Euler
-     (Rop : in out Mpfloat;
-      Rnd : Rounding := RNDEF);
-   procedure Const_Catalan
-     (Rop : in out Mpfloat;
-      Rnd : Rounding := RNDEF);
-   --  Set `Rop` to the logarithm of 2, the value of Pi, of Euler’s constant
-   --  0.577..., of Catalan’s constant 0.915..., respectively, rounded in the
+   procedure Const_Log2 (Rop : in out Mpfloat; Rnd : Rounding := RNDEF);
+   procedure Const_Pi (Rop : in out Mpfloat; Rnd : Rounding := RNDEF);
+   procedure Const_Euler (Rop : in out Mpfloat; Rnd : Rounding := RNDEF);
+   procedure Const_Catalan (Rop : in out Mpfloat; Rnd : Rounding := RNDEF);
+   --  Set `Rop` to the logarithm of 2, the value of Pi, of Euler's constant
+   --  0.577..., of Catalan's constant 0.915..., respectively, rounded in the
    --  direction `Rnd`.
 
    procedure Out_Str
@@ -1103,11 +909,13 @@ package Admpfr is
    --  Output `Op` on stdout in some unspecified format, then a newline
    --  character. This function is mainly for debugging purpose.
 
-   function Prec_Min return Precision is (Precision'First);
+   function Prec_Min return Precision
+   is (Precision'First);
    --  Return the minimum number of bits that can be used to represent the
    --  significand of a `Mpfloat`.
 
-   function Prec_Max return Precision is (Precision'Last);
+   function Prec_Max return Precision
+   is (Precision'Last);
    --  Return the maximum number of bits that can be used to represent the
    --  significand of a `Mpfloat`.
 
@@ -1129,9 +937,7 @@ package Admpfr is
    --  be any value between `Prec_Min` and `Prec_Max`. In case you want to keep
    --  the previous value stored in x, use `Prec_Round` (TODO) instead.
 
-   procedure Printf (Template : String;
-                     X        : Mpfloat;
-                     R        : Rounding := RNDEF);
+   procedure Printf (Template : String; X : Mpfloat; R : Rounding := RNDEF);
    --  Format string `Template`. The format specification accepted by
    --  `Printf` is an extension of the printf one. See the mpfr
    --  documentation for a detailed description of the `Template` formats.
@@ -1142,17 +948,14 @@ package Admpfr is
    --  the default precision, rounded toward +Inf, use:
    --    `Printf ("%.R*e" & ASCII.LF, X, R)`.
 
-   function Sprintf (Template : String;
-                     X        : Mpfloat;
-                     R        : Rounding := RNDEF) return String;
+   function Sprintf
+     (Template : String; X : Mpfloat; R : Rounding := RNDEF) return String;
    --  Format string `Template`. `Sprintf` has the same behavior than
    --  `Printf` (it is based on `mpfr_sprintf`). It returns the formated
    --  `Template` as a string.
 
    procedure Rint
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Ceil (Rop : in out Mpfloat; Op : Mpfloat);
    procedure Floor (Rop : in out Mpfloat; Op : Mpfloat);
    procedure Round (Rop : in out Mpfloat; Op : Mpfloat);
@@ -1173,25 +976,15 @@ package Admpfr is
    --    (like `Rint` with `RNDZ`.
 
    procedure Rint_Ceil
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Rint_Floor
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Rint_Round
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Rint_Roundeven
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Rint_Trunc
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    --  Set `Rop` to `Op` rounded to an integer:
    --  * `Rint_Ceil`: to the next higher or equal integer;
    --  * `Rint_Floor`: to the next lower or equal integer;
@@ -1206,26 +999,20 @@ package Admpfr is
    --  rounded in the given direction `Rnd`.
 
    procedure Frac
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    --  Set `Rop` to the fractional part of `Op`, having the same sign as `Op`,
    --  rounded in the direction `Rnd`. When `Op` is an integer or an infinity,
    --  set `Rop` to zero with the same sign as `Op`.
 
    procedure Modf
-     (Iop, Fop : in out Mpfloat;
-      Op       : Mpfloat;
-      Rnd      : Rounding := RNDEF);
+     (Iop, Fop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
    --  Set simultaneously `Iop` to the integral part of `Op` and `Fop` to the
    --  fractional part of `Op`, rounded in the direction `Rnd` with the
    --  corresponding precision of `Iop` and `Fop` (equivalent to
    --  `Trunc (Iop, Op, Rnd)` and `Frac (Fop, Op, Rnd)`).
 
    procedure Fmod
-     (R    : in out Mpfloat;
-      X, Y : Mpfloat;
-      Rnd  : Rounding := RNDEF);
+     (R : in out Mpfloat; X, Y : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Fmod
      (R   : in out Mpfloat;
       X   : Mpfloat;
@@ -1237,9 +1024,7 @@ package Admpfr is
       X, Y : Mpfloat;
       Rnd  : Rounding := RNDEF);
    procedure Remainder
-     (R    : in out Mpfloat;
-      X, Y : Mpfloat;
-      Rnd  : Rounding := RNDEF);
+     (R : in out Mpfloat; X, Y : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Remquo
      (R    : in out Mpfloat;
       Q    : in out Long_Integer;
@@ -1266,9 +1051,7 @@ package Admpfr is
    --  RNDN initially.
 
    procedure Prec_Round
-     (X    : in out Mpfloat;
-      Prec : Precision;
-      Rnd  : Rounding := RNDEF);
+     (X : in out Mpfloat; Prec : Precision; Rnd : Rounding := RNDEF);
    --  Round `X` according to `Rnd` with precision `Prec`.
 
    function Can_Round
@@ -1303,13 +1086,9 @@ package Admpfr is
    --  infinity).
 
    procedure Min
-     (Rop      : in out Mpfloat;
-      Op1, Op2 : Mpfloat;
-      Rnd      : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op1, Op2 : Mpfloat; Rnd : Rounding := RNDEF);
    procedure Max
-     (Rop      : in out Mpfloat;
-      Op1, Op2 : Mpfloat;
-      Rnd      : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op1, Op2 : Mpfloat; Rnd : Rounding := RNDEF);
    --  Set `Rop`to the minimum (resp. maximum) of `Op1` and `Op2`. If `Op1` and
    --  `Op2` are both NaN, then `Rop` is set to NaN. If `Op1` or `Op2` is NaN,
    --  then `Rop` is set to the numeric value. If `Op1` and `Op2` are zeros of
@@ -1327,17 +1106,12 @@ package Admpfr is
    --  Return the value of the sign bit of `X`.
 
    procedure Setsign
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      S   : Sign;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; S : Sign; Rnd : Rounding := RNDEF);
    --  Set the value of `Rop` from `Op`, rounded toward the given direction
    --  `Rnd`, then set its sign bit to `S`.
 
    procedure Copysign
-     (Rop      : in out Mpfloat;
-      Op1, Op2 : Mpfloat;
-      Rnd      : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op1, Op2 : Mpfloat; Rnd : Rounding := RNDEF);
    --  Set the value of `Rop` from `Op1`, rounded toward the given direction
    --  `Rnd`, then set its sign bit to that of `Op2`. This function is
    --  equivalent to `Setsign (Rop, Op1, Signbit (Op2), Rnd)`.
@@ -1469,7 +1243,7 @@ package Admpfr is
    --  Restore the flags specified by `Mask` to their state represented in
    --  `Flags`.
 
-   Failure : exception;
+   Failure    : exception;
    Empty_Prec : exception;
 
 private
@@ -1485,49 +1259,52 @@ private
       Mpfr_Sign : mpfr_sign_t;
       Mpfr_Exp  : mpfr_exp_t;
       Mp_Limb   : System.Address;
-   end record with Convention => C;
+   end record
+   with Convention => C;
    --  Be careful, mpfr_t may be not portable since mpfr_prec_t, and mpfr_exp_t
    --  can be of a different type depending on the machine the library has been
    --  built for. mpfr_t record must stricty stick to the C mpfr_t struct.
 
    type Mpfloat (Prec : Precision := Get_Default_Prec) is
-     new Limited_Controlled with
-      record
-         Value   : aliased mpfr_t;
-         Ternary : Ternary_Value := NOT_SET;
-      end record;
+     new Limited_Controlled
+   with record
+      Value   : aliased mpfr_t;
+      Ternary : Ternary_Value := NOT_SET;
+   end record;
 
    procedure Initialize (X : in out Mpfloat);
-   procedure Finalize   (X : in out Mpfloat);
+   procedure Finalize (X : in out Mpfloat);
 
    procedure Reformat_Printf_Args (T : in out String; R : in out Rounding);
    function To_Ternary_Value (T : int) return Ternary_Value;
    function To_Compare (C : int) return Compare;
 
    generic
-      with function mpfr_fn (Rop : access constant mpfr_t;
-                             Op  : access constant mpfr_t;
-                             Rnd : mpfr_rnd_t) return int;
+      with
+        function mpfr_fn
+          (Rop : access constant mpfr_t;
+           Op  : access constant mpfr_t;
+           Rnd : mpfr_rnd_t) return int;
    procedure Mpfr_Fn_1
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF);
 
    generic
-      with function mpfr_fn (Rop : access constant mpfr_t;
-                             Op1 : access constant mpfr_t;
-                             Op2 : access constant mpfr_t;
-                             Rnd : mpfr_rnd_t) return int;
+      with
+        function mpfr_fn
+          (Rop : access constant mpfr_t;
+           Op1 : access constant mpfr_t;
+           Op2 : access constant mpfr_t;
+           Rnd : mpfr_rnd_t) return int;
    procedure Mpfr_Fn_2
-     (Rop      : in out Mpfloat;
-      Op1, Op2 : Mpfloat;
-      Rnd      : Rounding := RNDEF);
+     (Rop : in out Mpfloat; Op1, Op2 : Mpfloat; Rnd : Rounding := RNDEF);
 
    generic
-      with function mpfr_fn (Rop : access constant mpfr_t;
-                             Op1 : access constant mpfr_t;
-                             Op2 : long;
-                             Rnd : mpfr_rnd_t) return int;
+      with
+        function mpfr_fn
+          (Rop : access constant mpfr_t;
+           Op1 : access constant mpfr_t;
+           Op2 : long;
+           Rnd : mpfr_rnd_t) return int;
    procedure Mpfr_Fn_2_I
      (Rop : in out Mpfloat;
       Op1 : Mpfloat;
@@ -1535,10 +1312,12 @@ private
       Rnd : Rounding := RNDEF);
 
    generic
-      with function mpfr_fn (Rop : access constant mpfr_t;
-                             Op1 : long;
-                             Op2 : access constant mpfr_t;
-                             Rnd : mpfr_rnd_t) return int;
+      with
+        function mpfr_fn
+          (Rop : access constant mpfr_t;
+           Op1 : long;
+           Op2 : access constant mpfr_t;
+           Rnd : mpfr_rnd_t) return int;
    procedure Mpfr_Fn_2_Ib
      (Rop : in out Mpfloat;
       Op1 : Long_Integer;
@@ -1546,10 +1325,12 @@ private
       Rnd : Rounding := RNDEF);
 
    generic
-      with function mpfr_fn (Rop : access constant mpfr_t;
-                             Op1 : access constant mpfr_t;
-                             Op2 : double;
-                             Rnd : mpfr_rnd_t) return int;
+      with
+        function mpfr_fn
+          (Rop : access constant mpfr_t;
+           Op1 : access constant mpfr_t;
+           Op2 : double;
+           Rnd : mpfr_rnd_t) return int;
    procedure Mpfr_Fn_2_F
      (Rop : in out Mpfloat;
       Op1 : Mpfloat;
@@ -1557,10 +1338,12 @@ private
       Rnd : Rounding := RNDEF);
 
    generic
-      with function mpfr_fn (Rop : access constant mpfr_t;
-                             Op1 : double;
-                             Op2 : access constant mpfr_t;
-                             Rnd : mpfr_rnd_t) return int;
+      with
+        function mpfr_fn
+          (Rop : access constant mpfr_t;
+           Op1 : double;
+           Op2 : access constant mpfr_t;
+           Rnd : mpfr_rnd_t) return int;
    procedure Mpfr_Fn_2_Fb
      (Rop : in out Mpfloat;
       Op1 : Long_Float;

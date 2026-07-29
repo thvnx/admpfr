@@ -19,6 +19,7 @@ begin
          Put_Line (Get_Prec (O)'Image);
       end;
    exception
-      when F : Failure => Put_Line (Exception_Message (F));
+      when F : Failure =>
+         Put_Line (Exception_Message (F));
    end;
 end Test;

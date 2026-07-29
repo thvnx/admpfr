@@ -1,9 +1,9 @@
-with Ada.Text_IO;    use Ada.Text_IO;
-with Admpfr;         use Admpfr;
+with Ada.Text_IO; use Ada.Text_IO;
+with Admpfr;      use Admpfr;
 
 procedure Test is
    M, N, O, P : Mpfloat;
-   B : Boolean;
+   B          : Boolean;
 begin
    M.Set ("0.1");
    N.Set ("-0.1");
@@ -33,25 +33,42 @@ begin
    Put_Line (N.Cmp_Abs (M)'Image);
    Put_Line (M.Cmp_Abs (M)'Image);
 
-   B := M = N; Put_Line (B'Image);
-   B := M /= N; Put_Line (B'Image);
-   B := M > N; Put_Line (B'Image);
-   B := M < N; Put_Line (B'Image);
-   B := M >= N; Put_Line (B'Image);
-   B := M <= N; Put_Line (B'Image);
+   B := M = N;
+   Put_Line (B'Image);
+   B := M /= N;
+   Put_Line (B'Image);
+   B := M > N;
+   Put_Line (B'Image);
+   B := M < N;
+   Put_Line (B'Image);
+   B := M >= N;
+   Put_Line (B'Image);
+   B := M <= N;
+   Put_Line (B'Image);
 
-   B := M = P; Put_Line (B'Image);
-   B := M /= P; Put_Line (B'Image);
-   B := M > P; Put_Line (B'Image);
-   B := M < P; Put_Line (B'Image);
-   B := M >= P; Put_Line (B'Image);
-   B := M <= P; Put_Line (B'Image);
+   B := M = P;
+   Put_Line (B'Image);
+   B := M /= P;
+   Put_Line (B'Image);
+   B := M > P;
+   Put_Line (B'Image);
+   B := M < P;
+   Put_Line (B'Image);
+   B := M >= P;
+   Put_Line (B'Image);
+   B := M <= P;
+   Put_Line (B'Image);
 
-   B := M = O; Put_Line (B'Image);
-   B := M > O; Put_Line (B'Image);
-   B := M < O; Put_Line (B'Image);
-   B := M >= O; Put_Line (B'Image);
-   B := M <= O; Put_Line (B'Image);
+   B := M = O;
+   Put_Line (B'Image);
+   B := M > O;
+   Put_Line (B'Image);
+   B := M < O;
+   Put_Line (B'Image);
+   B := M >= O;
+   Put_Line (B'Image);
+   B := M <= O;
+   Put_Line (B'Image);
 
    Put_Line (M.Greater (N)'Image);
    Put_Line (M.Greaterequal (N)'Image);

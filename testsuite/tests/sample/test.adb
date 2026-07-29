@@ -1,5 +1,5 @@
 with Ada.Text_IO; use Ada.Text_IO;
-with Admpfr; use Admpfr;
+with Admpfr;      use Admpfr;
 
 procedure Test is
    S, T, U : Mpfloat (200);

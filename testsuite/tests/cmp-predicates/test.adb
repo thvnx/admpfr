@@ -1,8 +1,8 @@
-with Ada.Text_IO;    use Ada.Text_IO;
-with Admpfr;         use Admpfr;
+with Ada.Text_IO; use Ada.Text_IO;
+with Admpfr;      use Admpfr;
 
 procedure Test is
-   M : Mpfloat;
+   M              : Mpfloat;
    NaN, Inf, Zero : Mpfloat;
 begin
    M.Set (12);

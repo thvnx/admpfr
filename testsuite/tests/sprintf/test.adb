@@ -10,8 +10,8 @@ begin
             Set (A, "-0.1", Base => Base (B), Rnd => R);
             Put_Line (Sprintf ("%R*e", A, R));
          exception
-            when
-              others => Put_Line ("Base not in range?: " & B'Image);
+            when others =>
+               Put_Line ("Base not in range?: " & B'Image);
          end;
       end loop;
    end loop;

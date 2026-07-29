@@ -1,9 +1,9 @@
-with Ada.Text_IO;    use Ada.Text_IO;
-with Admpfr;         use Admpfr;
+with Ada.Text_IO; use Ada.Text_IO;
+with Admpfr;      use Admpfr;
 
 procedure Test is
-   M   : Mpfloat;
-   I   : Long_Integer;
+   M : Mpfloat;
+   I : Long_Integer;
 begin
    M.Set (2);
    I := M.Get_Long_Integer;

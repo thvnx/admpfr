@@ -2,22 +2,16 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Admpfr;      use Admpfr;
 
 procedure Test is
-   type Fn_1 is access
-     procedure (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding);
-   type Fn_2 is access
-     procedure (Rop : in out Mpfloat; Op1, Op2 : Mpfloat; Rnd : Rounding);
+   type Fn_1 is
+     access procedure (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding);
+   type Fn_2 is
+     access procedure
+       (Rop : in out Mpfloat; Op1, Op2 : Mpfloat; Rnd : Rounding);
 
-   procedure Test_Fn_1
-     (Mpfr_Fn : Fn_1;
-      Op      : Mpfloat);
-   procedure Test_Fn_2
-     (Mpfr_Fn  : Fn_2;
-      Op1, Op2 : Mpfloat);
+   procedure Test_Fn_1 (Mpfr_Fn : Fn_1; Op : Mpfloat);
+   procedure Test_Fn_2 (Mpfr_Fn : Fn_2; Op1, Op2 : Mpfloat);
 
-   procedure Test_Fn_1
-     (Mpfr_Fn : Fn_1;
-      Op      : Mpfloat)
-   is
+   procedure Test_Fn_1 (Mpfr_Fn : Fn_1; Op : Mpfloat) is
       Rop : Mpfloat;
    begin
       Put_Line ("Fn1");
@@ -28,10 +22,7 @@ procedure Test is
       Put (ASCII.CR);
    end Test_Fn_1;
 
-   procedure Test_Fn_2
-     (Mpfr_Fn  : Fn_2;
-      Op1, Op2 : Mpfloat)
-   is
+   procedure Test_Fn_2 (Mpfr_Fn : Fn_2; Op1, Op2 : Mpfloat) is
       Rop : Mpfloat;
    begin
       Put_Line ("Fn2");

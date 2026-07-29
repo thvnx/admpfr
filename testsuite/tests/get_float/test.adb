@@ -27,27 +27,32 @@ begin
    begin
       F := M.Get_Float;
    exception
-      when F : Failure => Put_Line (Exception_Message (F));
+      when F : Failure =>
+         Put_Line (Exception_Message (F));
    end;
    begin
       LF := M.Get_Long_Float;
    exception
-      when F : Failure => Put_Line (Exception_Message (F));
+      when F : Failure =>
+         Put_Line (Exception_Message (F));
    end;
    begin
       LLF := M.Get_Long_Long_Float;
    exception
-      when F : Failure => Put_Line (Exception_Message (F));
+      when F : Failure =>
+         Put_Line (Exception_Message (F));
    end;
    begin
       LF := M.Get_Long_Float (LI);
    exception
-      when F : Failure => Put_Line (Exception_Message (F));
+      when F : Failure =>
+         Put_Line (Exception_Message (F));
    end;
    begin
       LLF := M.Get_Long_Long_Float (LI);
    exception
-      when F : Failure => Put_Line (Exception_Message (F));
+      when F : Failure =>
+         Put_Line (Exception_Message (F));
    end;
 
    M.Set_Nan;
@@ -55,27 +60,32 @@ begin
    begin
       F := M.Get_Float;
    exception
-      when F : Failure => Put_Line (Exception_Message (F));
+      when F : Failure =>
+         Put_Line (Exception_Message (F));
    end;
    begin
       LF := M.Get_Long_Float;
    exception
-      when F : Failure => Put_Line (Exception_Message (F));
+      when F : Failure =>
+         Put_Line (Exception_Message (F));
    end;
    begin
       LLF := M.Get_Long_Long_Float;
    exception
-      when F : Failure => Put_Line (Exception_Message (F));
+      when F : Failure =>
+         Put_Line (Exception_Message (F));
    end;
    begin
       LF := M.Get_Long_Float (LI);
    exception
-      when F : Failure => Put_Line (Exception_Message (F));
+      when F : Failure =>
+         Put_Line (Exception_Message (F));
    end;
    begin
       LLF := M.Get_Long_Long_Float (LI);
    exception
-      when F : Failure => Put_Line (Exception_Message (F));
+      when F : Failure =>
+         Put_Line (Exception_Message (F));
    end;
 
    M.Set ("1234e567");
@@ -83,30 +93,35 @@ begin
    begin
       F := M.Get_Float;
    exception
-      when F : Failure => Put_Line (Exception_Message (F));
+      when F : Failure =>
+         Put_Line (Exception_Message (F));
    end;
    begin
       LF := M.Get_Long_Float;
    exception
-      when F : Failure => Put_Line (Exception_Message (F));
+      when F : Failure =>
+         Put_Line (Exception_Message (F));
    end;
    begin
       LLF := M.Get_Long_Long_Float;
       Put_Line (LLF'Image);
    exception
-      when F : Failure => Put_Line (Exception_Message (F));
+      when F : Failure =>
+         Put_Line (Exception_Message (F));
    end;
    begin
       LF := M.Get_Long_Float (LI);
       Put_Line (LF'Image & " " & LI'Image);
    exception
-      when F : Failure => Put_Line (Exception_Message (F));
+      when F : Failure =>
+         Put_Line (Exception_Message (F));
    end;
    begin
       LLF := M.Get_Long_Long_Float (LI);
       Put_Line (LLF'Image & " " & LI'Image);
    exception
-      when F : Failure => Put_Line (Exception_Message (F));
+      when F : Failure =>
+         Put_Line (Exception_Message (F));
    end;
 
 end Test;

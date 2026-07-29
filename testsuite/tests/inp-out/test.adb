@@ -2,7 +2,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Admpfr;      use Admpfr;
 
 procedure Test is
-   F, I  : File_Type;
+   F, I : File_Type;
    M, N : Mpfloat;
 begin
    Create (F, Out_File, "tt.txt");

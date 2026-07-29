@@ -15,7 +15,8 @@ begin
             Set (Test.B, "0", Base => Base (B), Rnd => R);
             Set (C, "0.1", Base => Base (B), Rnd => R);
          exception
-            when others => Put_Line ("Base not in range?: " & B'Image);
+            when others =>
+               Put_Line ("Base not in range?: " & B'Image);
          end;
       end loop;
    end loop;
@@ -47,10 +48,10 @@ begin
    end;
 
    declare
-      A : constant Float := Float'Last;
-      B : constant Long_Float := Long_Float'First;
-      C : constant Float := 0.0;
-      D : constant Long_Long_Float := Long_Long_Float'Last;
+      A          : constant Float := Float'Last;
+      B          : constant Long_Float := Long_Float'First;
+      C          : constant Float := 0.0;
+      D          : constant Long_Long_Float := Long_Long_Float'Last;
       I, J, K, L : Mpfloat;
    begin
       Set (I, A);

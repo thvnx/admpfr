@@ -32,13 +32,30 @@ package body Admpfr is
       for I in 1 .. T'Length loop
          if T (I) = 'R' and then R = RNDN then
             case T (I + 1) is
-               when 'N' => T (I + 1) := '*';
-               when 'U' => T (I + 1) := '*'; R := RNDU;
-               when 'D' => T (I + 1) := '*'; R := RNDD;
-               when 'Y' => T (I + 1) := '*'; R := RNDA;
-               when 'Z' => T (I + 1) := '*'; R := RNDZ;
-               when '*' => null;
-               when others => raise Failure;
+               when 'N'    =>
+                  T (I + 1) := '*';
+
+               when 'U'    =>
+                  T (I + 1) := '*';
+                  R := RNDU;
+
+               when 'D'    =>
+                  T (I + 1) := '*';
+                  R := RNDD;
+
+               when 'Y'    =>
+                  T (I + 1) := '*';
+                  R := RNDA;
+
+               when 'Z'    =>
+                  T (I + 1) := '*';
+                  R := RNDZ;
+
+               when '*'    =>
+                  null;
+
+               when others =>
+                  raise Failure;
             end case;
          end if;
          exit when T (I) = '*';
@@ -49,9 +66,7 @@ package body Admpfr is
    -- Printf --
    ------------
 
-   procedure Printf (Template : String;
-                     X        : Mpfloat;
-                     R        : Rounding := RNDEF) is
+   procedure Printf (Template : String; X : Mpfloat; R : Rounding := RNDEF) is
       Res   : int := -1;
       Input : chars_ptr := Null_Ptr;
       Tpl   : String := Template;
@@ -77,9 +92,9 @@ package body Admpfr is
    -- Sprintf --
    -------------
 
-   function Sprintf (Template : String;
-                     X        : Mpfloat;
-                     R        : Rounding := RNDEF) return String is
+   function Sprintf
+     (Template : String; X : Mpfloat; R : Rounding := RNDEF) return String
+   is
       Res : int := -1;
       Buf : String (1 .. 256);
       --  TODO: find a way to compute a safe upper bound for Buf. mpfr_sprintf
@@ -93,10 +108,9 @@ package body Admpfr is
          Reformat_Printf_Args (Tpl, Rnd);
          Input := New_String (Tpl);
 
-         Res := sprintf_stub (Buf'Address,
-                              Input,
-                              Rounding'Pos (Rnd),
-                              X.Value'Access);
+         Res :=
+           sprintf_stub
+             (Buf'Address, Input, Rounding'Pos (Rnd), X.Value'Access);
          Free (Input);
 
          if Res > 0 then
@@ -120,8 +134,11 @@ package body Admpfr is
       mpfr_init2 (X.Value'Access, mpfr_prec_t (X.Prec));
    exception
       when Program_Error =>
-         raise Failure with "error during Mpfloat (Prec :=" &
-           X.Prec'Image & ") initialization";
+         raise Failure
+           with
+             "error during Mpfloat (Prec :="
+             & X.Prec'Image
+             & ") initialization";
    end Initialize;
 
    --------------
@@ -137,8 +154,8 @@ package body Admpfr is
    -- Get_Ternary_Value --
    -----------------------
 
-   function Get_Ternary_Value (X : Mpfloat) return Ternary_Value is
-     (X.Ternary);
+   function Get_Ternary_Value (X : Mpfloat) return Ternary_Value
+   is (X.Ternary);
 
    ----------------------
    -- To_Ternary_Value --
@@ -162,9 +179,8 @@ package body Admpfr is
    procedure Set (Rop : out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_set (Rop.Value'Access,
-                                    Op.Value'Access,
-                                    Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_set (Rop.Value'Access, Op.Value'Access, Rounding'Pos (Rnd)));
    end Set;
 
    ---------
@@ -172,14 +188,11 @@ package body Admpfr is
    ---------
 
    procedure Set
-     (Rop : out Mpfloat;
-      Op  : Long_Integer;
-      Rnd : Rounding := RNDEF) is
+     (Rop : out Mpfloat; Op : Long_Integer; Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_set_si (Rop.Value'Access,
-                                       long (Op),
-                                       Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_set_si (Rop.Value'Access, long (Op), Rounding'Pos (Rnd)));
    end Set;
 
    ---------
@@ -189,9 +202,21 @@ package body Admpfr is
    procedure Set (Rop : out Mpfloat; Op : Float; Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_set_flt (Rop.Value'Access,
-                                        C_float (Op),
-                                        Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_set_flt (Rop.Value'Access, C_float (Op), Rounding'Pos (Rnd)));
+   end Set;
+
+   ---------
+   -- Set --
+   ---------
+
+   procedure Set (Rop : out Mpfloat; Op : Long_Float; Rnd : Rounding := RNDEF)
+   is
+   begin
+      Rop.Ternary :=
+        To_Ternary_Value
+          (mpfr_set_d
+             (Rop.Value'Access, Interfaces.C.double (Op), Rounding'Pos (Rnd)));
    end Set;
 
    ---------
@@ -199,29 +224,14 @@ package body Admpfr is
    ---------
 
    procedure Set
-     (Rop : out Mpfloat;
-      Op  : Long_Float;
-      Rnd : Rounding := RNDEF) is
+     (Rop : out Mpfloat; Op : Long_Long_Float; Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_set_d (Rop.Value'Access,
-                                      Interfaces.C.double (Op),
-                                      Rounding'Pos (Rnd)));
-   end Set;
-
-   ---------
-   -- Set --
-   ---------
-
-   procedure Set
-     (Rop : out Mpfloat;
-      Op  : Long_Long_Float;
-      Rnd : Rounding := RNDEF) is
-   begin
-      Rop.Ternary :=
-        To_Ternary_Value (mpfr_set_ld (Rop.Value'Access,
-                                       Interfaces.C.long_double (Op),
-                                       Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_set_ld
+             (Rop.Value'Access,
+              Interfaces.C.long_double (Op),
+              Rounding'Pos (Rnd)));
    end Set;
 
    ---------
@@ -235,10 +245,12 @@ package body Admpfr is
       Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_set_si_2exp (Rop.Value'Access,
-                                            long (Op),
-                                            mpfr_exp_t (E),
-                                            Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_set_si_2exp
+             (Rop.Value'Access,
+              long (Op),
+              mpfr_exp_t (E),
+              Rounding'Pos (Rnd)));
    end Set;
 
    ---------
@@ -249,17 +261,19 @@ package body Admpfr is
      (Rop  : out Mpfloat;
       S    : String;
       Base : Admpfr.Base := 10;
-      Rnd  : Rounding    := RNDEF)
+      Rnd  : Rounding := RNDEF)
    is
       Input  : chars_ptr := New_String (S);
       Endptr : aliased chars_ptr := Null_Ptr;
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_strtofr (Rop.Value'Access,
-                                        Input,
-                                        Endptr'Access,
-                                        int (Base),
-                                        Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_strtofr
+             (Rop.Value'Access,
+              Input,
+              Endptr'Access,
+              int (Base),
+              Rounding'Pos (Rnd)));
 
       declare
          Invalid_Data : constant String := Value (Endptr);
@@ -271,8 +285,13 @@ package body Admpfr is
          Free (Input);
 
          if Invalid_Data /= "" then
-            raise Failure with "invalid data: '" & Invalid_Data &
-              "' to set number from string: '" & S & "'";
+            raise Failure
+              with
+                "invalid data: '"
+                & Invalid_Data
+                & "' to set number from string: '"
+                & S
+                & "'";
          end if;
       end;
 
@@ -326,8 +345,8 @@ package body Admpfr is
       return Float (mpfr_get_flt (Op.Value'Access, Rounding'Pos (Rnd)));
    exception
       when Constraint_Error =>
-         raise Failure with "invalid data, can't convert: " & Op.To_String
-            & " to Float";
+         raise Failure
+           with "invalid data, can't convert: " & Op.To_String & " to Float";
    end Get_Float;
 
    --------------------
@@ -335,14 +354,14 @@ package body Admpfr is
    --------------------
 
    function Get_Long_Float
-     (Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) return Long_Float is
+     (Op : Mpfloat; Rnd : Rounding := RNDEF) return Long_Float is
    begin
       return Long_Float (mpfr_get_d (Op.Value'Access, Rounding'Pos (Rnd)));
    exception
       when Constraint_Error =>
-         raise Failure with "invalid data, can't convert: " & Op.To_String
-            & " to Long_Float";
+         raise Failure
+           with
+             "invalid data, can't convert: " & Op.To_String & " to Long_Float";
    end Get_Long_Float;
 
    -------------------------
@@ -350,15 +369,17 @@ package body Admpfr is
    -------------------------
 
    function Get_Long_Long_Float
-     (Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) return Long_Long_Float is
+     (Op : Mpfloat; Rnd : Rounding := RNDEF) return Long_Long_Float is
    begin
-      return Long_Long_Float
-        (mpfr_get_ld (Op.Value'Access, Rounding'Pos (Rnd)));
+      return
+        Long_Long_Float (mpfr_get_ld (Op.Value'Access, Rounding'Pos (Rnd)));
    exception
       when Constraint_Error =>
-         raise Failure with "invalid data, can't convert: " & Op.To_String
-            & " to Long_Long_Float";
+         raise Failure
+           with
+             "invalid data, can't convert: "
+             & Op.To_String
+             & " to Long_Long_Float";
    end Get_Long_Long_Float;
 
    ----------------------
@@ -366,8 +387,7 @@ package body Admpfr is
    ----------------------
 
    function Get_Long_Integer
-     (Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) return Long_Integer is
+     (Op : Mpfloat; Rnd : Rounding := RNDEF) return Long_Integer is
    begin
       return Long_Integer (mpfr_get_si (Op.Value'Access, Rounding'Pos (Rnd)));
    end Get_Long_Integer;
@@ -377,22 +397,23 @@ package body Admpfr is
    --------------------
 
    function Get_Long_Float
-     (Op  : Mpfloat;
-      Exp : out Long_Integer;
-      Rnd : Rounding := RNDEF) return Long_Float
+     (Op : Mpfloat; Exp : out Long_Integer; Rnd : Rounding := RNDEF)
+      return Long_Float
    is
       L : aliased long;
    begin
-      return LF : constant Long_Float := Long_Float
-        (mpfr_get_d_2exp (L'Access,
-                          Op.Value'Access,
-                          Rounding'Pos (Rnd))) do
+      return
+         LF : constant Long_Float :=
+           Long_Float
+             (mpfr_get_d_2exp (L'Access, Op.Value'Access, Rounding'Pos (Rnd)))
+      do
          Exp := Long_Integer (L);
       end return;
    exception
       when Constraint_Error =>
-         raise Failure with "invalid data, can't convert: " & Op.To_String
-            & " to Long_Float";
+         raise Failure
+           with
+             "invalid data, can't convert: " & Op.To_String & " to Long_Float";
    end Get_Long_Float;
 
    -------------------------
@@ -400,22 +421,25 @@ package body Admpfr is
    -------------------------
 
    function Get_Long_Long_Float
-     (Op  : Mpfloat;
-      Exp : out Long_Integer;
-      Rnd : Rounding := RNDEF) return Long_Long_Float
+     (Op : Mpfloat; Exp : out Long_Integer; Rnd : Rounding := RNDEF)
+      return Long_Long_Float
    is
       L : aliased long;
    begin
-      return LLF : constant Long_Long_Float := Long_Long_Float
-        (mpfr_get_ld_2exp (L'Access,
-                           Op.Value'Access,
-                           Rounding'Pos (Rnd))) do
+      return
+         LLF : constant Long_Long_Float :=
+           Long_Long_Float
+             (mpfr_get_ld_2exp (L'Access, Op.Value'Access, Rounding'Pos (Rnd)))
+      do
          Exp := Long_Integer (L);
       end return;
    exception
       when Constraint_Error =>
-         raise Failure with "invalid data, can't convert: " & Op.To_String
-            & " to Long_Long_Float";
+         raise Failure
+           with
+             "invalid data, can't convert: "
+             & Op.To_String
+             & " to Long_Long_Float";
    end Get_Long_Long_Float;
 
    ---------
@@ -431,10 +455,12 @@ package body Admpfr is
       L : aliased mpfr_exp_t;
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_frexp (L'Access,
-                                      Rop.Value'Access,
-                                      Op.Value'Access,
-                                      Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_frexp
+             (L'Access,
+              Rop.Value'Access,
+              Op.Value'Access,
+              Rounding'Pos (Rnd)));
       Exp := Long_Integer (L);
    end Set;
 
@@ -443,9 +469,8 @@ package body Admpfr is
    ---------------
 
    function To_String
-     (X    : Mpfloat;
-      Base : Admpfr.Base := 10;
-      Rnd  : Rounding    := RNDEF) return String
+     (X : Mpfloat; Base : Admpfr.Base := 10; Rnd : Rounding := RNDEF)
+      return String
    is
       --  TODO: Rely on mpfr_get_str_ndigits for now but allows the user to set
       --  the number of digits to print by adding a parameter to this function.
@@ -454,9 +479,10 @@ package body Admpfr is
       --  at least for base 10!
 
       Number_Digits : constant size_t :=
-        size_t'Max (mpfr_get_str_ndigits (abs int (Base),
-                                          mpfr_get_prec (X.Value'Access)),
-                    7);
+        size_t'Max
+          (mpfr_get_str_ndigits
+             (abs int (Base), mpfr_get_prec (X.Value'Access)),
+           7);
 
       Significand_Buffer : String (1 .. Integer (Number_Digits + 2));
       Exponent           : mpfr_exp_t;
@@ -464,12 +490,14 @@ package body Admpfr is
       Exponent_S, Number : Unbounded_String;
       Significand        : chars_ptr;
    begin
-      Significand := mpfr_get_str (Significand_Buffer'Address,
-                                   Exponent'Address,
-                                   int (Base),
-                                   Number_Digits,
-                                   X.Value'Access,
-                                   Rounding'Pos (Rnd));
+      Significand :=
+        mpfr_get_str
+          (Significand_Buffer'Address,
+           Exponent'Address,
+           int (Base),
+           Number_Digits,
+           X.Value'Access,
+           Rounding'Pos (Rnd));
 
       --  Special treatment for NaN and inf values
 
@@ -525,8 +553,7 @@ package body Admpfr is
 
    procedure Mpfloat_Image
      (Buffer : in out Ada.Strings.Text_Buffers.Root_Buffer_Type'Class;
-      Arg    :        Mpfloat)
-   is
+      Arg    : Mpfloat) is
    begin
       Buffer.Put (Arg.To_String);
    end Mpfloat_Image;
@@ -536,11 +563,10 @@ package body Admpfr is
    -----------------------
 
    function Fits_Long_Integer
-     (Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) return Boolean
+     (Op : Mpfloat; Rnd : Rounding := RNDEF) return Boolean
    is
-      Fits : constant int := mpfr_fits_slong_p (Op.Value'Access,
-                                                Rounding'Pos (Rnd));
+      Fits : constant int :=
+        mpfr_fits_slong_p (Op.Value'Access, Rounding'Pos (Rnd));
    begin
       return (if Fits /= 0 then True else False);
    end Fits_Long_Integer;
@@ -549,12 +575,10 @@ package body Admpfr is
    -- Fits_Integer --
    ------------------
 
-   function Fits_Integer
-     (Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) return Boolean
+   function Fits_Integer (Op : Mpfloat; Rnd : Rounding := RNDEF) return Boolean
    is
-      Fits : constant int := mpfr_fits_sint_p (Op.Value'Access,
-                                               Rounding'Pos (Rnd));
+      Fits : constant int :=
+        mpfr_fits_sint_p (Op.Value'Access, Rounding'Pos (Rnd));
    begin
       return (if Fits /= 0 then True else False);
    end Fits_Integer;
@@ -564,14 +588,11 @@ package body Admpfr is
    ---------------
 
    procedure Mpfr_Fn_1
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) is
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_fn (Rop.Value'Access,
-                                   Op.Value'Access,
-                                   Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_fn (Rop.Value'Access, Op.Value'Access, Rounding'Pos (Rnd)));
    end Mpfr_Fn_1;
 
    procedure Mpfr_Sqr is new Mpfr_Fn_1 (mpfr_sqr);
@@ -642,15 +663,15 @@ package body Admpfr is
    ---------------
 
    procedure Mpfr_Fn_2
-     (Rop      : in out Mpfloat;
-      Op1, Op2 : Mpfloat;
-      Rnd      : Rounding := RNDEF) is
+     (Rop : in out Mpfloat; Op1, Op2 : Mpfloat; Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_fn (Rop.Value'Access,
-                                   Op1.Value'Access,
-                                   Op2.Value'Access,
-                                   Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_fn
+             (Rop.Value'Access,
+              Op1.Value'Access,
+              Op2.Value'Access,
+              Rounding'Pos (Rnd)));
    end Mpfr_Fn_2;
 
    procedure Mpfr_Add is new Mpfr_Fn_2 (mpfr_add);
@@ -678,10 +699,12 @@ package body Admpfr is
       Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_fn (Rop.Value'Access,
-                                   Op1.Value'Access,
-                                   long (Op2),
-                                   Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_fn
+             (Rop.Value'Access,
+              Op1.Value'Access,
+              long (Op2),
+              Rounding'Pos (Rnd)));
    end Mpfr_Fn_2_I;
 
    procedure Mpfr_Add is new Mpfr_Fn_2_I (mpfr_add_si);
@@ -702,10 +725,12 @@ package body Admpfr is
       Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_fn (Rop.Value'Access,
-                                   long (Op1),
-                                   Op2.Value'Access,
-                                   Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_fn
+             (Rop.Value'Access,
+              long (Op1),
+              Op2.Value'Access,
+              Rounding'Pos (Rnd)));
    end Mpfr_Fn_2_Ib;
 
    procedure Mpfr_Sub is new Mpfr_Fn_2_Ib (mpfr_si_sub);
@@ -722,10 +747,12 @@ package body Admpfr is
       Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_fn (Rop.Value'Access,
-                                   Op1.Value'Access,
-                                   double (Op2),
-                                   Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_fn
+             (Rop.Value'Access,
+              Op1.Value'Access,
+              double (Op2),
+              Rounding'Pos (Rnd)));
    end Mpfr_Fn_2_F;
 
    procedure Mpfr_Add is new Mpfr_Fn_2_F (mpfr_add_d);
@@ -744,10 +771,12 @@ package body Admpfr is
       Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_fn (Rop.Value'Access,
-                                   double (Op1),
-                                   Op2.Value'Access,
-                                   Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_fn
+             (Rop.Value'Access,
+              double (Op1),
+              Op2.Value'Access,
+              Rounding'Pos (Rnd)));
    end Mpfr_Fn_2_Fb;
 
    procedure Mpfr_Sub is new Mpfr_Fn_2_Fb (mpfr_d_sub);
@@ -758,9 +787,8 @@ package body Admpfr is
    ---------
 
    procedure Add
-     (Rop      : in out Mpfloat;
-      Op1, Op2 : Mpfloat;
-      Rnd      : Rounding := RNDEF) renames Mpfr_Add;
+     (Rop : in out Mpfloat; Op1, Op2 : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Add;
 
    ---------
    -- Add --
@@ -770,7 +798,8 @@ package body Admpfr is
      (Rop : in out Mpfloat;
       Op1 : Mpfloat;
       Op2 : Long_Integer;
-      Rnd : Rounding := RNDEF) renames Mpfr_Add;
+      Rnd : Rounding := RNDEF)
+   renames Mpfr_Add;
 
    ---------
    -- Add --
@@ -780,16 +809,16 @@ package body Admpfr is
      (Rop : in out Mpfloat;
       Op1 : Mpfloat;
       Op2 : Long_Float;
-      Rnd : Rounding := RNDEF) renames Mpfr_Add;
+      Rnd : Rounding := RNDEF)
+   renames Mpfr_Add;
 
    ---------
    -- Sub --
    ---------
 
    procedure Sub
-     (Rop      : in out Mpfloat;
-      Op1, Op2 : Mpfloat;
-      Rnd      : Rounding := RNDEF) renames Mpfr_Sub;
+     (Rop : in out Mpfloat; Op1, Op2 : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Sub;
 
    ---------
    -- Sub --
@@ -799,7 +828,8 @@ package body Admpfr is
      (Rop : in out Mpfloat;
       Op1 : Mpfloat;
       Op2 : Long_Integer;
-      Rnd : Rounding := RNDEF) renames Mpfr_Sub;
+      Rnd : Rounding := RNDEF)
+   renames Mpfr_Sub;
 
    ---------
    -- Sub --
@@ -809,7 +839,8 @@ package body Admpfr is
      (Rop : in out Mpfloat;
       Op1 : Mpfloat;
       Op2 : Long_Float;
-      Rnd : Rounding := RNDEF) renames Mpfr_Sub;
+      Rnd : Rounding := RNDEF)
+   renames Mpfr_Sub;
 
    ---------
    -- Sub --
@@ -819,7 +850,8 @@ package body Admpfr is
      (Rop : in out Mpfloat;
       Op1 : Long_Integer;
       Op2 : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Sub;
+      Rnd : Rounding := RNDEF)
+   renames Mpfr_Sub;
 
    ---------
    -- Sub --
@@ -829,16 +861,16 @@ package body Admpfr is
      (Rop : in out Mpfloat;
       Op1 : Long_Float;
       Op2 : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Sub;
+      Rnd : Rounding := RNDEF)
+   renames Mpfr_Sub;
 
    ---------
    -- Mul --
    ---------
 
    procedure Mul
-     (Rop      : in out Mpfloat;
-      Op1, Op2 : Mpfloat;
-      Rnd      : Rounding := RNDEF) renames Mpfr_Mul;
+     (Rop : in out Mpfloat; Op1, Op2 : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Mul;
 
    ---------
    -- Mul --
@@ -848,7 +880,8 @@ package body Admpfr is
      (Rop : in out Mpfloat;
       Op1 : Mpfloat;
       Op2 : Long_Integer;
-      Rnd : Rounding := RNDEF) renames Mpfr_Mul;
+      Rnd : Rounding := RNDEF)
+   renames Mpfr_Mul;
 
    ---------
    -- Mul --
@@ -858,25 +891,23 @@ package body Admpfr is
      (Rop : in out Mpfloat;
       Op1 : Mpfloat;
       Op2 : Long_Float;
-      Rnd : Rounding := RNDEF) renames Mpfr_Mul;
+      Rnd : Rounding := RNDEF)
+   renames Mpfr_Mul;
 
    ---------
    -- Sqr --
    ---------
 
-   procedure Sqr
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Sqr;
+   procedure Sqr (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Sqr;
 
    ---------
    -- Div --
    ---------
 
    procedure Div
-     (Rop      : in out Mpfloat;
-      Op1, Op2 : Mpfloat;
-      Rnd      : Rounding := RNDEF) renames Mpfr_Div;
+     (Rop : in out Mpfloat; Op1, Op2 : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Div;
 
    ---------
    -- Div --
@@ -886,7 +917,8 @@ package body Admpfr is
      (Rop : in out Mpfloat;
       Op1 : Mpfloat;
       Op2 : Long_Integer;
-      Rnd : Rounding := RNDEF) renames Mpfr_Div;
+      Rnd : Rounding := RNDEF)
+   renames Mpfr_Div;
 
    ---------
    -- Div --
@@ -896,7 +928,8 @@ package body Admpfr is
      (Rop : in out Mpfloat;
       Op1 : Mpfloat;
       Op2 : Long_Float;
-      Rnd : Rounding := RNDEF) renames Mpfr_Div;
+      Rnd : Rounding := RNDEF)
+   renames Mpfr_Div;
 
    ---------
    -- Div --
@@ -906,7 +939,8 @@ package body Admpfr is
      (Rop : in out Mpfloat;
       Op1 : Long_Integer;
       Op2 : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Div;
+      Rnd : Rounding := RNDEF)
+   renames Mpfr_Div;
 
    ---------
    -- Div --
@@ -916,30 +950,27 @@ package body Admpfr is
      (Rop : in out Mpfloat;
       Op1 : Long_Float;
       Op2 : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Div;
+      Rnd : Rounding := RNDEF)
+   renames Mpfr_Div;
+
+   ----------
+   -- Sqrt --
+   ----------
+
+   procedure Sqrt (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Sqrt;
 
    ----------
    -- Sqrt --
    ----------
 
    procedure Sqrt
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Sqrt;
-
-   ----------
-   -- Sqrt --
-   ----------
-
-   procedure Sqrt
-     (Rop : in out Mpfloat;
-      Op  : Long_Integer;
-      Rnd : Rounding := RNDEF) is
+     (Rop : in out Mpfloat; Op : Long_Integer; Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_sqrt_ui (Rop.Value'Access,
-                                        unsigned_long (Op),
-                                        Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_sqrt_ui
+             (Rop.Value'Access, unsigned_long (Op), Rounding'Pos (Rnd)));
    end Sqrt;
 
    --------------
@@ -947,18 +978,15 @@ package body Admpfr is
    --------------
 
    procedure Rec_Sqrt
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Rec_Sqrt;
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Rec_Sqrt;
 
    ----------
    -- Cbrt --
    ----------
 
-   procedure Cbrt
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Cbrt;
+   procedure Cbrt (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Cbrt;
 
    -----------
    -- Rootn --
@@ -971,38 +999,36 @@ package body Admpfr is
       Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_rootn_si (Rop.Value'Access,
-                                         Op.Value'Access,
-                                         long (N),
-                                         Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_rootn_si
+             (Rop.Value'Access,
+              Op.Value'Access,
+              long (N),
+              Rounding'Pos (Rnd)));
    end Rootn;
 
    ---------
    -- Neg --
    ---------
 
-   procedure Neg
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Neg;
+   procedure Neg (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Neg;
 
    --------------
    -- Absolute --
    --------------
 
    procedure Absolute
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Abs;
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Abs;
 
    ---------
    -- Dim --
    ---------
 
    procedure Dim
-     (Rop      : in out Mpfloat;
-      Op1, Op2 : Mpfloat;
-      Rnd      : Rounding := RNDEF) renames Mpfr_Dim;
+     (Rop : in out Mpfloat; Op1, Op2 : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Dim;
 
    -----------
    -- Mul_2 --
@@ -1012,7 +1038,8 @@ package body Admpfr is
      (Rop : in out Mpfloat;
       Op1 : Mpfloat;
       Op2 : Long_Integer;
-      Rnd : Rounding := RNDEF) renames Mpfr_Mul_2;
+      Rnd : Rounding := RNDEF)
+   renames Mpfr_Mul_2;
 
    -----------
    -- Div_2 --
@@ -1022,21 +1049,20 @@ package body Admpfr is
      (Rop : in out Mpfloat;
       Op1 : Mpfloat;
       Op2 : Long_Integer;
-      Rnd : Rounding := RNDEF) renames Mpfr_Div_2;
+      Rnd : Rounding := RNDEF)
+   renames Mpfr_Div_2;
 
    ---------
    -- Fac --
    ---------
 
    procedure Fac
-     (Rop : in out Mpfloat;
-      Op  : Long_Integer;
-      Rnd : Rounding := RNDEF) is
+     (Rop : in out Mpfloat; Op : Long_Integer; Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_fac_ui (Rop.Value'Access,
-                                       unsigned_long (Op),
-                                       Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_fac_ui
+             (Rop.Value'Access, unsigned_long (Op), Rounding'Pos (Rnd)));
    end Fac;
 
    ---------
@@ -1044,16 +1070,17 @@ package body Admpfr is
    ---------
 
    procedure Fma
-     (Rop           : in out Mpfloat;
-      Op1, Op2, Op3 : Mpfloat;
-      Rnd           : Rounding := RNDEF) is
+     (Rop : in out Mpfloat; Op1, Op2, Op3 : Mpfloat; Rnd : Rounding := RNDEF)
+   is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_fma (Rop.Value'Access,
-                                    Op1.Value'Access,
-                                    Op2.Value'Access,
-                                    Op3.Value'Access,
-                                    Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_fma
+             (Rop.Value'Access,
+              Op1.Value'Access,
+              Op2.Value'Access,
+              Op3.Value'Access,
+              Rounding'Pos (Rnd)));
    end Fma;
 
    ---------
@@ -1061,16 +1088,17 @@ package body Admpfr is
    ---------
 
    procedure Fms
-     (Rop           : in out Mpfloat;
-      Op1, Op2, Op3 : Mpfloat;
-      Rnd           : Rounding := RNDEF) is
+     (Rop : in out Mpfloat; Op1, Op2, Op3 : Mpfloat; Rnd : Rounding := RNDEF)
+   is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_fms (Rop.Value'Access,
-                                    Op1.Value'Access,
-                                    Op2.Value'Access,
-                                    Op3.Value'Access,
-                                    Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_fms
+             (Rop.Value'Access,
+              Op1.Value'Access,
+              Op2.Value'Access,
+              Op3.Value'Access,
+              Rounding'Pos (Rnd)));
    end Fms;
 
    ----------
@@ -1083,12 +1111,14 @@ package body Admpfr is
       Rnd                : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_fmma (Rop.Value'Access,
-                                     Op1.Value'Access,
-                                     Op2.Value'Access,
-                                     Op3.Value'Access,
-                                     Op4.Value'Access,
-                                     Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_fmma
+             (Rop.Value'Access,
+              Op1.Value'Access,
+              Op2.Value'Access,
+              Op3.Value'Access,
+              Op4.Value'Access,
+              Rounding'Pos (Rnd)));
    end Fmma;
 
    ----------
@@ -1101,12 +1131,14 @@ package body Admpfr is
       Rnd                : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_fmms (Rop.Value'Access,
-                                     Op1.Value'Access,
-                                     Op2.Value'Access,
-                                     Op3.Value'Access,
-                                     Op4.Value'Access,
-                                     Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_fmms
+             (Rop.Value'Access,
+              Op1.Value'Access,
+              Op2.Value'Access,
+              Op3.Value'Access,
+              Op4.Value'Access,
+              Rounding'Pos (Rnd)));
    end Fmms;
 
    -----------
@@ -1114,23 +1146,21 @@ package body Admpfr is
    -----------
 
    procedure Hypot
-     (Rop  : in out Mpfloat;
-      X, Y : Mpfloat;
-      Rnd  : Rounding := RNDEF) renames Mpfr_Hypot;
+     (Rop : in out Mpfloat; X, Y : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Hypot;
 
    ---------
    -- Sum --
    ---------
 
    procedure Sum
-     (Rop : in out Mpfloat;
-      Arr : Mpfloat_Array;
-      Rnd : Rounding := RNDEF)
+     (Rop : in out Mpfloat; Arr : Mpfloat_Array; Rnd : Rounding := RNDEF)
    is
       N : constant Integer := Arr'Length;
 
-      type mpfr_ptr_array is array (Integer range 1 .. N)
-        of access constant mpfr_t with Convention => C;
+      type mpfr_ptr_array is
+        array (Integer range 1 .. N) of access constant mpfr_t
+      with Convention => C;
       Tab : mpfr_ptr_array;
    begin
       for I in 1 .. N loop
@@ -1138,10 +1168,12 @@ package body Admpfr is
       end loop;
 
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_sum (Rop.Value'Access,
-                                    Tab'Address,
-                                    unsigned_long (N),
-                                    Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_sum
+             (Rop.Value'Access,
+              Tab'Address,
+              unsigned_long (N),
+              Rounding'Pos (Rnd)));
    end Sum;
 
    ---------
@@ -1155,10 +1187,11 @@ package body Admpfr is
       Rnd  : Rounding := RNDEF)
    is
       N : constant Integer :=
-         (if Arr1'Length <= Arr2'Length then Arr1'Length else Arr2'Length);
+        (if Arr1'Length <= Arr2'Length then Arr1'Length else Arr2'Length);
 
-      type mpfr_ptr_array is array (Integer range 1 .. N)
-        of access constant mpfr_t with Convention => C;
+      type mpfr_ptr_array is
+        array (Integer range 1 .. N) of access constant mpfr_t
+      with Convention => C;
       A, B : mpfr_ptr_array;
    begin
       for I in 1 .. N loop
@@ -1167,11 +1200,13 @@ package body Admpfr is
       end loop;
 
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_dot (Rop.Value'Access,
-                                    A'Address,
-                                    B'Address,
-                                    unsigned_long (N),
-                                    Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_dot
+             (Rop.Value'Access,
+              A'Address,
+              B'Address,
+              unsigned_long (N),
+              Rounding'Pos (Rnd)));
    end Dot;
 
    ----------------
@@ -1193,8 +1228,8 @@ package body Admpfr is
    -- Cmp --
    ---------
 
-   function Cmp (Op1, Op2 : Mpfloat) return Compare is
-     (To_Compare (mpfr_cmp (Op1.Value'Access, Op2.Value'Access)));
+   function Cmp (Op1, Op2 : Mpfloat) return Compare
+   is (To_Compare (mpfr_cmp (Op1.Value'Access, Op2.Value'Access)));
 
    ---------
    -- Cmp --
@@ -1215,281 +1250,267 @@ package body Admpfr is
    -- Cmp --
    ---------
 
-   function Cmp (Op1 : Mpfloat; Op2 : Long_Float) return Compare is
-     (To_Compare (mpfr_cmp_d (Op1.Value'Access, double (Op2))));
+   function Cmp (Op1 : Mpfloat; Op2 : Long_Float) return Compare
+   is (To_Compare (mpfr_cmp_d (Op1.Value'Access, double (Op2))));
 
    ---------
    -- Cmp --
    ---------
 
-   function Cmp (Op1 : Mpfloat; Op2 : Long_Long_Float) return Compare is
-     (To_Compare (mpfr_cmp_ld (Op1.Value'Access, long_double (Op2))));
+   function Cmp (Op1 : Mpfloat; Op2 : Long_Long_Float) return Compare
+   is (To_Compare (mpfr_cmp_ld (Op1.Value'Access, long_double (Op2))));
 
    ---------
    -- Cmp --
    ---------
 
    function Cmp
-     (Op1 : Mpfloat;
-      Op2 : Long_Integer;
-      E   : Exponent) return Compare is
-     (To_Compare
-        (mpfr_cmp_si_2exp (Op1.Value'Access, long (Op2), mpfr_exp_t (E))));
+     (Op1 : Mpfloat; Op2 : Long_Integer; E : Exponent) return Compare
+   is (To_Compare
+         (mpfr_cmp_si_2exp (Op1.Value'Access, long (Op2), mpfr_exp_t (E))));
 
    -------------
    -- Cmp_Abs --
    -------------
 
-   function Cmp_Abs (Op1, Op2 : Mpfloat) return Compare is
-     (To_Compare (mpfr_cmpabs (Op1.Value'Access, Op2.Value'Access)));
+   function Cmp_Abs (Op1, Op2 : Mpfloat) return Compare
+   is (To_Compare (mpfr_cmpabs (Op1.Value'Access, Op2.Value'Access)));
 
    -------------
    -- Cmp_Abs --
    -------------
 
-   function Cmp_Abs (Op1 : Mpfloat; Op2 : Long_Integer) return Compare is
-     (To_Compare
-        (mpfr_cmpabs_ui (Op1.Value'Access, (unsigned_long (abs Op2)))));
+   function Cmp_Abs (Op1 : Mpfloat; Op2 : Long_Integer) return Compare
+   is (To_Compare
+         (mpfr_cmpabs_ui (Op1.Value'Access, (unsigned_long (abs Op2)))));
 
    ------------
    -- Is_Nan --
    ------------
 
-   function Is_Nan (Op : Mpfloat) return Boolean is
-     (if mpfr_nan_p (Op.Value'Access) /= 0 then True else False);
+   function Is_Nan (Op : Mpfloat) return Boolean
+   is (if mpfr_nan_p (Op.Value'Access) /= 0 then True else False);
 
    ------------
    -- Is_Inf --
    ------------
 
-   function Is_Inf (Op : Mpfloat) return Boolean is
-     (if mpfr_inf_p (Op.Value'Access) /= 0 then True else False);
+   function Is_Inf (Op : Mpfloat) return Boolean
+   is (if mpfr_inf_p (Op.Value'Access) /= 0 then True else False);
 
    ---------------
    -- Is_Number --
    ---------------
 
-   function Is_Number (Op : Mpfloat) return Boolean is
-     (if mpfr_number_p (Op.Value'Access) /= 0 then True else False);
+   function Is_Number (Op : Mpfloat) return Boolean
+   is (if mpfr_number_p (Op.Value'Access) /= 0 then True else False);
 
    -------------
    -- Is_Zero --
    -------------
 
-   function Is_Zero (Op : Mpfloat) return Boolean is
-     (if mpfr_zero_p (Op.Value'Access) /= 0 then True else False);
+   function Is_Zero (Op : Mpfloat) return Boolean
+   is (if mpfr_zero_p (Op.Value'Access) /= 0 then True else False);
 
    ----------------
    -- Is_Regular --
    ----------------
 
-   function Is_Regular (Op : Mpfloat) return Boolean is
-     (if mpfr_regular_p (Op.Value'Access) /= 0 then True else False);
+   function Is_Regular (Op : Mpfloat) return Boolean
+   is (if mpfr_regular_p (Op.Value'Access) /= 0 then True else False);
 
    -------------
    -- Greater --
    -------------
 
-   function Greater (Op1, Op2 : Mpfloat) return Boolean is
-     (if mpfr_greater_p (Op1.Value'Access, Op2.Value'Access) /= 0
-      then True else False);
+   function Greater (Op1, Op2 : Mpfloat) return Boolean
+   is (if mpfr_greater_p (Op1.Value'Access, Op2.Value'Access) /= 0
+       then True
+       else False);
 
    ------------------
    -- Greaterequal --
    ------------------
 
-   function Greaterequal (Op1, Op2 : Mpfloat) return Boolean is
-     (if mpfr_greaterequal_p (Op1.Value'Access, Op2.Value'Access) /= 0
-      then True else False);
+   function Greaterequal (Op1, Op2 : Mpfloat) return Boolean
+   is (if mpfr_greaterequal_p (Op1.Value'Access, Op2.Value'Access) /= 0
+       then True
+       else False);
 
    ----------
    -- Less --
    ----------
 
-   function Less (Op1, Op2 : Mpfloat) return Boolean is
-     (if mpfr_less_p (Op1.Value'Access, Op2.Value'Access) /= 0
-      then True else False);
+   function Less (Op1, Op2 : Mpfloat) return Boolean
+   is (if mpfr_less_p (Op1.Value'Access, Op2.Value'Access) /= 0
+       then True
+       else False);
 
    ---------------
    -- Lessequal --
    ---------------
 
-   function Lessequal (Op1, Op2 : Mpfloat) return Boolean is
-     (if mpfr_lessequal_p (Op1.Value'Access, Op2.Value'Access) /= 0
-      then True else False);
+   function Lessequal (Op1, Op2 : Mpfloat) return Boolean
+   is (if mpfr_lessequal_p (Op1.Value'Access, Op2.Value'Access) /= 0
+       then True
+       else False);
 
    -----------
    -- Equal --
    -----------
 
-   function Equal (Op1, Op2 : Mpfloat) return Boolean is
-     (if mpfr_equal_p (Op1.Value'Access, Op2.Value'Access) /= 0
-      then True else False);
+   function Equal (Op1, Op2 : Mpfloat) return Boolean
+   is (if mpfr_equal_p (Op1.Value'Access, Op2.Value'Access) /= 0
+       then True
+       else False);
 
    -----------------
    -- Lessgreater --
    -----------------
 
-   function Lessgreater (Op1, Op2 : Mpfloat) return Boolean is
-     (if mpfr_lessgreater_p (Op1.Value'Access, Op2.Value'Access) /= 0
-      then True else False);
+   function Lessgreater (Op1, Op2 : Mpfloat) return Boolean
+   is (if mpfr_lessgreater_p (Op1.Value'Access, Op2.Value'Access) /= 0
+       then True
+       else False);
 
    ---------------
    -- Unordered --
    ---------------
 
-   function Unordered (Op1, Op2 : Mpfloat) return Boolean is
-     (if mpfr_unordered_p (Op1.Value'Access, Op2.Value'Access) /= 0
-      then True else False);
+   function Unordered (Op1, Op2 : Mpfloat) return Boolean
+   is (if mpfr_unordered_p (Op1.Value'Access, Op2.Value'Access) /= 0
+       then True
+       else False);
 
    -----------------
    -- Total_Order --
    -----------------
 
-   function Total_Order (Op1, Op2 : Mpfloat) return Boolean is
-     (if mpfr_total_order_p (Op1.Value'Access, Op2.Value'Access) /= 0
-      then True else False);
+   function Total_Order (Op1, Op2 : Mpfloat) return Boolean
+   is (if mpfr_total_order_p (Op1.Value'Access, Op2.Value'Access) /= 0
+       then True
+       else False);
+
+   ---------
+   -- Log --
+   ---------
+
+   procedure Log (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Log;
 
    ---------
    -- Log --
    ---------
 
    procedure Log
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Log;
-
-   ---------
-   -- Log --
-   ---------
-
-   procedure Log
-     (Rop : in out Mpfloat;
-      Op  : Long_Integer;
-      Rnd : Rounding := RNDEF) is
+     (Rop : in out Mpfloat; Op : Long_Integer; Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_log_ui (Rop.Value'Access,
-                                       unsigned_long (Op),
-                                       Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_log_ui
+             (Rop.Value'Access, unsigned_long (Op), Rounding'Pos (Rnd)));
    end Log;
 
    ----------
    -- Log2 --
    ----------
 
-   procedure Log2
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Log2;
+   procedure Log2 (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Log2;
 
    -----------
    -- Log10 --
    -----------
 
    procedure Log10
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Log10;
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Log10;
 
    -----------
    -- Log1p --
    -----------
 
    procedure Log1p
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Log1p;
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Log1p;
 
    ------------
    -- Log2p1 --
    ------------
 
    procedure Log2p1
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Log2p1;
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Log2p1;
 
    -------------
    -- Log10p1 --
    -------------
 
    procedure Log10p1
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Log10p1;
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Log10p1;
 
    ---------
    -- Exp --
    ---------
 
-   procedure Exp
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Exp;
+   procedure Exp (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Exp;
 
    ----------
    -- Exp2 --
    ----------
 
-   procedure Exp2
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Exp2;
+   procedure Exp2 (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Exp2;
 
    -----------
    -- Exp10 --
    -----------
 
    procedure Exp10
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Exp10;
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Exp10;
 
    -----------
    -- Expm1 --
    -----------
 
    procedure Expm1
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Expm1;
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Expm1;
 
    ------------
    -- Exp2m1 --
    ------------
 
    procedure Exp2m1
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Exp2m1;
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Exp2m1;
 
    -------------
    -- Exp10m1 --
    -------------
 
    procedure Exp10m1
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Exp10m1;
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Exp10m1;
 
    ---------
    -- Pow --
    ---------
 
    procedure Pow
-     (Rop      : in out Mpfloat;
-      Op1, Op2 : Mpfloat;
-      Rnd      : Rounding := RNDEF) renames Mpfr_Pow;
+     (Rop : in out Mpfloat; Op1, Op2 : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Pow;
 
    ----------
    -- Powr --
    ----------
 
    procedure Powr
-     (Rop      : in out Mpfloat;
-      Op1, Op2 : Mpfloat;
-      Rnd      : Rounding := RNDEF) renames Mpfr_Powr;
+     (Rop : in out Mpfloat; Op1, Op2 : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Powr;
 
    ---------
    -- Pow --
@@ -1502,10 +1523,12 @@ package body Admpfr is
       Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_pow_ui (Rop.Value'Access,
-                                       Op1.Value'Access,
-                                       unsigned_long (Op2),
-                                       Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_pow_ui
+             (Rop.Value'Access,
+              Op1.Value'Access,
+              unsigned_long (Op2),
+              Rounding'Pos (Rnd)));
    end Pow;
 
    ---------
@@ -1513,15 +1536,16 @@ package body Admpfr is
    ---------
 
    procedure Pow
-     (Rop      : in out Mpfloat;
-      Op1, Op2 : Long_Integer;
-      Rnd      : Rounding := RNDEF) is
+     (Rop : in out Mpfloat; Op1, Op2 : Long_Integer; Rnd : Rounding := RNDEF)
+   is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_ui_pow_ui (Rop.Value'Access,
-                                          unsigned_long (Op1),
-                                          unsigned_long (Op2),
-                                          Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_ui_pow_ui
+             (Rop.Value'Access,
+              unsigned_long (Op1),
+              unsigned_long (Op2),
+              Rounding'Pos (Rnd)));
    end Pow;
 
    ---------
@@ -1535,10 +1559,12 @@ package body Admpfr is
       Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_ui_pow (Rop.Value'Access,
-                                       unsigned_long (Op1),
-                                       Op2.Value'Access,
-                                       Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_ui_pow
+             (Rop.Value'Access,
+              unsigned_long (Op1),
+              Op2.Value'Access,
+              Rounding'Pos (Rnd)));
    end Pow;
 
    --------------
@@ -1552,38 +1578,34 @@ package body Admpfr is
       Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_compound_si (Rop.Value'Access,
-                                            Op.Value'Access,
-                                            long (N),
-                                            Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_compound_si
+             (Rop.Value'Access,
+              Op.Value'Access,
+              long (N),
+              Rounding'Pos (Rnd)));
    end Compound;
 
    ---------
    -- Cos --
    ---------
 
-   procedure Cos
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Cos;
+   procedure Cos (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Cos;
 
    ---------
    -- Sin --
    ---------
 
-   procedure Sin
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Sin;
+   procedure Sin (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Sin;
 
    ---------
    -- Tan --
    ---------
 
-   procedure Tan
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Tan;
+   procedure Tan (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Tan;
 
    ----------
    -- Cosu --
@@ -1596,10 +1618,12 @@ package body Admpfr is
       Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_cosu (Rop.Value'Access,
-                                     Op.Value'Access,
-                                     unsigned_long (U),
-                                     Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_cosu
+             (Rop.Value'Access,
+              Op.Value'Access,
+              unsigned_long (U),
+              Rounding'Pos (Rnd)));
    end Cosu;
 
    ----------
@@ -1613,10 +1637,12 @@ package body Admpfr is
       Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_sinu (Rop.Value'Access,
-                                     Op.Value'Access,
-                                     unsigned_long (U),
-                                     Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_sinu
+             (Rop.Value'Access,
+              Op.Value'Access,
+              unsigned_long (U),
+              Rounding'Pos (Rnd)));
    end Sinu;
 
    ----------
@@ -1630,10 +1656,12 @@ package body Admpfr is
       Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_tanu (Rop.Value'Access,
-                                     Op.Value'Access,
-                                     unsigned_long (U),
-                                     Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_tanu
+             (Rop.Value'Access,
+              Op.Value'Access,
+              unsigned_long (U),
+              Rounding'Pos (Rnd)));
    end Tanu;
 
    -----------
@@ -1641,36 +1669,31 @@ package body Admpfr is
    -----------
 
    procedure Cospi
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Cospi;
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Cospi;
 
    -----------
    -- Sinpi --
    -----------
 
    procedure Sinpi
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Sinpi;
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Sinpi;
 
    -----------
    -- Tanpi --
    -----------
 
    procedure Tanpi
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Tanpi;
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Tanpi;
 
    -------------
    -- Sin_Cos --
    -------------
 
    procedure Sin_Cos
-     (Sop, Cop : in out Mpfloat;
-      Op       : Mpfloat;
-      Rnd      : Rounding := RNDEF)
+     (Sop, Cop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
    is
       Ret, Sop_T, Cop_T : int;
       type mpfr_t_a is access all mpfr_t;
@@ -1679,10 +1702,12 @@ package body Admpfr is
          raise Failure with "Sop and Cop must be different variables";
       end if;
 
-      Ret := mpfr_sin_cos (Sop.Value'Access,
-                           Cop.Value'Access,
-                           Op.Value'Access,
-                           Rounding'Pos (Rnd));
+      Ret :=
+        mpfr_sin_cos
+          (Sop.Value'Access,
+           Cop.Value'Access,
+           Op.Value'Access,
+           Rounding'Pos (Rnd));
 
       Sop_T := Ret mod 4;
       Cop_T := Ret / 4;
@@ -1703,55 +1728,43 @@ package body Admpfr is
    -- Sec --
    ---------
 
-   procedure Sec
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Sec;
+   procedure Sec (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Sec;
 
    ---------
    -- Csc --
    ---------
 
-   procedure Csc
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Csc;
+   procedure Csc (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Csc;
 
    ---------
    -- Cot --
    ---------
 
-   procedure Cot
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Cot;
+   procedure Cot (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Cot;
 
    ----------
    -- Acos --
    ----------
 
-   procedure Acos
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Acos;
+   procedure Acos (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Acos;
 
    ----------
    -- Asin --
    ----------
 
-   procedure Asin
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Asin;
+   procedure Asin (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Asin;
 
    ----------
    -- Atan --
    ----------
 
-   procedure Atan
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Atan;
+   procedure Atan (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Atan;
 
    -----------
    -- Acosu --
@@ -1764,10 +1777,12 @@ package body Admpfr is
       Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_acosu (Rop.Value'Access,
-                                      Op.Value'Access,
-                                      unsigned_long (U),
-                                      Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_acosu
+             (Rop.Value'Access,
+              Op.Value'Access,
+              unsigned_long (U),
+              Rounding'Pos (Rnd)));
    end Acosu;
 
    -----------
@@ -1781,10 +1796,12 @@ package body Admpfr is
       Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_asinu (Rop.Value'Access,
-                                      Op.Value'Access,
-                                      unsigned_long (U),
-                                      Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_asinu
+             (Rop.Value'Access,
+              Op.Value'Access,
+              unsigned_long (U),
+              Rounding'Pos (Rnd)));
    end Asinu;
 
    -----------
@@ -1798,10 +1815,12 @@ package body Admpfr is
       Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_atanu (Rop.Value'Access,
-                                      Op.Value'Access,
-                                      unsigned_long (U),
-                                      Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_atanu
+             (Rop.Value'Access,
+              Op.Value'Access,
+              unsigned_long (U),
+              Rounding'Pos (Rnd)));
    end Atanu;
 
    ------------
@@ -1809,53 +1828,51 @@ package body Admpfr is
    ------------
 
    procedure Acospi
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Acospi;
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Acospi;
 
    ------------
    -- Asinpi --
    ------------
 
    procedure Asinpi
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Asinpi;
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Asinpi;
 
    ------------
    -- Atanpi --
    ------------
 
    procedure Atanpi
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Atanpi;
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Atanpi;
 
    -----------
    -- Atan2 --
    -----------
 
    procedure Atan2
-     (Rop   : in out Mpfloat;
-      X, Y  : Mpfloat;
-      Rnd   : Rounding := RNDEF) renames Mpfr_Atan2;
+     (Rop : in out Mpfloat; X, Y : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Atan2;
 
    ------------
    -- Atan2u --
    ------------
 
    procedure Atan2u
-     (Rop   : in out Mpfloat;
-      X, Y  : Mpfloat;
-      U     : Long_Integer;
-      Rnd   : Rounding := RNDEF) is
+     (Rop  : in out Mpfloat;
+      X, Y : Mpfloat;
+      U    : Long_Integer;
+      Rnd  : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_atan2u (Rop.Value'Access,
-                                       X.Value'Access,
-                                       Y.Value'Access,
-                                       unsigned_long (U),
-                                       Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_atan2u
+             (Rop.Value'Access,
+              X.Value'Access,
+              Y.Value'Access,
+              unsigned_long (U),
+              Rounding'Pos (Rnd)));
    end Atan2u;
 
    -------------
@@ -1863,45 +1880,36 @@ package body Admpfr is
    -------------
 
    procedure Atan2pi
-     (Rop   : in out Mpfloat;
-      X, Y  : Mpfloat;
-      Rnd   : Rounding := RNDEF) renames Mpfr_Atan2pi;
+     (Rop : in out Mpfloat; X, Y : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Atan2pi;
 
    ----------
    -- Cosh --
    ----------
 
-   procedure Cosh
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Cosh;
+   procedure Cosh (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Cosh;
 
    ----------
    -- Sinh --
    ----------
 
-   procedure Sinh
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Sinh;
+   procedure Sinh (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Sinh;
 
    ----------
    -- Tanh --
    ----------
 
-   procedure Tanh
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Tanh;
+   procedure Tanh (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Tanh;
 
    ---------------
    -- Sinh_Cosh --
    ---------------
 
    procedure Sinh_Cosh
-     (Sop, Cop : in out Mpfloat;
-      Op       : Mpfloat;
-      Rnd      : Rounding := RNDEF)
+     (Sop, Cop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
    is
       Ret, Sop_T, Cop_T : int;
       type mpfr_t_a is access all mpfr_t;
@@ -1910,10 +1918,12 @@ package body Admpfr is
          raise Failure with "Sop and Cop must be different variables";
       end if;
 
-      Ret := mpfr_sinh_cosh (Sop.Value'Access,
-                             Cop.Value'Access,
-                             Op.Value'Access,
-                             Rounding'Pos (Rnd));
+      Ret :=
+        mpfr_sinh_cosh
+          (Sop.Value'Access,
+           Cop.Value'Access,
+           Op.Value'Access,
+           Rounding'Pos (Rnd));
 
       Sop_T := Ret mod 4;
       Cop_T := Ret / 4;
@@ -1934,100 +1944,84 @@ package body Admpfr is
    -- Sech --
    ----------
 
-   procedure Sech
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Sech;
+   procedure Sech (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Sech;
 
    ----------
    -- Csch --
    ----------
 
-   procedure Csch
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Csch;
+   procedure Csch (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Csch;
 
    ----------
    -- Coth --
    ----------
 
-   procedure Coth
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Coth;
+   procedure Coth (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Coth;
 
    -----------
    -- Acosh --
    -----------
 
    procedure Acosh
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Acosh;
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Acosh;
 
    -----------
    -- Asinh --
    -----------
 
    procedure Asinh
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Asinh;
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Asinh;
 
    -----------
    -- Atanh --
    -----------
 
    procedure Atanh
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Atanh;
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Atanh;
 
    ----------
    -- Eint --
    ----------
 
-   procedure Eint
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Eint;
+   procedure Eint (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Eint;
 
    ---------
    -- Li2 --
    ---------
 
-   procedure Li2
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Li2;
+   procedure Li2 (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Li2;
 
    -----------
    -- Gamma --
    -----------
 
    procedure Gamma
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Gamma;
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Gamma;
 
    ---------------
    -- Gamma_Inc --
    ---------------
 
    procedure Gamma_Inc
-     (Rop     : in out Mpfloat;
-      Op, Op2 : Mpfloat;
-      Rnd     : Rounding := RNDEF) renames Mpfr_Gamma_Inc;
+     (Rop : in out Mpfloat; Op, Op2 : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Gamma_Inc;
 
    -------------
    -- Lngamma --
    -------------
 
    procedure Lngamma
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Lngamma;
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Lngamma;
 
    ------------
    -- Lgamma --
@@ -2042,10 +2036,12 @@ package body Admpfr is
       S : aliased int;
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_lgamma (Rop.Value'Access,
-                                       S'Access,
-                                       Op.Value'Access,
-                                       Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_lgamma
+             (Rop.Value'Access,
+              S'Access,
+              Op.Value'Access,
+              Rounding'Pos (Rnd)));
       if S > 0 then
          Signp := Pos;
       else
@@ -2058,78 +2054,64 @@ package body Admpfr is
    -------------
 
    procedure Digamma
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Digamma;
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Digamma;
 
    ----------
    -- Beta --
    ----------
 
    procedure Beta
-     (Rop      : in out Mpfloat;
-      Op1, Op2 : Mpfloat;
-      Rnd      : Rounding := RNDEF) renames Mpfr_Beta;
+     (Rop : in out Mpfloat; Op1, Op2 : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Beta;
+
+   ----------
+   -- Zeta --
+   ----------
+
+   procedure Zeta (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Zeta;
 
    ----------
    -- Zeta --
    ----------
 
    procedure Zeta
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Zeta;
-
-   ----------
-   -- Zeta --
-   ----------
-
-   procedure Zeta
-     (Rop : in out Mpfloat;
-      Op  : Long_Integer;
-      Rnd : Rounding := RNDEF) is
+     (Rop : in out Mpfloat; Op : Long_Integer; Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_zeta_ui (Rop.Value'Access,
-                                        unsigned_long (Op),
-                                        Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_zeta_ui
+             (Rop.Value'Access, unsigned_long (Op), Rounding'Pos (Rnd)));
    end Zeta;
 
    ---------
    -- Erf --
    ---------
 
-   procedure Erf
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Erf;
+   procedure Erf (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Erf;
 
    ----------
    -- Erfc --
    ----------
 
-   procedure Erfc
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Erfc;
+   procedure Erfc (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Erfc;
 
    --------
    -- J0 --
    --------
 
-   procedure J0
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_J0;
+   procedure J0 (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_J0;
 
    --------
    -- J1 --
    --------
 
-   procedure J1
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_J1;
+   procedure J1 (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_J1;
 
    --------
    -- Jn --
@@ -2142,29 +2124,27 @@ package body Admpfr is
       Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_jn (Rop.Value'Access,
-                                   long (N),
-                                   Op.Value'Access,
-                                   Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_jn
+             (Rop.Value'Access,
+              long (N),
+              Op.Value'Access,
+              Rounding'Pos (Rnd)));
    end Jn;
 
    --------
    -- Y0 --
    --------
 
-   procedure Y0
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Y0;
+   procedure Y0 (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Y0;
 
    --------
    -- Y1 --
    --------
 
-   procedure Y1
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Y1;
+   procedure Y1 (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Y1;
 
    --------
    -- Yn --
@@ -2177,10 +2157,12 @@ package body Admpfr is
       Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_yn (Rop.Value'Access,
-                                   long (N),
-                                   Op.Value'Access,
-                                   Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_yn
+             (Rop.Value'Access,
+              long (N),
+              Op.Value'Access,
+              Rounding'Pos (Rnd)));
    end Yn;
 
    ---------
@@ -2188,69 +2170,58 @@ package body Admpfr is
    ---------
 
    procedure Agm
-     (Rop      : in out Mpfloat;
-      Op1, Op2 : Mpfloat;
-      Rnd      : Rounding := RNDEF) renames Mpfr_Agm;
+     (Rop : in out Mpfloat; Op1, Op2 : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Agm;
 
    --------
    -- Ai --
    --------
 
-   procedure Ai
-     (Rop : in out Mpfloat;
-      X   : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Ai;
+   procedure Ai (Rop : in out Mpfloat; X : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Ai;
 
    ----------------
    -- Const_LogZ --
    ----------------
 
-   procedure Const_Log2
-     (Rop : in out Mpfloat;
-      Rnd : Rounding := RNDEF) is
+   procedure Const_Log2 (Rop : in out Mpfloat; Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_const_log2 (Rop.Value'Access,
-                                           Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_const_log2 (Rop.Value'Access, Rounding'Pos (Rnd)));
    end Const_Log2;
 
    --------------
    -- Const_Pi --
    --------------
 
-   procedure Const_Pi
-     (Rop : in out Mpfloat;
-      Rnd : Rounding := RNDEF) is
+   procedure Const_Pi (Rop : in out Mpfloat; Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_const_pi (Rop.Value'Access,
-                                         Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_const_pi (Rop.Value'Access, Rounding'Pos (Rnd)));
    end Const_Pi;
 
    -----------------
    -- Const_Euler --
    -----------------
 
-   procedure Const_Euler
-     (Rop : in out Mpfloat;
-      Rnd : Rounding := RNDEF) is
+   procedure Const_Euler (Rop : in out Mpfloat; Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_const_euler (Rop.Value'Access,
-                                            Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_const_euler (Rop.Value'Access, Rounding'Pos (Rnd)));
    end Const_Euler;
 
    -------------------
    -- Const_Catalan --
    -------------------
 
-   procedure Const_Catalan
-     (Rop : in out Mpfloat;
-      Rnd : Rounding := RNDEF) is
+   procedure Const_Catalan (Rop : in out Mpfloat; Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_const_catalan (Rop.Value'Access,
-                                              Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_const_catalan (Rop.Value'Access, Rounding'Pos (Rnd)));
    end Const_Catalan;
 
    -------------
@@ -2263,11 +2234,13 @@ package body Admpfr is
       Base   : Admpfr.Base := 10;
       Rnd    : Rounding := RNDEF)
    is
-      N : constant size_t :=  mpfr_out_str (C_Streams.C_Stream (Stream),
-                                            int (Base),
-                                            0,
-                                            Op.Value'Access,
-                                            Rounding'Pos (Rnd));
+      N : constant size_t :=
+        mpfr_out_str
+          (C_Streams.C_Stream (Stream),
+           int (Base),
+           0,
+           Op.Value'Access,
+           Rounding'Pos (Rnd));
    begin
       if N = 0 then
          raise Failure with "error with mpfr_out_str";
@@ -2284,10 +2257,12 @@ package body Admpfr is
       Base   : Admpfr.Base := 10;
       Rnd    : Rounding := RNDEF)
    is
-      N : constant size_t := mpfr_inp_str (Op.Value'Access,
-                                           C_Streams.C_Stream (Stream),
-                                           int (abs Base),
-                                           Rounding'Pos (Rnd));
+      N : constant size_t :=
+        mpfr_inp_str
+          (Op.Value'Access,
+           C_Streams.C_Stream (Stream),
+           int (abs Base),
+           Rounding'Pos (Rnd));
    begin
       Op.Ternary := NOT_SET;
       if N = 0 then
@@ -2299,10 +2274,9 @@ package body Admpfr is
    -- Fpif_Export --
    -----------------
 
-   procedure Fpif_Export (Stream : File_Type; Op : Mpfloat)
-   is
-      N : constant int := mpfr_fpif_export (C_Streams.C_Stream (Stream),
-                                            Op.Value'Access);
+   procedure Fpif_Export (Stream : File_Type; Op : Mpfloat) is
+      N : constant int :=
+        mpfr_fpif_export (C_Streams.C_Stream (Stream), Op.Value'Access);
    begin
       if N /= 0 then
          raise Failure with "error with mpfr_fpif_export";
@@ -2313,10 +2287,9 @@ package body Admpfr is
    -- Fpif_Import --
    -----------------
 
-   procedure Fpif_Import (Op : in out Mpfloat; Stream : File_Type)
-   is
-      N : constant int := mpfr_fpif_import (Op.Value'Access,
-                                            C_Streams.C_Stream (Stream));
+   procedure Fpif_Import (Op : in out Mpfloat; Stream : File_Type) is
+      N : constant int :=
+        mpfr_fpif_import (Op.Value'Access, C_Streams.C_Stream (Stream));
    begin
       Op.Ternary := NOT_SET;
       if N /= 0 then
@@ -2337,10 +2310,8 @@ package body Admpfr is
    -- Rint --
    ----------
 
-   procedure Rint
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Rint;
+   procedure Rint (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Rint;
 
    ----------
    -- Ceil --
@@ -2349,8 +2320,7 @@ package body Admpfr is
    procedure Ceil (Rop : in out Mpfloat; Op : Mpfloat) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_ceil (Rop.Value'Access,
-                                     Op.Value'Access));
+        To_Ternary_Value (mpfr_ceil (Rop.Value'Access, Op.Value'Access));
    end Ceil;
 
    -----------
@@ -2360,8 +2330,7 @@ package body Admpfr is
    procedure Floor (Rop : in out Mpfloat; Op : Mpfloat) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_floor (Rop.Value'Access,
-                                      Op.Value'Access));
+        To_Ternary_Value (mpfr_floor (Rop.Value'Access, Op.Value'Access));
    end Floor;
 
    -----------
@@ -2371,8 +2340,7 @@ package body Admpfr is
    procedure Round (Rop : in out Mpfloat; Op : Mpfloat) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_round (Rop.Value'Access,
-                                      Op.Value'Access));
+        To_Ternary_Value (mpfr_round (Rop.Value'Access, Op.Value'Access));
    end Round;
 
    ---------------
@@ -2382,8 +2350,7 @@ package body Admpfr is
    procedure Roundeven (Rop : in out Mpfloat; Op : Mpfloat) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_roundeven (Rop.Value'Access,
-                                          Op.Value'Access));
+        To_Ternary_Value (mpfr_roundeven (Rop.Value'Access, Op.Value'Access));
    end Roundeven;
 
    -----------
@@ -2393,8 +2360,7 @@ package body Admpfr is
    procedure Trunc (Rop : in out Mpfloat; Op : Mpfloat) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_trunc (Rop.Value'Access,
-                                      Op.Value'Access));
+        To_Ternary_Value (mpfr_trunc (Rop.Value'Access, Op.Value'Access));
    end Trunc;
 
    ----------------
@@ -2402,63 +2368,54 @@ package body Admpfr is
    ----------------
 
    procedure Rint_Ceil
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Rint_Ceil;
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Rint_Ceil;
 
    ----------------
    -- Rint_Floor --
    ----------------
 
    procedure Rint_Floor
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Rint_Floor;
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Rint_Floor;
 
    ----------------
    -- Rint_Round --
    ----------------
 
    procedure Rint_Round
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Rint_Round;
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Rint_Round;
 
    --------------------
    -- Rint_Roundeven --
    --------------------
 
    procedure Rint_Roundeven
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Rint_Roundeven;
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Rint_Roundeven;
 
    ----------------
    -- Rint_Trunc --
    ----------------
 
    procedure Rint_Trunc
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Rint_Trunc;
+     (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Rint_Trunc;
 
    ----------
    -- Frac --
    ----------
 
-   procedure Frac
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      Rnd : Rounding := RNDEF) renames Mpfr_Frac;
+   procedure Frac (Rop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
+   renames Mpfr_Frac;
 
    ----------
    -- Modf --
    ----------
 
    procedure Modf
-     (Iop, Fop : in out Mpfloat;
-      Op       : Mpfloat;
-      Rnd      : Rounding := RNDEF)
+     (Iop, Fop : in out Mpfloat; Op : Mpfloat; Rnd : Rounding := RNDEF)
    is
       Ret, Iop_T, Fop_T : int;
       type mpfr_t_a is access all mpfr_t;
@@ -2467,10 +2424,12 @@ package body Admpfr is
          raise Failure with "Iop and Fop must be different variables";
       end if;
 
-      Ret := mpfr_modf (Iop.Value'Access,
-                        Fop.Value'Access,
-                        Op.Value'Access,
-                        Rounding'Pos (Rnd));
+      Ret :=
+        mpfr_modf
+          (Iop.Value'Access,
+           Fop.Value'Access,
+           Op.Value'Access,
+           Rounding'Pos (Rnd));
 
       Iop_T := Ret mod 4;
       Fop_T := Ret / 4;
@@ -2491,16 +2450,16 @@ package body Admpfr is
    -- Fmod --
    ----------
 
-   procedure Fmod
-     (R    : in out Mpfloat;
-      X, Y : Mpfloat;
-      Rnd  : Rounding := RNDEF) is
+   procedure Fmod (R : in out Mpfloat; X, Y : Mpfloat; Rnd : Rounding := RNDEF)
+   is
    begin
       R.Ternary :=
-        To_Ternary_Value (mpfr_fmod (R.Value'Access,
-                                     X.Value'Access,
-                                     Y.Value'Access,
-                                     Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_fmod
+             (R.Value'Access,
+              X.Value'Access,
+              Y.Value'Access,
+              Rounding'Pos (Rnd)));
    end Fmod;
 
    ----------
@@ -2514,10 +2473,12 @@ package body Admpfr is
       Rnd : Rounding := RNDEF) is
    begin
       R.Ternary :=
-        To_Ternary_Value (mpfr_fmod_ui (R.Value'Access,
-                                        X.Value'Access,
-                                        unsigned_long (Y),
-                                        Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_fmod_ui
+             (R.Value'Access,
+              X.Value'Access,
+              unsigned_long (Y),
+              Rounding'Pos (Rnd)));
    end Fmod;
 
    -------------
@@ -2533,11 +2494,13 @@ package body Admpfr is
       lq : aliased long;
    begin
       R.Ternary :=
-        To_Ternary_Value (mpfr_fmodquo (R.Value'Access,
-                                        lq'Access,
-                                        X.Value'Access,
-                                        Y.Value'Access,
-                                        Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_fmodquo
+             (R.Value'Access,
+              lq'Access,
+              X.Value'Access,
+              Y.Value'Access,
+              Rounding'Pos (Rnd)));
       Q := Long_Integer (lq);
    end Fmodquo;
 
@@ -2546,15 +2509,15 @@ package body Admpfr is
    ---------------
 
    procedure Remainder
-     (R    : in out Mpfloat;
-      X, Y : Mpfloat;
-      Rnd  : Rounding := RNDEF) is
+     (R : in out Mpfloat; X, Y : Mpfloat; Rnd : Rounding := RNDEF) is
    begin
       R.Ternary :=
-        To_Ternary_Value (mpfr_remainder (R.Value'Access,
-                                          X.Value'Access,
-                                          Y.Value'Access,
-                                          Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_remainder
+             (R.Value'Access,
+              X.Value'Access,
+              Y.Value'Access,
+              Rounding'Pos (Rnd)));
    end Remainder;
 
    ------------
@@ -2570,11 +2533,13 @@ package body Admpfr is
       lq : aliased long;
    begin
       R.Ternary :=
-        To_Ternary_Value (mpfr_remquo (R.Value'Access,
-                                       lq'Access,
-                                       X.Value'Access,
-                                       Y.Value'Access,
-                                       Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_remquo
+             (R.Value'Access,
+              lq'Access,
+              X.Value'Access,
+              Y.Value'Access,
+              Rounding'Pos (Rnd)));
       Q := Long_Integer (lq);
    end Remquo;
 
@@ -2582,8 +2547,8 @@ package body Admpfr is
    -- Is_Integer --
    ----------------
 
-   function Is_Integer (Op : Mpfloat) return Boolean is
-     (if mpfr_integer_p (Op.Value'Access) /= 0 then True else False);
+   function Is_Integer (Op : Mpfloat) return Boolean
+   is (if mpfr_integer_p (Op.Value'Access) /= 0 then True else False);
 
    -------------------------------
    -- Set_Default_Rounding_Mode --
@@ -2598,22 +2563,20 @@ package body Admpfr is
    -- Get_Default_Rounding_Mode --
    -------------------------------
 
-   function Get_Default_Rounding_Mode return Rounding is
-     (Rounding'Enum_Val (mpfr_get_default_rounding_mode));
+   function Get_Default_Rounding_Mode return Rounding
+   is (Rounding'Enum_Val (mpfr_get_default_rounding_mode));
 
    ----------------
    -- Prec_Round --
    ----------------
 
    procedure Prec_Round
-     (X    : in out Mpfloat;
-      Prec : Precision;
-      Rnd  : Rounding := RNDEF) is
+     (X : in out Mpfloat; Prec : Precision; Rnd : Rounding := RNDEF) is
    begin
       X.Ternary :=
-        To_Ternary_Value (mpfr_prec_round (X.Value'Access,
-                                           mpfr_prec_t (Prec),
-                                           Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_prec_round
+             (X.Value'Access, mpfr_prec_t (Prec), Rounding'Pos (Rnd)));
    end Prec_Round;
 
    ---------------
@@ -2626,11 +2589,13 @@ package body Admpfr is
       Rnd1, Rnd2 : Rounding;
       Prec       : Precision) return Boolean
    is
-      R : constant int := mpfr_can_round (B.Value'Access,
-                                          mpfr_exp_t (Err),
-                                          Rounding'Pos (Rnd1),
-                                          Rounding'Pos (Rnd2),
-                                          mpfr_prec_t (Prec));
+      R : constant int :=
+        mpfr_can_round
+          (B.Value'Access,
+           mpfr_exp_t (Err),
+           Rounding'Pos (Rnd1),
+           Rounding'Pos (Rnd2),
+           mpfr_prec_t (Prec));
    begin
       if R /= 0 then
          return True;
@@ -2685,15 +2650,15 @@ package body Admpfr is
    ---------
 
    procedure Min
-     (Rop      : in out Mpfloat;
-      Op1, Op2 : Mpfloat;
-      Rnd      : Rounding := RNDEF) is
+     (Rop : in out Mpfloat; Op1, Op2 : Mpfloat; Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_min (Rop.Value'Access,
-                                    Op1.Value'Access,
-                                    Op2.Value'Access,
-                                    Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_min
+             (Rop.Value'Access,
+              Op1.Value'Access,
+              Op2.Value'Access,
+              Rounding'Pos (Rnd)));
    end Min;
 
    ---------
@@ -2701,23 +2666,23 @@ package body Admpfr is
    ---------
 
    procedure Max
-     (Rop      : in out Mpfloat;
-      Op1, Op2 : Mpfloat;
-      Rnd      : Rounding := RNDEF) is
+     (Rop : in out Mpfloat; Op1, Op2 : Mpfloat; Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_max (Rop.Value'Access,
-                                    Op1.Value'Access,
-                                    Op2.Value'Access,
-                                    Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_max
+             (Rop.Value'Access,
+              Op1.Value'Access,
+              Op2.Value'Access,
+              Rounding'Pos (Rnd)));
    end Max;
 
    -------------
    -- Get_Exp --
    -------------
 
-   function Get_Exp (X : Mpfloat) return Exponent is
-     (Exponent (mpfr_get_exp (X.Value'Access)));
+   function Get_Exp (X : Mpfloat) return Exponent
+   is (Exponent (mpfr_get_exp (X.Value'Access)));
    --  TODO: raise an exception if X is NaN, Inf, or Zero.
 
    -------------
@@ -2747,16 +2712,15 @@ package body Admpfr is
    -------------
 
    procedure Setsign
-     (Rop : in out Mpfloat;
-      Op  : Mpfloat;
-      S   : Sign;
-      Rnd : Rounding := RNDEF) is
+     (Rop : in out Mpfloat; Op : Mpfloat; S : Sign; Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_setsign (Rop.Value'Access,
-                                        Op.Value'Access,
-                                        S'Enum_Rep,
-                                        Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_setsign
+             (Rop.Value'Access,
+              Op.Value'Access,
+              S'Enum_Rep,
+              Rounding'Pos (Rnd)));
    end Setsign;
 
    --------------
@@ -2764,15 +2728,15 @@ package body Admpfr is
    --------------
 
    procedure Copysign
-     (Rop      : in out Mpfloat;
-      Op1, Op2 : Mpfloat;
-      Rnd      : Rounding := RNDEF) is
+     (Rop : in out Mpfloat; Op1, Op2 : Mpfloat; Rnd : Rounding := RNDEF) is
    begin
       Rop.Ternary :=
-        To_Ternary_Value (mpfr_copysign (Rop.Value'Access,
-                                         Op1.Value'Access,
-                                         Op2.Value'Access,
-                                         Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_copysign
+             (Rop.Value'Access,
+              Op1.Value'Access,
+              Op2.Value'Access,
+              Rounding'Pos (Rnd)));
    end Copysign;
 
    -----------------
@@ -2789,15 +2753,15 @@ package body Admpfr is
    -- Get_Emin --
    --------------
 
-   function Get_Emin return Exponent is
-     (Exponent (mpfr_get_emin));
+   function Get_Emin return Exponent
+   is (Exponent (mpfr_get_emin));
 
    --------------
    -- Get_Emax --
    --------------
 
-   function Get_Emax return Exponent is
-     (Exponent (mpfr_get_emax));
+   function Get_Emax return Exponent
+   is (Exponent (mpfr_get_emax));
 
    --------------
    -- Set_Emin --
@@ -2831,29 +2795,29 @@ package body Admpfr is
    -- Get_Emin_Min --
    ------------------
 
-   function Get_Emin_Min return Exponent is
-     (Exponent (mpfr_get_emin_min));
+   function Get_Emin_Min return Exponent
+   is (Exponent (mpfr_get_emin_min));
 
    ------------------
    -- Get_Emin_Max --
    ------------------
 
-   function Get_Emin_Max return Exponent is
-     (Exponent (mpfr_get_emin_max));
+   function Get_Emin_Max return Exponent
+   is (Exponent (mpfr_get_emin_max));
 
    ------------------
    -- Get_Emax_Min --
    ------------------
 
-   function Get_Emax_Min return Exponent is
-     (Exponent (mpfr_get_emax_min));
+   function Get_Emax_Min return Exponent
+   is (Exponent (mpfr_get_emax_min));
 
    ------------------
    -- Get_Emax_Max --
    ------------------
 
-   function Get_Emax_Max return Exponent is
-     (Exponent (mpfr_get_emax_max));
+   function Get_Emax_Max return Exponent
+   is (Exponent (mpfr_get_emax_max));
 
    -----------------
    -- Check_Range --
@@ -2862,9 +2826,9 @@ package body Admpfr is
    procedure Check_Range (X : in out Mpfloat; Rnd : Rounding := RNDEF) is
    begin
       X.Ternary :=
-        To_Ternary_Value (mpfr_check_range (X.Value'Access,
-                                            X.Ternary'Enum_Rep,
-                                            Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_check_range
+             (X.Value'Access, X.Ternary'Enum_Rep, Rounding'Pos (Rnd)));
    end Check_Range;
 
    ------------------
@@ -2874,9 +2838,9 @@ package body Admpfr is
    procedure Subnormalize (X : in out Mpfloat; Rnd : Rounding := RNDEF) is
    begin
       X.Ternary :=
-        To_Ternary_Value (mpfr_subnormalize (X.Value'Access,
-                                             X.Ternary'Enum_Rep,
-                                             Rounding'Pos (Rnd)));
+        To_Ternary_Value
+          (mpfr_subnormalize
+             (X.Value'Access, X.Ternary'Enum_Rep, Rounding'Pos (Rnd)));
    end Subnormalize;
 
    ---------------------
@@ -3000,43 +2964,43 @@ package body Admpfr is
    -- Underflow --
    ---------------
 
-   function Underflow return Boolean is
-     (if mpfr_underflow_p /= 0 then True else False);
+   function Underflow return Boolean
+   is (if mpfr_underflow_p /= 0 then True else False);
 
    --------------
    -- Overflow --
    --------------
 
-   function Overflow return Boolean is
-     (if mpfr_overflow_p /= 0 then True else False);
+   function Overflow return Boolean
+   is (if mpfr_overflow_p /= 0 then True else False);
 
    ------------
    -- Divby0 --
    ------------
 
-   function Divby0 return Boolean is
-     (if mpfr_divby0_p /= 0 then True else False);
+   function Divby0 return Boolean
+   is (if mpfr_divby0_p /= 0 then True else False);
 
    -------------
    -- Nanflag --
    -------------
 
-   function Nanflag return Boolean is
-     (if mpfr_nanflag_p /= 0 then True else False);
+   function Nanflag return Boolean
+   is (if mpfr_nanflag_p /= 0 then True else False);
 
    --------------
    -- Inexflag --
    --------------
 
-   function Inexflag return Boolean is
-     (if mpfr_inexflag_p /= 0 then True else False);
+   function Inexflag return Boolean
+   is (if mpfr_inexflag_p /= 0 then True else False);
 
    ----------------
    -- Erangeflag --
    ----------------
 
-   function Erangeflag return Boolean is
-     (if mpfr_erangeflag_p /= 0 then True else False);
+   function Erangeflag return Boolean
+   is (if mpfr_erangeflag_p /= 0 then True else False);
 
    ---------------------
    -- To_Mpfr_Flags_T --
@@ -3057,7 +3021,7 @@ package body Admpfr is
 
    function To_Flags_Mask (M : mpfr_flags_t) return Flags_Mask is
       Flags : Flags_Mask (1 .. 6);
-      I : Integer := 0;
+      I     : Integer := 0;
       procedure Check (F : Flag);
 
       procedure Check (F : Flag) is
@@ -3097,15 +3061,15 @@ package body Admpfr is
    -- Flags_Test --
    ----------------
 
-   function Flags_Test (Mask : Flags_Mask) return Flags_Mask is
-     (To_Flags_Mask (mpfr_flags_test (To_Mpfr_Flags_T (Mask))));
+   function Flags_Test (Mask : Flags_Mask) return Flags_Mask
+   is (To_Flags_Mask (mpfr_flags_test (To_Mpfr_Flags_T (Mask))));
 
    ----------------
    -- Flags_Save --
    ----------------
 
-   function Flags_Save return Flags_Mask is
-     (To_Flags_Mask (mpfr_flags_save));
+   function Flags_Save return Flags_Mask
+   is (To_Flags_Mask (mpfr_flags_save));
 
    -------------------
    -- Flags_Restore --
