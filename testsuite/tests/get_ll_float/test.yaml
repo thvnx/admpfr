@@ -1,0 +1,4 @@
+driver: admpfr
+control:
+- [XFAIL, "env.build.os.name == 'darwin'",
+   "Long_Long_Float is 64-bit on Apple arm64 (long double == double)"]

@@ -48,11 +48,14 @@ begin
    end;
 
    declare
-      A          : constant Float := Float'Last;
-      B          : constant Long_Float := Long_Float'First;
-      C          : constant Float := 0.0;
-      D          : constant Long_Long_Float := Long_Long_Float'Last;
-      I, J, K, L : Mpfloat;
+      A       : constant Float := Float'Last;
+      B       : constant Long_Float := Long_Float'First;
+      C       : constant Float := 0.0;
+      D       : constant Long_Long_Float := Long_Long_Float'Last;
+      I, J, K : Mpfloat;
+      L       : Mpfloat (24);
+      --  Not the default 53 bits: Long_Long_Float'Last must round on every
+      --  platform, including Apple arm64 where long double is only 53 bits.
    begin
       Set (I, A);
       Put_Line (I.Get_Ternary_Value'Image);

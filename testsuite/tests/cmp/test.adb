@@ -20,8 +20,12 @@ begin
    Put_Line (M.Cmp (Long_Float (0.1))'Image);
    Put_Line (N.Cmp (Long_Float (0.1))'Image);
 
-   Put_Line (M.Cmp (Long_Long_Float (0.1))'Image);
-   Put_Line (N.Cmp (Long_Long_Float (0.1))'Image);
+   --  A power of two is exact in every float format, so the result does not
+   --  depend on the width of Long_Long_Float, which is 64 bits of mantissa on
+   --  x86-64 (extended 80-bits format) but only 53 on Apple arm64 where long
+   --  double is double.
+   Put_Line (M.Cmp (Long_Long_Float (0.0625))'Image);
+   Put_Line (N.Cmp (Long_Long_Float (0.125))'Image);
 
    Put_Line (M.Cmp (-1, 3)'Image);
    Put_Line (N.Cmp (1, -3)'Image);
