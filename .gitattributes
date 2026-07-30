@@ -1,0 +1,2 @@
+# Store and check out all text files with LF endings on every platform.
+* text=auto eol=lf
