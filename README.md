@@ -21,7 +21,7 @@ admpfr`.
 ### Prerequisites
 
 - An Ada 2022 compiler.
-- [MPFR 4.1.0](https://www.mpfr.org).
+- [MPFR 4.2.0](https://www.mpfr.org) or above.
 - (Optional) AdaCore's [e3-testsuite](https://github.com/AdaCore/e3-testsuite).
 
 ### Using Alire
@@ -30,9 +30,6 @@ Simply get [Alire](https://alire.ada.dev/) and run the following commands:
 
 ```bash
 $ cd admpfr
-# Export some variable if MPFR is installed in a custom location
-$ export LIBRARY_PATH=/usr/local/lib
-$ export C_INCLUDE_PATH=/usr/local/include
 $ alr build
 ```
 
