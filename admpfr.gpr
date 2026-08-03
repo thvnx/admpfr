@@ -1,9 +1,7 @@
 library project Admpfr is
 
    for Languages use ("Ada", "C");
-
    for Source_Dirs use ("src");
-   for Object_Dir use "obj";
 
    type Target_type is ("Windows_NT", "UNIX");
    Target : Target_type := external ("OS", "UNIX");
@@ -11,8 +9,28 @@ library project Admpfr is
    type Build_Type is ("Debug", "Release");
    Build : Build_Type := external ("PRJ_BUILD", "Debug");
 
+   type Library_Type_Kind is ("relocatable", "static", "static-pic");
+   Library_Type : Library_Type_Kind :=
+     external ("ADMPFR_LIBRARY_TYPE", external ("LIBRARY_TYPE", "static"));
+
+
    for Library_Name use "admpfr";
-   for Library_Dir use "lib";
+   for Library_Kind use Library_Type;
+
+   for Library_Dir use "lib/" & Library_Type;
+   for Object_Dir use "obj/" & Library_Type;
+
+   Mpfr_Libs := ("-lmpfr");
+   case Target is
+      when "Windows_NT" => Mpfr_Libs := ("-lmpfr", "-lgmp");
+      when "UNIX"       => null;
+   end case;
+
+   --  Archives (static, static-pic) only accept object files here.
+   case Library_Type is
+      when "relocatable" => for Library_Options use Mpfr_Libs;
+      when others        => null;
+   end case;
 
    package Compiler is
 
@@ -31,10 +49,7 @@ library project Admpfr is
    end Compiler;
 
    package Linker is
-      case Target is
-         when "Windows_NT" => for Linker_Options use ("-lmpfr", "-lgmp");
-         when "UNIX"       => for Linker_Options use ("-lmpfr");
-      end case;
+      for Linker_Options use Mpfr_Libs;
    end Linker;
 
 end Admpfr;
